@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Calculator</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--light-bg);
+        }
+
+        .calculator-container {
+            display: none;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .result-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--light-bg);
+            border-radius: 8px;
+        }
+
+        .result-box h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .price-breakdown {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .extras-checkboxes {
+            display: grid;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div class="login-container" id="loginForm">
+        <div class="form__group">
+            <label for="password">Enter Password</label>
+            <input type="password" id="password" required>
+            <button onclick="checkPassword()" class="button">Login</button>
+        </div>
+    </div>
+
+    <!-- Calculator (Hidden by default) -->
+    <div class="calculator-container" id="calculator">
+        <div class="admin-header">
+            <h2>Service Calculator</h2>
+            <button onclick="logout()" class="button">Logout</button>
+        </div>
+        <form class="calculator-form" id="calculatorForm">
+            <div class="form-row">
+                <div class="form__group">
+                    <label for="serviceType">Service Type</label>
+                    <select id="serviceType" required>
+                        <option value="">Select Service</option>
+                        <option value="residential">Residential Cleaning</option>
+                        <option value="commercial">Commercial Cleaning</option>
+                        <option value="airbnb">Airbnb Turnover</option>
+                    </select>
+                </div>
+                <div class="form__group">
+                    <label for="squareFeet">Square Footage</label>
+                    <input type="number" id="squareFeet" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form__group">
+                    <label for="bedrooms">Bedrooms</label>
+                    <select id="bedrooms" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+                <div class="form__group">
+                    <label for="bathrooms">Bathrooms</label>
+                    <select id="bathrooms" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form__group">
+                    <label for="frequency">Cleaning Frequency</label>
+                    <select id="frequency">
+                        <option value="onetime">One-time</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="biweekly">Bi-weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+                <div class="form__group">
+                    <label>Extra Services</label>
+                    <div class="extras-checkboxes">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="windows" value="windows" name="extras">
+                            <label for="windows">Window Cleaning ($35)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fridge" value="fridge" name="extras">
+                            <label for="fridge">Inside Fridge ($25)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="oven" value="oven" name="extras">
+                            <label for="oven">Inside Oven ($30)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="laundry" value="laundry" name="extras">
+                            <label for="laundry">Laundry ($25)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="button">Calculate Price</button>
+        </form>
+
+        <div class="result-box" id="result" style="display: none;">
+            <h3>Price Breakdown</h3>
+            <div class="price-breakdown" id="breakdown"></div>
+            <div class="total-price" id="totalPrice"></div>
+        </div>
+    </div>
+
+    <script>
+        // Encrypted password hash (for Issan123)
+        const PASS_HASH = 'U2FsdGVkX19/PSGz4BbCw2BhT6HLZECkEoZYlN9JVJI=';
+        
+        // Session management
+        function isLoggedIn() {
+            return sessionStorage.getItem('calculator_auth') === 'true';
+        }
+
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            try {
+                // Decrypt and verify
+                const decrypted = CryptoJS.AES.decrypt(PASS_HASH, 'Issan123').toString(CryptoJS.enc.Utf8);
+                if (password === 'Issan123') {
+                    sessionStorage.setItem('calculator_auth', 'true');
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('calculator').style.display = 'block';
+                } else {
+                    alert('Invalid password');
+                }
+            } catch (e) {
+                alert('Invalid password');
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('calculator_auth');
+            window.location.href = '../index.html'; // Redirect to home page
+        }
+
+        // Check auth status on load
+        if (!isLoggedIn()) {
+            document.getElementById('calculator').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'flex';
+        } else {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('calculator').style.display = 'block';
+        }
+
+        // Obfuscated pricing configuration
+        const _0x4f8d=['\x72\x65\x73\x69\x64\x65\x6e\x74\x69\x61\x6c','\x63\x6f\x6d\x6d\x65\x72\x63\x69\x61\x6c','\x61\x69\x72\x62\x6e\x62'];
+        const PRICING={[_0x4f8d[0]]:{baseRate:100,sqftRate:.1,bedroomRate:25,bathroomRate:30},[_0x4f8d[1]]:{baseRate:150,sqftRate:.12,bedroomRate:0,bathroomRate:40},[_0x4f8d[2]]:{baseRate:120,sqftRate:.11,bedroomRate:30,bathroomRate:35}};
+        const FREQUENCY_DISCOUNT={onetime:1,monthly:.92,biweekly:.88,weekly:.85};
+        const EXTRAS_PRICING={windows:35,fridge:25,oven:30,laundry:25};
+
+        // Calculator form submission
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!isLoggedIn()) {
+                location.reload();
+                return;
+            }
+
+            const serviceType = document.getElementById('serviceType').value;
+            const squareFeet = parseFloat(document.getElementById('squareFeet').value);
+            const bedrooms = parseInt(document.getElementById('bedrooms').value);
+            const bathrooms = parseInt(document.getElementById('bathrooms').value);
+            const frequency = document.getElementById('frequency').value;
+            const extras = Array.from(document.querySelectorAll('input[name="extras"]:checked')).map(checkbox => checkbox.value);
+
+            // Calculate price
+            const pricing = PRICING[serviceType];
+            let basePrice = pricing.baseRate;
+            basePrice += squareFeet * pricing.sqftRate;
+            basePrice += bedrooms * pricing.bedroomRate;
+            basePrice += bathrooms * pricing.bathroomRate;
+
+            const extrasTotal = extras.reduce((total, extra) => total + EXTRAS_PRICING[extra], 0);
+            const finalPrice = (basePrice + extrasTotal) * FREQUENCY_DISCOUNT[frequency];
+
+            // Display results
+            const breakdown = document.getElementById('breakdown');
+            breakdown.innerHTML = `
+                <div>Base Rate: $${pricing.baseRate}</div>
+                <div>Square Footage (${squareFeet} sq ft): $${(squareFeet * pricing.sqftRate).toFixed(2)}</div>
+                <div>Bedrooms (${bedrooms}): $${(bedrooms * pricing.bedroomRate).toFixed(2)}</div>
+                <div>Bathrooms (${bathrooms}): $${(bathrooms * pricing.bathroomRate).toFixed(2)}</div>
+                ${extras.length ? `<div>Extras: $${extrasTotal}</div>` : ''}
+                ${frequency !== 'onetime' ? `<div>Frequency Discount (${frequency}): ${((1 - FREQUENCY_DISCOUNT[frequency]) * 100).toFixed(0)}%</div>` : ''}
+            `;
+
+            document.getElementById('totalPrice').textContent = `Total Price: $${finalPrice.toFixed(2)}`;
+            document.getElementById('result').style.display = 'block';
+        });
+    </script>
+</body>
+</html> 

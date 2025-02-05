@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <title>CONTACT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      emailjs.init({
+        publicKey: "-cMqd3DNma7BnQcm0",
+      });
+    })();
+  </script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="header__container">
+        <a href="index.html" class="header__logo logo">
+          <img src="images/logo.png" alt="Logo">
+        </a>
+        <nav class="header__navigation">
+          <div class="menu__body">
+            <ul class="menu__list">
+              <li class="menu__item"><a href="index.html" class="menu__link">Home</a></li>
+              <li class="menu__item"><a href="about.html" class="menu__link">About</a></li>
+              <li class="menu__item"><a href="services.html" class="menu__link">Services</a></li>
+              <li class="menu__item"><a href="pricing.html" class="menu__link">Pricing</a></li>
+              <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
+            </ul>
+            <a href="tel:+13053172735" class="actions-header__button">(305) 317-2735</a>
+          </div>
+        </nav>
+        <button type="button" class="icon-menu">
+          <span></span>
+        </button>
+      </div>
+    </header>
+    <main class="page">
+      <section class="page__main main main_contact main_pages">
+        <video class="main__video" autoplay muted loop playsinline preload="none">
+          <source src="videos/contact.mp4" type="video/mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
+        </video>
+        <div class="main__container main__container_pages">
+          <h1 class="main__title">Contact</h1>
+          <div class="main__text main__text_pages">
+            Let's make your space spotless
+          </div>
+        </div>
+      </section>
+      <section class="page__faq faq">
+        <div class="faq__container">
+          <h2 class="faq__title title">Frequently Asked Questions</h2>
+          <div class="faq__grid">
+            <details class="faq__item">
+              <summary>What areas do you serve?</summary>
+              <p>We proudly serve Miami and surrounding areas including Miami Beach, Coral Gables, Brickell, and Downtown Miami.</p>
+            </details>
+            
+            <details class="faq__item">
+              <summary>Are you insured and bonded?</summary>
+              <p>Yes, we are fully insured and bonded for your peace of mind. Our insurance covers any potential damages or accidents during service.</p>
+            </details>
+            
+            <details class="faq__item">
+              <summary>What cleaning supplies do you use?</summary>
+              <p>We use professional-grade, eco-friendly cleaning products that are safe for your family, pets, and the environment while ensuring exceptional cleaning results.</p>
+            </details>
+            
+            <details class="faq__item">
+              <summary>How do I schedule a cleaning?</summary>
+              <p>You can schedule a cleaning by calling us at (305) 317-2735, filling out our contact form, or booking directly through our website.</p>
+            </details>
+            
+            <details class="faq__item">
+              <summary>Do you offer recurring cleaning services?</summary>
+              <p>Yes, we offer weekly, bi-weekly, and monthly cleaning services with special rates for regular clients.</p>
+            </details>
+            
+            <details class="faq__item">
+              <summary>What is your cancellation policy?</summary>
+              <p>We require 24-hour notice for cancellations to avoid any cancellation fees. We understand emergencies happen and handle each situation with care.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+      <section class="page__booking booking">
+        <div class="booking__container">
+          <div class="booking__tabs">
+            <button class="booking__tab active" data-tab="contact">Contact Form</button>
+            <button class="booking__tab" data-tab="booking">Book Service</button>
+          </div>
+
+          <div class="booking__content">
+            <!-- Contact Form Tab (existing form) -->
+            <div class="booking__panel active" id="contact-panel">
+              <div class="contact__info">
+                <h2 class="contact__title">Get in Touch</h2>
+                <form class="contact__form" id="contact-form" onsubmit="return sendEmail(event)">
+                  <div class="form__group">
+                    <label for="name">Name *</label>
+                    <input type="text" id="name" name="name" required>
+                  </div>
+                  
+                  <div class="form__group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                  </div>
+                  
+                  <div class="form__group">
+                    <label for="phone">Phone (Optional)</label>
+                    <input type="tel" id="phone" name="phone">
+                  </div>
+                  
+                  <div class="form__group">
+                    <label for="service">Service Type (Optional)</label>
+                    <select id="service" name="service">
+                      <option value="">Select a service</option>
+                      <option value="residential">Residential Cleaning</option>
+                      <option value="commercial">Commercial Cleaning</option>
+                      <option value="airbnb">Airbnb Turnover</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form__group">
+                    <label for="description">Description of Work Needed *</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                  </div>
+                  
+                  <button type="submit" class="form__button button">Send Message</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Booking Form Tab -->
+            <div class="booking__panel" id="booking-panel">
+              <h2 class="booking__title">Schedule Your Cleaning</h2>
+              <form class="booking__form" id="booking-form" onsubmit="return sendBooking(event)">
+                <!-- Service Type -->
+                <div class="form__group">
+                  <label for="booking-service">Service Type *</label>
+                  <select id="booking-service" name="service" required>
+                    <option value="">Select a service</option>
+                    <option value="residential">Residential Cleaning</option>
+                    <option value="commercial">Commercial Cleaning</option>
+                    <option value="airbnb">Airbnb Turnover</option>
+                  </select>
+                </div>
+
+                <!-- Add this right after the Service Type selection in the booking form -->
+                <div class="form__group service-checklist hidden" id="service-checklist">
+                  <label class="checklist-label">What's Included:</label>
+                  
+                  <!-- Residential Cleaning Checklist -->
+                  <div class="checklist-content hidden" data-service="residential">
+                    <h4 class="checklist-title">Standard Residential Cleaning</h4>
+                    <div class="checklist-grid">
+                      <div class="checklist-column">
+                        <h5>General</h5>
+                        <ul>
+                          <li>✓ Dust all accessible surfaces</li>
+                          <li>✓ Vacuum all floors and carpets</li>
+                          <li>✓ Mop all hard floors</li>
+                          <li>✓ Empty trash bins</li>
+                          <li>✓ Clean door handles and light switches</li>
+                        </ul>
+                      </div>
+                      <div class="checklist-column">
+                        <h5>Kitchen</h5>
+                        <ul>
+                          <li>✓ Clean countertops and backsplash</li>
+                          <li>✓ Clean stovetop and exterior of appliances</li>
+                          <li>✓ Clean sink and faucet</li>
+                          <li>✓ Wipe cabinet fronts</li>
+                          <li>✓ Clean microwave inside and out</li>
+                        </ul>
+                      </div>
+                      <div class="checklist-column">
+                        <h5>Bathrooms</h5>
+                        <ul>
+                          <li>✓ Clean and sanitize toilet</li>
+                          <li>✓ Clean shower/tub and faucets</li>
+                          <li>✓ Clean sink and counters</li>
+                          <li>✓ Clean mirrors</li>
+                          <li>✓ Sweep and mop floors</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Commercial Cleaning Checklist -->
+                  <div class="checklist-content hidden" data-service="commercial">
+                    <h4 class="checklist-title">Commercial Cleaning Service</h4>
+                    <div class="checklist-grid">
+                      <div class="checklist-column">
+                        <h5>Office Areas</h5>
+                        <ul>
+                          <li>✓ Dust and clean all surfaces</li>
+                          <li>✓ Vacuum carpets and floors</li>
+                          <li>✓ Clean and sanitize high-touch areas</li>
+                          <li>✓ Empty trash bins</li>
+                          <li>✓ Clean windows and glass surfaces</li>
+                        </ul>
+                      </div>
+                      <div class="checklist-column">
+                        <h5>Common Areas</h5>
+                        <ul>
+                          <li>✓ Clean reception areas</li>
+                          <li>✓ Sanitize door handles</li>
+                          <li>✓ Clean break rooms</li>
+                          <li>✓ Dust furniture and fixtures</li>
+                          <li>✓ Clean water fountains</li>
+                        </ul>
+                      </div>
+                      <div class="checklist-column">
+                        <h5>Restrooms</h5>
+                        <ul>
+                          <li>✓ Clean and sanitize all fixtures</li>
+                          <li>✓ Restock supplies</li>
+                          <li>✓ Clean mirrors and counters</li>
+                          <li>✓ Sweep and mop floors</li>
+                          <li>✓ Empty trash bins</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Airbnb Cleaning Checklist -->
+                  <div class="checklist-content hidden" data-service="airbnb">
+                    <h4 class="checklist-title">Airbnb Turnover Service</h4>
+                    <div class="checklist-grid">
+                      <div class="checklist-column">
+                        <h5>Living Spaces</h5>
+                        <ul>
+                          <li>✓ Full cleaning of all rooms</li>
+                          <li>✓ Make beds with fresh linens</li>
+                          <li>✓ Dust and clean all surfaces</li>
+                          <li>✓ Vacuum and mop floors</li>
+                          <li>✓ Clean windows and mirrors</li>
+                        </ul>
+                      </div>
+                      <div class="checklist-column">
+                        <h5>Kitchen & Laundry</h5>
+                        <ul>
+                          <li>✓ Deep clean all appliances</li>
+                          <li>✓ Wash dishes and utensils</li>
+                          <li>✓ Clean and sanitize surfaces</li>
+                          <li>✓ Wash and fold linens</li>
+                          <li>✓ Restock supplies</li>
+                        </ul>
+                      </div>
+                      <div class="checklist-column">
+                        <h5>Final Touches</h5>
+                        <ul>
+                          <li>✓ Check inventory</li>
+                          <li>✓ Set up welcome amenities</li>
+                          <li>✓ Take verification photos</li>
+                          <li>✓ Check for damages</li>
+                          <li>✓ Lock up and secure</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Property Details -->
+                <div class="form__group">
+                  <label for="property-size">Property Size *</label>
+                  <select id="property-size" name="size" required>
+                    <option value="">Select size</option>
+                    <option value="small">Small (up to 1,000 sq ft)</option>
+                    <option value="medium">Medium (1,000-2,000 sq ft)</option>
+                    <option value="large">Large (2,000+ sq ft)</option>
+                  </select>
+                </div>
+
+                <!-- Date and Time -->
+                <div class="form__row">
+                  <div class="form__group half date-field">
+                    <label for="preferred-date">Preferred Date *</label>
+                    <input type="date" id="preferred-date" name="date" required>
+                  </div>
+                  <div class="form__group half time-field">
+                    <label for="preferred-time">Preferred Time *</label>
+                    <select id="preferred-time" name="time" required>
+                      <option value="">Select time</option>
+                      <option value="morning">Morning (8AM - 12PM)</option>
+                      <option value="afternoon">Afternoon (12PM - 4PM)</option>
+                      <option value="evening">Evening (4PM - 8PM)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Bedrooms & Bathrooms -->
+                <div class="form__row">
+                  <div class="form__group half bedroom-field">
+                    <label for="bedrooms">Bedrooms *</label>
+                    <select id="bedrooms" name="bedrooms" required>
+                      <option value="">Select</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4+</option>
+                    </select>
+                  </div>
+                  <div class="form__group half bathroom-field">
+                    <label for="bathrooms">Bathrooms *</label>
+                    <select id="bathrooms" name="bathrooms" required>
+                      <option value="">Select</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4+</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="form__group">
+                  <label for="booking-name">Name *</label>
+                  <input type="text" id="booking-name" name="name" required>
+                </div>
+
+                <div class="form__group">
+                  <label for="booking-email">Email *</label>
+                  <input type="email" id="booking-email" name="email" required>
+                </div>
+
+                <div class="form__group">
+                  <label for="booking-phone">Phone *</label>
+                  <input type="tel" id="booking-phone" name="phone" required>
+                </div>
+
+                <!-- Special Instructions -->
+                <div class="form__group">
+                  <label for="booking-notes">Special Instructions</label>
+                  <textarea id="booking-notes" name="notes" rows="4"></textarea>
+                </div>
+
+                <button type="submit" class="form__button button">Book Now</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="page__contact contact">
+        <div class="contact__container">
+          <h2 class="contact__title">Find Us</h2>
+          <div class="contact__info-grid">
+            <!-- Phone -->
+            <a href="tel:+13053172735" class="contact__info-item">
+              <span class="contact__label">PHONE</span>
+              <span class="contact__value">(305) 317-2735</span>
+            </a>
+
+            <!-- Email -->
+            <a href="mailto:issancleaningco@gmail.com" class="contact__info-item">
+              <span class="contact__label">EMAIL</span>
+              <span class="contact__value">issancleaningco@gmail.com</span>
+            </a>
+
+            <!-- Service Area -->
+            <div class="contact__info-item">
+              <span class="contact__label">SERVING</span>
+              <span class="contact__value">Miami and surrounding areas</span>
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="contact__social">
+            <a href="https://www.facebook.com/profile.php?id=61572380124099" class="contact__social-link">
+              <img src="img/contact/fb.png" alt="Facebook" />
+            </a>
+            <a href="https://www.instagram.com/issancleaningco/" class="contact__social-link">
+              <img src="img/contact/ig.jpeg" alt="Instagram" />
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="footer__container">
+        <nav class="footer__nav">
+          <ul class="footer__menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <a href="index.html" class="footer__logo logo">
+          <img src="images/logo.png" alt="Issan Cleaning logo">
+        </a>
+        <div class="footer__copyright">Copyright © 2025 Issan Cleaning – All Rights Reserved</div>
+      </div>
+    </footer>
+  </div>
+  <script src="js/script.js"></script>
+  <script type="text/javascript">
+    function sendEmail(e) {
+      e.preventDefault();
+      
+      // Get form data
+      const form = document.getElementById('contact-form');
+      const templateParams = {
+        name: form.name.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        service: form.service.value,
+        additionalInfo: form.description.value
+      };
+
+      // Send email using EmailJS
+      emailjs.send('service_6cikdqq', 'template_rsq8lj2', templateParams)
+        .then(
+          function(response) {
+            console.log("SUCCESS", response);
+            alert("Message sent successfully!");
+            form.reset();
+          },
+          function(error) {
+            console.log("FAILED", error);
+            alert("Failed to send message. Please try again.");
+          }
+        );
+
+      return false;
+    }
+
+    function sendBooking(e) {
+      e.preventDefault();
+      
+      // Get booking form data
+      const form = document.getElementById('booking-form');
+      const templateParams = {
+        name: form.name.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        service: form.service.value,
+        size: form.size.value,
+        bedrooms: form.bedrooms.value,
+        bathrooms: form.bathrooms.value,
+        date: form.date.value,
+        time: form.time.value,
+        notes: form.notes.value
+      };
+
+      // Send email using EmailJS - we'll use a different template for bookings
+      emailjs.send('service_6cikdqq', 'template_n99giqi', templateParams)
+        .then(
+          function(response) {
+            console.log("SUCCESS", response);
+            alert("Booking request sent successfully! We'll contact you shortly to confirm.");
+            form.reset();
+          },
+          function(error) {
+            console.log("FAILED", error);
+            alert("Failed to send booking request. Please try again.");
+          }
+        );
+
+      return false;
+    }
+
+    // Tab switching functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('.booking__tab');
+      const panels = document.querySelectorAll('.booking__panel');
+      
+      // Set minimum date to today for the date picker
+      const dateInput = document.getElementById('preferred-date');
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.min = today;
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Remove active class from all tabs and panels
+          tabs.forEach(t => t.classList.remove('active'));
+          panels.forEach(p => p.classList.remove('active'));
+
+          // Add active class to clicked tab and corresponding panel
+          tab.classList.add('active');
+          document.getElementById(`${tab.dataset.tab}-panel`).classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
