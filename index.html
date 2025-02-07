@@ -11,7 +11,7 @@
   <link rel="alternate" hreflang="es" href="https://yourwebsite.com/es/">
   <link rel="alternate" hreflang="en" href="https://yourwebsite.com/">
   <link rel="alternate" hreflang="x-default" href="https://yourwebsite.com/">
-  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="icon" type="image/png" href="dist/images/favicon.png" />
   <title>Professional House Cleaning Services in Miami | Residential & Commercial</title>
   <!-- Preload critical assets -->
   <link rel="preload" href="fonts/quicksand-v30-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -34,19 +34,19 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Miami's Trusted Cleaning Service">
   <meta property="og:description" content="Professional cleaning services in Miami. Residential, commercial & Airbnb cleaning with 100% satisfaction guarantee.">
-  <meta property="og:image" content="images/og-image.jpg">
+  <meta property="og:image" content="dist/images/og-image.jpg">
   <meta property="og:url" content="https://yourwebsite.com">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Miami's Trusted Cleaning Service">
   <meta name="twitter:description" content="Professional cleaning services in Miami. Book your cleaning today!">
-  <meta name="twitter:image" content="images/og-image.jpg">
+  <meta name="twitter:image" content="dist/images/og-image.jpg">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Issan Cleaning",
     "alternateName": "Issan Cleaning Services Miami",
-    "image": "images/logo.png",
+    "image": "dist/images/logo.png",
     "description": "Professional residential and commercial cleaning services in Miami. Specializing in home cleaning, office cleaning, and Airbnb turnover services.",
     "areaServed": {
       "@type": "City",
@@ -175,7 +175,10 @@
     <header class="header">
       <div class="header__container">
         <a href="index.html" class="header__logo logo">
-          <img src="images/logo.png" alt="Professional Cleaning Service">
+          <picture>
+            <source srcset="dist/images/logo.webp" type="image/webp">
+            <img src="dist/images/logo.png" alt="Professional Cleaning Service">
+          </picture>
         </a>
         <div class="header__navigation">
           <div class="language-toggle">
@@ -412,7 +415,10 @@
           </ul>
         </nav>
         <a href="index.html" class="footer__logo logo">
-          <img src="images/logo.png" alt="Issan Cleaning logo">
+          <picture>
+            <source srcset="dist/images/logo.webp" type="image/webp">
+            <img src="dist/images/logo.png" alt="Issan Cleaning logo">
+          </picture>
         </a>
         <div class="footer__copyright">Copyright © 2025 Issan Cleaning – All Rights Reserved</div>
       </div>

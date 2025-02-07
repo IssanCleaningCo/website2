@@ -45,7 +45,10 @@
     <header class="header">
       <div class="header__container">
         <a href="index.html" class="header__logo logo">
-          <img src="images/logo.png" alt="Professional Cleaning Service">
+          <picture>
+            <source srcset="dist/images/logo.webp" type="image/webp">
+            <img src="dist/images/logo.png" alt="Professional Cleaning Service">
+          </picture>
         </a>
         <div class="header__navigation">
           <div class="language-toggle">
@@ -188,11 +191,17 @@
             <div class="before-after__item">
               <div class="before-after__images">
                 <div class="before-after__before">
-                  <img src="dist/images/Gallery/kitchen-before.jpg" alt="Kitchen before cleaning">
+                  <picture>
+                    <source srcset="dist/images/Gallery/kitchen-before.webp" type="image/webp">
+                    <img src="dist/images/Gallery/kitchen-before.jpg" alt="Kitchen before cleaning" loading="lazy">
+                  </picture>
                   <span class="before-after__label">Before</span>
                 </div>
                 <div class="before-after__after">
-                  <img src="dist/images/Gallery/kitchen-after.jpg" alt="Kitchen after cleaning">
+                  <picture>
+                    <source srcset="dist/images/Gallery/kitchen-after.webp" type="image/webp">
+                    <img src="dist/images/Gallery/kitchen-after.jpg" alt="Kitchen after cleaning" loading="lazy">
+                  </picture>
                   <span class="before-after__label">After</span>
                 </div>
               </div>
@@ -238,7 +247,10 @@
           </ul>
         </nav>
         <a href="index.html" class="footer__logo logo">
-          <img src="images/logo.png" alt="Issan Cleaning logo">
+          <picture>
+            <source srcset="dist/images/logo.webp" type="image/webp">
+            <img src="dist/images/logo.png" alt="Issan Cleaning logo">
+          </picture>
         </a>
         <div class="footer__copyright">Copyright © 2025 Issan Cleaning – All Rights Reserved</div>
       </div>
