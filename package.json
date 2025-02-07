@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "convert-images": "node convert-images.js",
+    "build": "npm run convert-images && your-other-build-commands"
+  }
+} 

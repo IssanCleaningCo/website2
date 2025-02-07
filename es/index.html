@@ -175,7 +175,12 @@
       </section>
       <section class="page__about about">
         <div class="about__container">
-          <div class="about__image"><img src="../images/Home/Home-About.jpg" alt="Imagen Sobre Nosotros" /></div>
+          <div class="about__image">
+            <picture>
+              <source srcset="../images/Home/Home-About.webp" type="image/webp">
+              <img src="../images/Home/Home-About.jpg" alt="Imagen Sobre Nosotros" loading="lazy" />
+            </picture>
+          </div>
           <div class="about__content">
             <h2 class="about__title title">Nuestra Promesa</h2>
             <div class="about__text">
