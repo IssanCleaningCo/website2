@@ -5,7 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="../images/favicon.png" />
     <title>Servicios de Limpieza en Miami | Residencial, Comercial y Airbnb</title>
-    <link rel="stylesheet" href="../css/style.css" />
+    <!-- Preload critical assets -->
+    <link rel="preload" href="../fonts/quicksand-v30-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../videos/services.mp4" as="video" type="video/mp4">
+    
+    <!-- Inline critical CSS -->
+    <style>
+      /* Copy contents of critical.css here */
+    </style>
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Defer non-critical CSS -->
+    <link rel="stylesheet" href="../css/style.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="../css/style.css"></noscript>
     <meta name="description" content="Servicios profesionales de limpieza en Miami. Ofrecemos limpieza residencial, comercial y servicios especializados para Airbnb.">
     <script type="application/ld+json">
     {
@@ -251,6 +266,8 @@
         </footer>
     </div>
 
+    <script src="../js/script.js" defer></script>
+    <script src="../js/font-loader.js" defer></script>
     <nav class="mobile-nav">
         <a href="index.html" class="mobile-nav__item">
             <i class="mobile-nav__icon fa-solid fa-house"></i>
@@ -273,7 +290,5 @@
             <span>Llamar</span>
         </a>
     </nav>
-
-    <script src="../js/script.js"></script>
 </body>
 </html> 

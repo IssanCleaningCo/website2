@@ -13,7 +13,22 @@
   <link rel="alternate" hreflang="x-default" href="https://yourwebsite.com/">
   <link rel="icon" type="image/png" href="images/favicon.png" />
   <title>Professional House Cleaning Services in Miami | Residential & Commercial</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <!-- Preload critical assets -->
+  <link rel="preload" href="fonts/quicksand-v30-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="videos/home.mp4" as="video" type="video/mp4">
+  
+  <!-- Inline critical CSS -->
+  <style>
+    /* Copy contents of critical.css here */
+  </style>
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Defer non-critical CSS -->
+  <link rel="stylesheet" href="css/style.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="css/style.css"></noscript>
   <meta name="description" content="Top-rated cleaning service in Miami. Professional residential, commercial & Airbnb cleaning. 100% satisfaction guaranteed. Book your cleaning today!">
   <meta name="keywords" content="Miami cleaning service, house cleaning Miami, commercial cleaning, Airbnb cleaning, maid service Miami, office cleaning, residential cleaning">
   <meta property="og:type" content="website">
@@ -403,7 +418,7 @@
       </div>
     </footer>
   </div>
-  <script src="js/script.js"></script>
+  <script src="js/script.js" defer></script>
   <nav class="mobile-nav">
     <a href="index.html" class="mobile-nav__item">
         <i class="mobile-nav__icon">🏠</i>
