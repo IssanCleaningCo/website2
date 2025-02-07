@@ -1,6 +1,27 @@
 {
+  "name": "issan-cleaning",
+  "version": "1.0.0",
+  "description": "Issan Cleaning Services Website",
+  "main": "index.js",
   "scripts": {
     "convert-images": "node convert-images.js",
-    "build": "npm run convert-images && your-other-build-commands"
+    "optimize-css": "postcss css/*.css --use autoprefixer cssnano --dir dist/css",
+    "optimize-js": "uglifyjs js/*.js --compress --mangle --output dist/js/script.min.js",
+    "copy-assets": "copyfiles -u 1 \"images/**/*\" \"videos/**/*\" dist/",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "build": "npm run convert-images && npm run optimize-css && npm run optimize-js && npm run copy-assets"
+  },
+  "dependencies": {
+    "sharp": "^0.33.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.17",
+    "copyfiles": "^2.4.1",
+    "cssnano": "^6.0.3",
+    "postcss": "^8.4.35",
+    "postcss-cli": "^11.0.0",
+    "rimraf": "^5.0.5",
+    "uglify-js": "^3.17.4"
   }
 } 

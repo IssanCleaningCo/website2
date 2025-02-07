@@ -4,7 +4,8 @@ const path = require('path');
 
 // Configuration
 const config = {
-    inputDirs: ['images', 'img'],  // Directories to scan for images
+    inputDirs: ['images'],  // Source directory
+    outputDir: 'dist/images',  // Output directory for processed images
     quality: 80,  // WebP quality (0-100)
     skipExisting: true,  // Skip if WebP version exists
     extensions: ['.jpg', '.jpeg', '.png']
@@ -28,7 +29,13 @@ async function findImages(dir) {
 }
 
 async function convertToWebP(imagePath) {
-    const webpPath = imagePath.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+    // Create output path maintaining directory structure
+    const relativePath = path.relative(config.inputDirs[0], imagePath);
+    const outputPath = path.join(config.outputDir, relativePath);
+    const webpPath = outputPath.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+    
+    // Ensure output directory exists
+    await fs.mkdir(path.dirname(webpPath), { recursive: true });
     
     // Skip if WebP exists and skipExisting is true
     if (config.skipExisting) {
@@ -42,11 +49,14 @@ async function convertToWebP(imagePath) {
     }
 
     try {
+        // Copy original image to dist
+        await fs.copyFile(imagePath, outputPath);
+        
         await sharp(imagePath)
             .webp({ quality: config.quality })
             .toFile(webpPath);
         
-        console.log(`Converted: ${imagePath} → ${webpPath}`);
+        console.log(`Processed: ${imagePath}\n  → ${outputPath}\n  → ${webpPath}`);
     } catch (error) {
         console.error(`Error converting ${imagePath}:`, error);
     }
