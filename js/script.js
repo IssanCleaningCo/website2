@@ -23,6 +23,40 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.classList.remove('menu-open');
     }
   });
+
+  // Set active state for mobile navigation
+  const currentPath = window.location.pathname;
+  const mobileNavItems = document.querySelectorAll('.mobile-nav__item');
+  
+  mobileNavItems.forEach(item => {
+    if (item.getAttribute('href') === currentPath.split('/').pop()) {
+      item.classList.add('active');
+    }
+  });
+
+  // Optimize animations with requestAnimationFrame
+  const mobileNav = document.querySelector('.mobile-nav');
+  if (mobileNav) {
+    requestAnimationFrame(() => {
+      mobileNav.style.transform = 'translateY(0)';
+    });
+  }
+
+  // Add touch ripple effect
+  mobileNavItems.forEach(item => {
+    item.addEventListener('touchstart', function(e) {
+      const rect = item.getBoundingClientRect();
+      const ripple = document.createElement('div');
+      ripple.className = 'ripple';
+      ripple.style.left = `${e.touches[0].clientX - rect.left}px`;
+      ripple.style.top = `${e.touches[0].clientY - rect.top}px`;
+      item.appendChild(ripple);
+      
+      setTimeout(() => {
+        ripple.remove();
+      }, 500);
+    });
+  });
 });
 
 const spollerButtons = document.querySelectorAll("[data-spoller] .spollers-faq__button");
@@ -210,34 +244,183 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Add this to your script.js
-const heroMessages = [
-    {
-        title: "Come Home to Perfect",
-        text: "Imagine walking into your spotless home, leaving stress at the door, and simply enjoying your space. We handle the cleaning, so you can focus on living."
-    },
-    {
-        title: "Your Sanctuary Awaits",
-        text: "There's nothing quite like stepping into a freshly cleaned home. Let us create that moment of pure relaxation for you, where cleaning is the last thing on your mind."
-    },
-    {
-        title: "Relax. It's Done.",
-        text: "Experience the bliss of coming home to a perfectly cleaned space. No chores, no stress – just the pure joy of a pristine home ready for you to enjoy."
-    }
-];
+const heroMessages = {
+    en: [
+        {
+            title: "Come Home to Perfect",
+            text: "Imagine walking into your spotless home, leaving stress at the door, and simply enjoying your space. We handle the cleaning, so you can focus on living."
+        },
+        {
+            title: "Your Sanctuary Awaits",
+            text: "There's nothing quite like stepping into a freshly cleaned home. Let us create that moment of pure relaxation for you, where cleaning is the last thing on your mind."
+        },
+        {
+            title: "Relax. It's Done.",
+            text: "Experience the bliss of coming home to a perfectly cleaned space. No chores, no stress – just the pure joy of a pristine home ready for you to enjoy."
+        }
+    ],
+    es: [
+        {
+            title: "Llegue a un Hogar Perfecto",
+            text: "Imagine entrar a su casa impecable, dejando la ansiedad en la puerta y simplemente disfrutando de su espacio."
+        },
+        {
+            title: "Su Santuario le Espera",
+            text: "No hay nada como llegar a una casa recién limpia. Dejemos que nosotros creamos ese momento de pureza para ti, donde la limpieza es la última cosa en tu mente."
+        },
+        {
+            title: "Relájese. Ya Está Hecho.",
+            text: "Experimente la felicidad de llegar a un espacio perfectamente limpio. No hay tareas, no ansiedad – solo la felicidad pura de una casa limpia lista para disfrutar."
+        }
+    ]
+};
 
-// Function to set random hero message
+// Function to set random hero message (only on home page)
 function setRandomHeroMessage() {
-    const randomIndex = Math.floor(Math.random() * heroMessages.length);
-    const message = heroMessages[randomIndex];
-    
-    const titleElement = document.querySelector('.main__title');
-    const textElement = document.querySelector('.main__text');
-    
-    if (titleElement && textElement) {
-        titleElement.textContent = message.title;
-        textElement.textContent = message.text;
-    }
+     // Check if we're on the home page (either English or Spanish)
+     if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('es/index.html')) {
+      // Determine language based on URL
+      const isSpanish = window.location.pathname.includes('/es/');
+      const messages = isSpanish ? heroMessages.es : heroMessages.en;
+      
+      const randomIndex = Math.floor(Math.random() * messages.length);
+      const message = messages[randomIndex];
+      
+      const titleElement = document.querySelector('.main__title');
+      const textElement = document.querySelector('.main__text');
+      
+      if (titleElement && textElement) {
+          titleElement.textContent = message.title;
+          textElement.textContent = message.text;
+      }
+  }
 }
 
 // Call this when the page loads
 document.addEventListener('DOMContentLoaded', setRandomHeroMessage);
+
+// Add lazy loading and optimize images
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        // Only apply lazy loading to non-critical images
+        if (img.classList.contains('logo') || 
+            img.closest('.header') || 
+            img.closest('.services__item') || 
+            img.closest('.about__image')) {
+            img.loading = 'eager'; // Load immediately
+            img.decoding = 'sync';  // Decode synchronously
+        } else {
+            img.loading = 'lazy';
+            img.decoding = 'async';
+        }
+    });
+
+    // Optimize video loading
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => {
+        video.preload = 'auto'; // Preload video for smoother playback
+        // Only load video when in viewport
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            });
+        });
+        observer.observe(video);
+    });
+});
+
+// Debounce scroll events
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Optimize scroll handler
+const optimizedScroll = debounce(() => {
+    const currentScroll = window.pageYOffset;
+    // ... rest of scroll logic
+}, 16);
+
+// Use Intersection Observer for scroll animations
+const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, {
+    threshold: 0.1
+});
+
+// Observe elements that need scroll animations
+document.querySelectorAll('.fade-in, .slide-in').forEach(el => {
+    scrollObserver.observe(el);
+});
+
+// Add performance monitoring
+if ('performance' in window) {
+    window.addEventListener('load', () => {
+        const timing = performance.getEntriesByType('navigation')[0];
+        console.log(`Page Load Time: ${timing.loadEventEnd - timing.navigationStart}ms`);
+    });
+}
+
+// Monitor and log performance metrics
+if ('performance' in window && 'PerformanceObserver' in window) {
+    const observer = new PerformanceObserver((list) => {
+        list.getEntries().forEach((entry) => {
+            if (entry.entryType === 'largest-contentful-paint') {
+                console.log('LCP:', entry.startTime);
+            }
+            if (entry.entryType === 'first-input') {
+                console.log('FID:', entry.processingStart - entry.startTime);
+            }
+        });
+    });
+    observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input'] });
+}
+
+// Debounce form submissions
+function debounceSubmit(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Apply to form submissions
+const debouncedSubmit = debounceSubmit((e) => {
+    sendEmail(e);
+}, 300);
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('ServiceWorker registered');
+            })
+            .catch(err => {
+                console.log('ServiceWorker registration failed:', err);
+            });
+    });
+}

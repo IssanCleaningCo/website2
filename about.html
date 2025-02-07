@@ -14,9 +14,14 @@
     <header class="header">
       <div class="header__container">
         <a href="index.html" class="header__logo logo">
-          <img src="images/logo.png" alt="Thai-cleaning logo">
+          <img src="images/logo.png" alt="Professional Cleaning Service">
         </a>
         <div class="header__navigation">
+          <div class="language-toggle">
+            <a href="about.html" class="language-btn active">EN</a>
+            <span class="language-separator">|</span>
+            <a href="es/sobre-nosotros.html" class="language-btn">ES</a>
+          </div>
           <div class="header__menu menu">
             <nav class="menu__body">
               <ul class="menu__list">
@@ -29,9 +34,9 @@
               <a href="tel:+13053172735" class="actions-header__button">(305) 317-2735</a>
             </nav>
           </div>
-          <div class="header__actions actions-header">
-            <button type="button" class="menu__icon icon-menu"><span></span></button>
-          </div>
+          <button type="button" class="icon-menu">
+            <span></span>
+          </button>
         </div>
       </div>
     </header>
@@ -43,7 +48,32 @@
         <div class="main__container main__container_pages">
           <h1 class="main__title">About Us</h1>
           <div class="main__text main__text_pages">
-            Thai cleaning excellence for your space
+            Dedicated to delivering exceptional cleaning services with professionalism and care
+          </div>
+        </div>
+      </section>
+      <section class="stats">
+        <div class="stats__container">
+          <div class="stats__grid">
+            <div class="stats__item">
+              <div class="stats__number">500+</div>
+              <div class="stats__label">Happy Clients</div>
+            </div>
+
+            <div class="stats__item">
+              <div class="stats__number">5000+</div>
+              <div class="stats__label">Cleanings Completed</div>
+            </div>
+
+            <div class="stats__item">
+              <div class="stats__number">10+</div>
+              <div class="stats__label">Years Experience</div>
+            </div>
+
+            <div class="stats__item">
+              <div class="stats__number">100%</div>
+              <div class="stats__label">Satisfaction Rate</div>
+            </div>
           </div>
         </div>
       </section>
@@ -130,31 +160,6 @@
           </div>
         </div>
       </section>
-      <section class="stats">
-        <div class="stats__container">
-          <div class="stats__grid">
-            <div class="stats__item">
-              <div class="stats__number">500+</div>
-              <div class="stats__label">Happy Clients</div>
-            </div>
-
-            <div class="stats__item">
-              <div class="stats__number">5000+</div>
-              <div class="stats__label">Cleanings Completed</div>
-            </div>
-
-            <div class="stats__item">
-              <div class="stats__number">10+</div>
-              <div class="stats__label">Years Experience</div>
-            </div>
-
-            <div class="stats__item">
-              <div class="stats__number">100%</div>
-              <div class="stats__label">Satisfaction Rate</div>
-            </div>
-          </div>
-        </div>
-      </section>
       <section class="page__outro outro outro_about">
         <div class="outro__container">
           <h2 class="outro__title title">Let's Connect</h2>
@@ -184,6 +189,28 @@
     </footer>
   </div>
   <script src="js/script.js"></script>
+  <nav class="mobile-nav">
+    <a href="index.html" class="mobile-nav__item">
+      <i class="mobile-nav__icon">🏠</i>
+      <span>Home</span>
+    </a>
+    <a href="services.html" class="mobile-nav__item">
+      <i class="mobile-nav__icon">🧹</i>
+      <span>Services</span>
+    </a>
+    <a href="contact.html" class="mobile-nav__item mobile-nav__item--cta">
+      <i class="mobile-nav__icon">📞</i>
+      <span>Book Now</span>
+    </a>
+    <a href="pricing.html" class="mobile-nav__item">
+      <i class="mobile-nav__icon">💰</i>
+      <span>Pricing</span>
+    </a>
+    <a href="tel:+13053172735" class="mobile-nav__item">
+      <i class="mobile-nav__icon">📱</i>
+      <span>Call</span>
+    </a>
+  </nav>
 </body>
 
 </html>
