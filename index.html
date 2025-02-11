@@ -425,6 +425,19 @@
     </footer>
   </div>
   <script src="js/script.js" defer></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registered:', registration);
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed:', error);
+          });
+      });
+    }
+  </script>
   <nav class="mobile-nav">
     <a href="index.html" class="mobile-nav__item">
         <i class="mobile-nav__icon">🏠</i>

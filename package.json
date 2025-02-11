@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "convert-images": "node convert-images.js",
+    "convert-social": "node convert-social-icons.js",
     "optimize-css": "postcss css/*.css --use autoprefixer cssnano --no-map --dir dist/css",
     "critical-css": "critical css/style.css --base . --inline > css/critical.css",
     "optimize-js": "uglifyjs js/*.js --compress --mangle --output dist/js/script.min.js",
     "copy-assets": "copyfiles -u 1 \"images/**/*\" \"videos/**/*\" dist/",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "build": "npm run critical-css && npm run convert-images && npm run optimize-css && npm run optimize-js && npm run copy-assets"
+    "build": "npm run critical-css && npm run convert-images && npm run convert-social && npm run optimize-css && npm run optimize-js && npm run copy-assets"
   },
   "dependencies": {
     "sharp": "^0.33.2"
