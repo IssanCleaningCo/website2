@@ -54,6 +54,10 @@
                     <!-- Updated Company Name and Address -->
                     <h1 class="text-2xl font-bold text-gray-800" contenteditable="true" id="companyName">Issan Cleaning Co.</h1>
                     <p class="text-sm text-gray-500" contenteditable="true" id="companyAddress">Miami, FL</p>
+                    <p class="text-sm text-gray-500">
+                        <span>Email: <a href="mailto:issancleaningco@gmail.com">issancleaningco@gmail.com</a></span> |
+                        <span>Phone: <a href="tel:+13057013909">(305) 701-3909</a></span>
+                    </p>
                 </div>
             </div>
             <div class="w-full sm:w-auto text-left sm:text-right">
@@ -61,6 +65,15 @@
                 <div class="flex items-center justify-start sm:justify-end mt-2">
                     <span class="text-gray-500 font-semibold mr-2">#</span>
                     <input type="text" id="invoiceNumber" class="invoice-input w-24 text-right" value="INV-001">
+                </div>
+                <!-- Invoice Status Dropdown -->
+                <div class="mt-2">
+                    <label for="invoiceStatus" class="text-gray-500 font-semibold mr-2">Status:</label>
+                    <select id="invoiceStatus" class="invoice-input w-32 text-gray-800">
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Overdue">Overdue</option>
+                    </select>
                 </div>
             </div>
         </header>
@@ -136,6 +149,34 @@
             </div>
         </section>
 
+        <!-- Payment Methods Section -->
+        <section class="mt-8">
+            <h4 class="font-semibold text-gray-500 mb-2">Payment Methods</h4>
+            <ul class="list-disc pl-6 text-gray-700 text-sm">
+                <li>Zelle: issancleaningco@gmail.com</li>
+                <li>Venmo: @issancleaningco</li>
+                <li>Cash or Check accepted</li>
+                <li>Contact us for other options</li>
+            </ul>
+        </section>
+
+        <!-- Prepared By Section -->
+        <section class="mt-8">
+            <h4 class="font-semibold text-gray-500 mb-2">Prepared By</h4>
+            <input type="text" id="preparedBy" class="invoice-input w-full max-w-xs" placeholder="Your Name">
+        </section>
+
+        <!-- Terms & Conditions Section -->
+        <section class="mt-8">
+            <h4 class="font-semibold text-gray-500 mb-2">Terms &amp; Conditions</h4>
+            <ul class="list-disc pl-6 text-gray-700 text-sm">
+                <li>Payment is due within 15 days of invoice date.</li>
+                <li>Late payments may be subject to a 5% late fee per month.</li>
+                <li>Please contact us if you have any questions regarding this invoice.</li>
+                <li>Services rendered are subject to our standard service agreement.</li>
+            </ul>
+        </section>
+
         <!-- Notes Section -->
         <footer class="mt-12 pt-8 border-t border-gray-200">
             <h4 class="font-semibold text-gray-500 mb-2">Notes</h4>
@@ -144,6 +185,25 @@
             </div>
         </footer>
 
+    </div>
+
+    <!-- Thank You / Branding Footer -->
+    <div class="max-w-4xl mx-auto mt-8 text-center text-gray-600 text-sm opacity-80">
+        <hr class="my-4">
+        <div>
+            <strong>Thank you for choosing Issan Cleaning Co.</strong><br>
+            We appreciate your business and look forward to serving you again!
+        </div>
+        <div class="mt-4 flex flex-col items-center gap-2">
+            <img src="dist/images/logo.png" alt="Issan Cleaning Co logo" class="mx-auto h-8 w-auto" style="opacity:0.7;">
+            <!-- QR Code removed -->
+            <div class="text-xs text-gray-500 mt-1">
+                For the latest features and improvements, please use the updated Invoice Generator at <a href="https://issancleaningco.com/invoice.html" class="underline text-blue-600">issancleaningco.com/invoice.html</a>
+            </div>
+        </div>
+        <div class="mt-2">
+            &copy; 2025 Issan Cleaning Co. | Miami, FL
+        </div>
     </div>
 
     <!-- Action Buttons -->
@@ -159,6 +219,12 @@
                 <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
             Download PDF
+        </button>
+        <button id="emailBtn" class="bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600 transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2.94 6.94a1.5 1.5 0 012.12 0L10 11.88l4.94-4.94a1.5 1.5 0 112.12 2.12l-6 6a1.5 1.5 0 01-2.12 0l-6-6a1.5 1.5 0 010-2.12z"/>
+            </svg>
+            Send by Email
         </button>
     </div>
 
@@ -209,6 +275,19 @@
                     row.remove();
                     updateTotals();
                 });
+
+                // Add input event listener to update totals when editing new row
+                row.addEventListener('input', (e) => {
+                    if (
+                        e.target.classList.contains('quantity') ||
+                        e.target.classList.contains('rate')
+                    ) {
+                        updateTotals();
+                    }
+                });
+
+                // Update totals after adding a new row
+                updateTotals();
             }
 
             addItemBtn.addEventListener('click', createItemRow);
@@ -287,6 +366,25 @@
                     console.error(err);
                 }
             });
+
+            // Send by Email Button
+            document.getElementById('emailBtn').addEventListener('click', function () {
+                // Get client email and invoice number
+                const clientInfo = document.getElementById('clientInfo').innerText || '';
+                const emailMatch = clientInfo.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+                const clientEmail = emailMatch ? emailMatch[0] : '';
+                const invoiceNumber = document.getElementById('invoiceNumber').value || 'Invoice';
+
+                // Prepare subject and body
+                const subject = encodeURIComponent(`Your Invoice from Issan Cleaning Co. (${invoiceNumber})`);
+                const body = encodeURIComponent(
+                    `Hello,\n\nPlease find your invoice (${invoiceNumber}) from Issan Cleaning Co. attached or view it online.\n\nThank you for your business!\n\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`
+                );
+
+                // Open mailto link
+                window.location.href = `mailto:${clientEmail}?subject=${subject}&body=${body}`;
+            });
+
             // Initialize with one item row
             createItemRow();
             // Add another for demonstration
@@ -311,4 +409,5 @@
     </script>
 </body>
 </html>
+<!-- No code changes required. Serve your files using a local web server instead of opening them directly. -->
 <!-- No code changes required. Serve your files using a local web server instead of opening them directly. -->
