@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleaning Service Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .no-print {
+                display: none !important;
+            }
+            #invoice-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+        }
+        .invoice-input {
+            @apply w-full p-2 border border-gray-200 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+        }
+        .invoice-input[contenteditable="true"] {
+            cursor: text;
+        }
+        .item-row:hover .delete-row-btn {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 sm:p-6 lg:p-8">
+
+    <div id="invoice-container" class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 lg:p-10">
+        <!-- Header Section -->
+        <header class="flex flex-col sm:flex-row justify-between items-start pb-8 border-b border-gray-200">
+            <div class="flex items-center gap-4 mb-6 sm:mb-0">
+                <!-- Robust Logo with WebP fallback -->
+                <picture>
+                    <source srcset="dist/images/logo.webp" type="image/webp">
+                    <img src="dist/images/logo.png" alt="Issan Cleaning Co logo" class="h-14 w-14 object-contain"
+                         onerror="this.onerror=null;this.src='https://placehold.co/60x60/20c997/FFFFFF?text=Logo';">
+                </picture>
+                <div>
+                    <!-- Updated Company Name and Address -->
+                    <h1 class="text-2xl font-bold text-gray-800" contenteditable="true" id="companyName">Issan Cleaning Co.</h1>
+                    <p class="text-sm text-gray-500" contenteditable="true" id="companyAddress">Miami, FL</p>
+                </div>
+            </div>
+            <div class="w-full sm:w-auto text-left sm:text-right">
+                <h2 class="text-3xl font-extrabold text-gray-800 uppercase tracking-wider">Invoice</h2>
+                <div class="flex items-center justify-start sm:justify-end mt-2">
+                    <span class="text-gray-500 font-semibold mr-2">#</span>
+                    <input type="text" id="invoiceNumber" class="invoice-input w-24 text-right" value="INV-001">
+                </div>
+            </div>
+        </header>
+
+        <!-- Bill To and From Section -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-8 my-8">
+            <div>
+                <h3 class="font-semibold text-gray-500 mb-3">Bill To:</h3>
+                <div contenteditable="true" id="clientInfo" class="invoice-input leading-relaxed">
+                    Client Name<br>
+                    Client's Address<br>
+                    client@email.com
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <label for="invoiceDate" class="font-semibold text-gray-500">Date Issued:</label>
+                    <input type="date" id="invoiceDate" class="invoice-input w-40 text-right">
+                </div>
+                <div class="flex justify-between items-center">
+                    <label for="dueDate" class="font-semibold text-gray-500">Due Date:</label>
+                    <input type="date" id="dueDate" class="invoice-input w-40 text-right">
+                </div>
+            </div>
+        </section>
+
+        <!-- Invoice Items Table -->
+        <section>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left" id="invoiceItems">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-600 text-sm uppercase">
+                            <th class="p-3 font-semibold">Service / Description</th>
+                            <th class="p-3 font-semibold text-center w-24">Qty</th>
+                            <th class="p-3 font-semibold text-right w-32">Rate</th>
+                            <th class="p-3 font-semibold text-right w-32">Amount</th>
+                            <th class="p-3 w-10"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsContainer">
+                        <!-- Item rows will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button id="addItemBtn" class="mt-4 flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors no-print">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                </svg>
+                Add Item
+            </button>
+        </section>
+
+        <!-- Totals Section -->
+        <section class="grid grid-cols-2 sm:grid-cols-3 gap-8 mt-8 pt-8 border-t border-gray-200">
+            <div class="sm:col-start-2 col-span-full sm:col-span-2 space-y-3">
+                 <div class="flex justify-between items-center">
+                    <span class="font-semibold text-gray-500">Subtotal</span>
+                    <span id="subtotal" class="font-bold text-gray-800 text-lg">$0.00</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                         <span class="font-semibold text-gray-500">Tax</span>
+                         <input type="number" id="taxRate" class="invoice-input w-20 text-center" value="6" step="0.1" min="0">
+                         <span class="font-semibold text-gray-500">%</span>
+                    </div>
+                    <span id="taxAmount" class="font-bold text-gray-800 text-lg">$0.00</span>
+                </div>
+                <div class="flex justify-between items-center bg-gray-100 p-4 rounded-lg">
+                    <span class="font-extrabold text-gray-800 text-xl">Total</span>
+                    <span id="total" class="font-extrabold text-gray-800 text-xl">$0.00</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notes Section -->
+        <footer class="mt-12 pt-8 border-t border-gray-200">
+            <h4 class="font-semibold text-gray-500 mb-2">Notes</h4>
+            <div id="notes" contenteditable="true" class="invoice-input leading-relaxed">
+                Thank you for your business! Payment is due within 15 days.
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="max-w-4xl mx-auto mt-6 flex justify-end gap-3 no-print">
+        <button id="printBtn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+            </svg>
+            Print
+        </button>
+        <button id="downloadPdfBtn" class="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+            Download PDF
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const itemsContainer = document.getElementById('itemsContainer');
+            const addItemBtn = document.getElementById('addItemBtn');
+            const taxRateInput = document.getElementById('taxRate');
+            const invoiceContainer = document.getElementById('invoice-container');
+
+            // --- DATE HANDLING ---
+            const today = new Date();
+            const formatDate = (date) => date.toISOString().split('T')[0];
+            document.getElementById('invoiceDate').value = formatDate(today);
+            const dueDate = new Date(today);
+            dueDate.setDate(today.getDate() + 15); // Default due date 15 days from now
+            document.getElementById('dueDate').value = formatDate(dueDate);
+
+            // --- DYNAMIC ITEM ROWS ---
+            let itemCounter = 0;
+
+            function createItemRow() {
+                itemCounter++;
+                const row = document.createElement('tr');
+                row.className = 'item-row border-b border-gray-100';
+                row.innerHTML = `
+                    <td class="p-3">
+                        <div contenteditable="true" class="invoice-input description" placeholder="e.g., Standard Home Cleaning"></div>
+                    </td>
+                    <td class="p-3">
+                        <div contenteditable="true" class="invoice-input quantity text-center" placeholder="1">1</div>
+                    </td>
+                    <td class="p-3">
+                        <div contenteditable="true" class="invoice-input rate text-right" placeholder="50.00">50.00</div>
+                    </td>
+                    <td class="p-3 text-right">
+                        <span class="font-bold amount">$50.00</span>
+                    </td>
+                    <td class="p-3 text-center">
+                        <button class="delete-row-btn text-red-500 opacity-0 hover:text-red-700 transition-opacity no-print">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                        </button>
+                    </td>
+                `;
+                itemsContainer.appendChild(row);
+
+                row.querySelector('.delete-row-btn').addEventListener('click', () => {
+                    row.remove();
+                    updateTotals();
+                });
+            }
+
+            addItemBtn.addEventListener('click', createItemRow);
+            
+            // --- AUTO CALCULATION ---
+            function updateTotals() {
+                let subtotal = 0;
+                itemsContainer.querySelectorAll('.item-row').forEach(row => {
+                    const quantityText = row.querySelector('.quantity').innerText.trim() || '0';
+                    const rateText = row.querySelector('.rate').innerText.trim() || '0';
+                    
+                    const quantity = parseFloat(quantityText.replace(/[^0-9.]/g, '')) || 0;
+                    const rate = parseFloat(rateText.replace(/[^0-9.]/g, '')) || 0;
+                    
+                    const amount = quantity * rate;
+                    row.querySelector('.amount').textContent = formatCurrency(amount);
+                    subtotal += amount;
+                });
+
+                const taxRate = parseFloat(taxRateInput.value) || 0;
+                const taxAmount = subtotal * (taxRate / 100);
+                const total = subtotal + taxAmount;
+
+                document.getElementById('subtotal').textContent = formatCurrency(subtotal);
+                document.getElementById('taxAmount').textContent = formatCurrency(taxAmount);
+                document.getElementById('total').textContent = formatCurrency(total);
+            }
+
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+            }
+            
+            invoiceContainer.addEventListener('input', (e) => {
+                if (e.target.classList.contains('quantity') || e.target.classList.contains('rate') || e.target.id === 'taxRate') {
+                    updateTotals();
+                }
+            });
+
+            // --- ACTION BUTTONS ---
+            document.getElementById('printBtn').addEventListener('click', () => {
+                window.print();
+            });
+
+            document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
+                try {
+                    // Hide logo to avoid CORS taint if needed
+                    // const logoImg = document.querySelector('#invoice-container img');
+                    // let logoDisplay = '';
+                    // if (logoImg) {
+                    //     logoDisplay = logoImg.style.display;
+                    //     logoImg.style.display = 'none';
+                    // }
+
+                    // Use jsPDF from the global namespace
+                    const jsPDF = window.jspdf.jsPDF;
+                    const invoiceElement = document.getElementById('invoice-container');
+                    const canvas = await html2canvas(invoiceElement, {
+                        scale: 2,
+                        useCORS: false, // changed from true to false
+                        logging: false
+                    });
+
+                    // Restore logo after canvas
+                    // if (logoImg) logoImg.style.display = logoDisplay;
+
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    const invoiceNumber = document.getElementById('invoiceNumber').value || 'invoice';
+                    pdf.save(`${invoiceNumber}.pdf`);
+                } catch (err) {
+                    alert('PDF generation failed. See console for details.');
+                    console.error(err);
+                }
+            });
+            // Initialize with one item row
+            createItemRow();
+            // Add another for demonstration
+            createItemRow();
+            
+            // Prefill sample data for demonstration
+            const firstRow = itemsContainer.querySelector('.item-row');
+            if (firstRow) {
+                firstRow.querySelector('.description').innerText = 'Deep Cleaning Service';
+                firstRow.querySelector('.quantity').innerText = '4';
+                firstRow.querySelector('.rate').innerText = '75.00';
+            }
+            const secondRow = itemsContainer.querySelectorAll('.item-row')[1];
+            if (secondRow) {
+                secondRow.querySelector('.description').innerText = 'Window Cleaning';
+                secondRow.querySelector('.quantity').innerText = '1';
+                secondRow.querySelector('.rate').innerText = '120.00';
+            }
+            
+            updateTotals();
+        });
+    </script>
+</body>
+</html>
+<!-- No code changes required. Serve your files using a local web server instead of opening them directly. -->
