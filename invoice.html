@@ -181,7 +181,7 @@
         <footer class="mt-12 pt-8 border-t border-gray-200">
             <h4 class="font-semibold text-gray-500 mb-2">Notes</h4>
             <div id="notes" contenteditable="true" class="invoice-input leading-relaxed">
-                Thank you for your business! Payment is due within 15 days.
+                Feel free to add any additional notes or instructions here. This could include special requests, reminders, or anything else relevant to the client.
             </div>
         </footer>
 
@@ -196,10 +196,6 @@
         </div>
         <div class="mt-4 flex flex-col items-center gap-2">
             <img src="dist/images/logo.png" alt="Issan Cleaning Co logo" class="mx-auto h-8 w-auto" style="opacity:0.7;">
-            <!-- QR Code removed -->
-            <div class="text-xs text-gray-500 mt-1">
-                For the latest features and improvements, please use the updated Invoice Generator at <a href="https://issancleaningco.com/invoice.html" class="underline text-blue-600">issancleaningco.com/invoice.html</a>
-            </div>
         </div>
         <div class="mt-2">
             &copy; 2025 Issan Cleaning Co. | Miami, FL
@@ -381,8 +377,9 @@
                     `Hello,\n\nPlease find your invoice (${invoiceNumber}) from Issan Cleaning Co. attached or view it online.\n\nThank you for your business!\n\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`
                 );
 
-                // Open mailto link
-                window.location.href = `mailto:${clientEmail}?subject=${subject}&body=${body}`;
+                // Open Gmail compose in a new tab
+                const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${clientEmail}&su=${subject}&body=${body}`;
+                window.open(gmailUrl, '_blank');
             });
 
             // Initialize with one item row
