@@ -15,16 +15,18 @@
     "build": "npm run critical-css && npm run convert-images && npm run convert-social && npm run optimize-css && npm run optimize-js && npm run copy-assets"
   },
   "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
+    "resend": "^4.6.0",
     "sharp": "^0.33.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.17",
     "copyfiles": "^2.4.1",
+    "critical": "^5.0.0",
     "cssnano": "^6.0.3",
     "postcss": "^8.4.35",
     "postcss-cli": "^11.0.0",
     "rimraf": "^5.0.5",
-    "uglify-js": "^3.17.4",
-    "critical": "^5.0.0"
+    "uglify-js": "^3.17.4"
   }
-} 
+}
