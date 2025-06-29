@@ -6,6 +6,7 @@
   "scripts": {
     "convert-images": "node convert-images.js",
     "convert-social": "node convert-social-icons.js",
+    "compress-videos": "node compress-videos.js",
     "optimize-css": "postcss css/*.css --use autoprefixer cssnano --no-map --dir dist/css",
     "critical-css": "critical css/style.css --base . --inline > css/critical.css",
     "optimize-js": "uglifyjs js/*.js --compress --mangle --output dist/js/script.min.js",
