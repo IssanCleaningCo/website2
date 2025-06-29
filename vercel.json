@@ -17,6 +17,66 @@
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
+    },
+    {
+      "src": "/about",
+      "dest": "/about.html"
+    },
+    {
+      "src": "/services", 
+      "dest": "/services.html"
+    },
+    {
+      "src": "/contact",
+      "dest": "/contact.html"
+    },
+    {
+      "src": "/pricing",
+      "dest": "/pricing.html"
+    },
+    {
+      "src": "/blog",
+      "dest": "/blog.html"
+    },
+    {
+      "src": "/estimate",
+      "dest": "/estimate.html"
+    },
+    {
+      "src": "/invoice",
+      "dest": "/invoice.html"
+    },
+    {
+      "src": "/offline",
+      "dest": "/offline.html"
+    },
+    {
+      "src": "/admin/calculator",
+      "dest": "/admin/calculator.html"
+    },
+    {
+      "src": "/es",
+      "dest": "/es/index.html"
+    },
+    {
+      "src": "/es/sobre-nosotros",
+      "dest": "/es/sobre-nosotros.html"
+    },
+    {
+      "src": "/es/servicios",
+      "dest": "/es/servicios.html"
+    },
+    {
+      "src": "/es/precios",
+      "dest": "/es/precios.html"
+    },
+    {
+      "src": "/es/contacto",
+      "dest": "/es/contacto.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 } 
