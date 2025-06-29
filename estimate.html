@@ -330,13 +330,27 @@
             });
 
             document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
+                const downloadBtn = this;
+                const originalText = downloadBtn.innerHTML;
+                
+                // Show loading state
+                downloadBtn.innerHTML = `
+                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Generating...
+                `;
+                downloadBtn.disabled = true;
+
                 try {
                     const jsPDF = window.jspdf.jsPDF;
                     const estimateElement = document.getElementById('estimate-container');
                     const canvas = await html2canvas(estimateElement, {
                         scale: 2,
                         useCORS: false,
-                        logging: false
+                        logging: false,
+                        backgroundColor: '#ffffff'
                     });
 
                     const imgData = canvas.toDataURL('image/png');
@@ -348,42 +362,69 @@
                     const estimateNumber = document.getElementById('estimateNumber').value || 'estimate';
                     pdf.save(`${estimateNumber}.pdf`);
                 } catch (err) {
-                    alert('PDF generation failed. See console for details.');
-                    console.error(err);
+                    console.error('PDF generation error:', err);
+                    alert('PDF generation failed. Please try again.');
+                } finally {
+                    // Restore button state
+                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.disabled = false;
                 }
             });
 
             // Send by Email Button
             document.getElementById('emailBtn').addEventListener('click', async function () {
-                // Get client email and estimate number
-                const clientInfo = document.getElementById('clientInfo').innerText || '';
-                const emailMatch = clientInfo.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-                const clientEmail = emailMatch ? emailMatch[0] : '';
-                const estimateNumber = document.getElementById('estimateNumber').value || 'Estimate';
+                const emailBtn = this;
+                const originalText = emailBtn.innerHTML;
+                
+                // Show loading state
+                emailBtn.innerHTML = `
+                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                `;
+                emailBtn.disabled = true;
 
-                // Prepare subject and body
-                const subject = `Your Estimate from Issan Cleaning Co. (${estimateNumber})`;
-                const body = `Hello,\n\nPlease find your estimate (${estimateNumber}) from Issan Cleaning Co. attached or view it online.\n\nThank you for considering us!\n\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`;
-
-                // Generate PDF as base64
-                const jsPDF = window.jspdf.jsPDF;
-                const estimateElement = document.getElementById('estimate-container');
-                const canvas = await html2canvas(estimateElement, { scale: 2, useCORS: false, logging: false });
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                const pdfBlob = pdf.output('blob');
-                const pdfBase64 = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result.split(',')[1]);
-                    reader.readAsDataURL(pdfBlob);
-                });
-
-                // Call Netlify Function to send email
                 try {
-                    const response = await fetch('/.netlify/functions/send-estimate-email', {
+                    // Get client email and estimate number
+                    const clientInfo = document.getElementById('clientInfo').innerText || '';
+                    const emailMatch = clientInfo.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+                    const clientEmail = emailMatch ? emailMatch[0] : '';
+                    const estimateNumber = document.getElementById('estimateNumber').value || 'Estimate';
+
+                    if (!clientEmail) {
+                        alert('Please enter a valid email address in the client information section.');
+                        return;
+                    }
+
+                    // Prepare subject and body
+                    const subject = `Your Estimate from Issan Cleaning Co. (${estimateNumber})`;
+                    const body = `Hello,\n\nPlease find your estimate (${estimateNumber}) from Issan Cleaning Co. attached.\n\nThank you for considering us!\n\nBest regards,\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`;
+
+                    // Generate PDF as base64
+                    const jsPDF = window.jspdf.jsPDF;
+                    const estimateElement = document.getElementById('estimate-container');
+                    const canvas = await html2canvas(estimateElement, { 
+                        scale: 2, 
+                        useCORS: false, 
+                        logging: false,
+                        backgroundColor: '#ffffff'
+                    });
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    const pdfBlob = pdf.output('blob');
+                    const pdfBase64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                        reader.readAsDataURL(pdfBlob);
+                    });
+
+                    // Call API to send email
+                    const response = await fetch('/api/send-estimate-email', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -394,15 +435,21 @@
                             pdfBase64
                         })
                     });
+
                     const result = await response.json();
+                    
                     if (response.ok) {
-                        alert('Estimate sent by email!');
+                        alert('Estimate sent successfully! Check your email.');
                     } else {
-                        alert('Failed to send email: ' + (result.error || 'Unknown error'));
+                        throw new Error(result.error || 'Failed to send email');
                     }
                 } catch (err) {
-                    alert('Failed to send email. See console for details.');
-                    console.error(err);
+                    console.error('Email error:', err);
+                    alert('Failed to send email: ' + (err.message || 'Unknown error. Please try again.'));
+                } finally {
+                    // Restore button state
+                    emailBtn.innerHTML = originalText;
+                    emailBtn.disabled = false;
                 }
             });
 

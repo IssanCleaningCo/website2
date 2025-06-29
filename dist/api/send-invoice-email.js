@@ -14,7 +14,7 @@ exports.handler = async function(event, context) {
 
     try {
         await resend.emails.send({
-            from: process.env.FROM_EMAIL || 'noreply@yourdomain.com', // Use environment variable or fallback
+            from: 'issancleaningco@yourdomain.com', // Use a verified sender from your Resend dashboard
             to,
             subject,
             text: body,
@@ -29,7 +29,6 @@ exports.handler = async function(event, context) {
         });
         return { statusCode: 200, body: JSON.stringify({ success: true }) };
     } catch (error) {
-        console.error('Resend error:', error);
         return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
     }
-};
+}; 

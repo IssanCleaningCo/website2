@@ -328,26 +328,28 @@
             });
 
             document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
-                try {
-                    // Hide logo to avoid CORS taint if needed
-                    // const logoImg = document.querySelector('#invoice-container img');
-                    // let logoDisplay = '';
-                    // if (logoImg) {
-                    //     logoDisplay = logoImg.style.display;
-                    //     logoImg.style.display = 'none';
-                    // }
+                const downloadBtn = this;
+                const originalText = downloadBtn.innerHTML;
+                
+                // Show loading state
+                downloadBtn.innerHTML = `
+                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Generating...
+                `;
+                downloadBtn.disabled = true;
 
-                    // Use jsPDF from the global namespace
+                try {
                     const jsPDF = window.jspdf.jsPDF;
                     const invoiceElement = document.getElementById('invoice-container');
                     const canvas = await html2canvas(invoiceElement, {
                         scale: 2,
-                        useCORS: false, // changed from true to false
-                        logging: false
+                        useCORS: false,
+                        logging: false,
+                        backgroundColor: '#ffffff'
                     });
-
-                    // Restore logo after canvas
-                    // if (logoImg) logoImg.style.display = logoDisplay;
 
                     const imgData = canvas.toDataURL('image/png');
                     const pdf = new jsPDF('p', 'mm', 'a4');
@@ -358,28 +360,97 @@
                     const invoiceNumber = document.getElementById('invoiceNumber').value || 'invoice';
                     pdf.save(`${invoiceNumber}.pdf`);
                 } catch (err) {
-                    alert('PDF generation failed. See console for details.');
-                    console.error(err);
+                    console.error('PDF generation error:', err);
+                    alert('PDF generation failed. Please try again.');
+                } finally {
+                    // Restore button state
+                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.disabled = false;
                 }
             });
 
             // Send by Email Button
-            document.getElementById('emailBtn').addEventListener('click', function () {
-                // Get client email and invoice number
-                const clientInfo = document.getElementById('clientInfo').innerText || '';
-                const emailMatch = clientInfo.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-                const clientEmail = emailMatch ? emailMatch[0] : '';
-                const invoiceNumber = document.getElementById('invoiceNumber').value || 'Invoice';
+            document.getElementById('emailBtn').addEventListener('click', async function () {
+                const emailBtn = this;
+                const originalText = emailBtn.innerHTML;
+                
+                // Show loading state
+                emailBtn.innerHTML = `
+                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                `;
+                emailBtn.disabled = true;
 
-                // Prepare subject and body
-                const subject = encodeURIComponent(`Your Invoice from Issan Cleaning Co. (${invoiceNumber})`);
-                const body = encodeURIComponent(
-                    `Hello,\n\nPlease find your invoice (${invoiceNumber}) from Issan Cleaning Co. attached or view it online.\n\nThank you for your business!\n\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`
-                );
+                try {
+                    // Get client email and invoice number
+                    const clientInfo = document.getElementById('clientInfo').innerText || '';
+                    const emailMatch = clientInfo.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+                    const clientEmail = emailMatch ? emailMatch[0] : '';
+                    const invoiceNumber = document.getElementById('invoiceNumber').value || 'Invoice';
 
-                // Open Gmail compose in a new tab
-                const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${clientEmail}&su=${subject}&body=${body}`;
-                window.open(gmailUrl, '_blank');
+                    if (!clientEmail) {
+                        alert('Please enter a valid email address in the client information section.');
+                        return;
+                    }
+
+                    // Prepare subject and body
+                    const subject = `Your Invoice from Issan Cleaning Co. (${invoiceNumber})`;
+                    const body = `Hello,\n\nPlease find your invoice (${invoiceNumber}) from Issan Cleaning Co. attached.\n\nPayment is due within 15 days. Thank you for your business!\n\nBest regards,\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`;
+
+                    // Generate PDF as base64
+                    const jsPDF = window.jspdf.jsPDF;
+                    const invoiceElement = document.getElementById('invoice-container');
+                    const canvas = await html2canvas(invoiceElement, {
+                        scale: 2,
+                        useCORS: false,
+                        logging: false,
+                        backgroundColor: '#ffffff'
+                    });
+
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    const pdfBlob = pdf.output('blob');
+                    const pdfBase64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                        reader.readAsDataURL(pdfBlob);
+                    });
+
+                    // Call API to send email
+                    const response = await fetch('/api/send-invoice-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            to: clientEmail,
+                            subject,
+                            body,
+                            filename: `${invoiceNumber}.pdf`,
+                            pdfBase64
+                        })
+                    });
+
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        alert('Invoice sent successfully! Check your email.');
+                    } else {
+                        throw new Error(result.error || 'Failed to send email');
+                    }
+                } catch (err) {
+                    console.error('Email error:', err);
+                    alert('Failed to send email: ' + (err.message || 'Unknown error. Please try again.'));
+                } finally {
+                    // Restore button state
+                    emailBtn.innerHTML = originalText;
+                    emailBtn.disabled = false;
+                }
             });
 
             // Initialize with one item row

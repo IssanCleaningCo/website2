@@ -32,4 +32,4 @@ exports.handler = async function(event, context) {
         console.error('Resend error:', error);
         return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
     }
-};
+}; 
