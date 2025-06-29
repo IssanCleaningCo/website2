@@ -3028,7 +3028,7 @@ body {
 .contact__social {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 /* Mobile Responsive */
@@ -4042,9 +4042,54 @@ body {
 
 @media (max-width: 768px) {
     .language-toggle {
-        position: absolute;
-        top: 1.5rem;
-        right: 4rem;
+        position: fixed;
+        top: 1rem;
+        right: 4.5rem;
+        z-index: 1001;
+        background: #ffffff;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        border: 1px solid var(--border-color);
+        display: flex !important; /* Force display */
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .language-btn {
+        font-size: 1rem;
+        padding: 0.35rem 0.5rem;
+        color: var(--primary-color);
+        min-width: 2rem;
+        text-align: center;
+    }
+
+    /* Ensure toggle is above menu button */
+    .icon-menu {
+        z-index: 1000;
+    }
+
+    /* Ensure toggle is visible when menu is open */
+    .menu-open .language-toggle {
+        position: fixed;
+        display: flex !important;
+    }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        .language-toggle {
+            background: #ffffff;
+            border-color: var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .language-btn {
+            color: var(--primary-color);
+        }
+
+        .language-btn.active {
+            color: var(--accent-color);
+        }
     }
 }
 
@@ -4062,4 +4107,68 @@ img {
   backface-visibility: hidden;
   transform: translateZ(0);
   -webkit-font-smoothing: subpixel-antialiased;
+}
+
+/* Social Links Styling */
+.contact__social {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.contact__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--light-bg);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.contact__social-link:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contact__social-link img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  transition: filter 0.3s ease;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .contact__social-link {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .contact__social-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  .contact__social-link img {
+    filter: brightness(1.2);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contact__social {
+    gap: 1rem;
+  }
+  
+  .contact__social-link {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .contact__social-link img {
+    width: 20px;
+    height: 20px;
+  }
 }

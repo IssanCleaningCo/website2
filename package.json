@@ -12,7 +12,11 @@
     "copy-assets": "copyfiles -u 1 \"images/**/*\" \"videos/**/*\" dist/",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "build": "npm run critical-css && npm run convert-images && npm run convert-social && npm run optimize-css && npm run optimize-js && npm run copy-assets"
+    "copy-images": "npx cpx \"images/**/*.*\" dist/images",
+    "copy-css": "npx cpx \"css/**/*.*\" dist/css",
+    "copy-fonts": "npx cpx \"fonts/**/*.*\" dist/fonts",
+    "build": "npx mkdirp dist/js && npx uglify-js src/js/script.js -o dist/js/script.min.js && npm run copy-images && npm run copy-css && npm run copy-fonts && npm run convert-images",
+    "minify-js": "mkdir -p dist/js && uglifyjs src/js/script.js -o dist/js/script.min.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.5",
@@ -22,11 +26,13 @@
   "devDependencies": {
     "autoprefixer": "^10.4.17",
     "copyfiles": "^2.4.1",
+    "cpx": "^1.5.0",
     "critical": "^5.0.0",
     "cssnano": "^6.0.3",
+    "mkdirp": "^3.0.1",
     "postcss": "^8.4.35",
     "postcss-cli": "^11.0.0",
     "rimraf": "^5.0.5",
-    "uglify-js": "^3.17.4"
+    "uglify-js": "^3.19.3"
   }
 }
