@@ -18,7 +18,7 @@
     "copy-css": "npx cpx \"css/**/*.*\" dist/css",
     "copy-fonts": "npx cpx \"fonts/**/*.*\" dist/fonts",
     "copy-html": "node process-html.js",
-    "copy-api": "npx cpx \"api/**/*.*\" dist/api",
+    "copy-api": "npx cpx \"api/**/*.*\" dist/api && npx cpx \"api/package.json\" dist/api",
     "build": "npm run build-js && npm run copy-images && npm run copy-videos && npm run copy-css && npm run copy-fonts && npm run copy-html && npm run copy-api && npm run convert-images",
     "build-js": "npx mkdirp dist/js && npx uglify-js js/script.js -o dist/js/script.min.js --compress --mangle",
     "minify-js": "mkdir -p dist/js && uglifyjs src/js/script.js -o dist/js/script.min.js"
