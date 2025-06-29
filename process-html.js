@@ -5,15 +5,11 @@ console.log('Processing HTML files for Vercel deployment...');
 
 // Function to process HTML content
 function processHtmlContent(content) {
-  // Remove 'dist/' prefix from image paths
-  content = content.replace(/src="dist\//g, 'src="');
-  content = content.replace(/srcset="dist\//g, 'srcset="');
-  content = content.replace(/href="dist\//g, 'href="');
+  // Remove 'dist/' prefix from all paths
+  content = content.replace(/dist\//g, '');
   
   // Remove '../dist/' prefix from image paths (for Spanish pages)
-  content = content.replace(/src="\.\.\/dist\//g, 'src="../');
-  content = content.replace(/srcset="\.\.\/dist\//g, 'srcset="../');
-  content = content.replace(/href="\.\.\/dist\//g, 'href="../');
+  content = content.replace(/\.\.\/dist\//g, '../');
   
   return content;
 }
