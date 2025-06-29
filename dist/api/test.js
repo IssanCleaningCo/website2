@@ -1,4 +1,4 @@
-exports.handler = async function(event, context) {
+module.exports = async function(event, context) {
     try {
         // Test if we can require resend
         let resendStatus = 'Not tested';
