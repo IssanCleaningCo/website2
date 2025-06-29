@@ -82,10 +82,11 @@
         <section class="grid grid-cols-1 sm:grid-cols-2 gap-8 my-8">
             <div>
                 <h3 class="font-semibold text-gray-500 mb-3">Bill To:</h3>
-                <div contenteditable="true" id="clientInfo" class="invoice-input leading-relaxed">
-                    Client Name<br>
-                    Client's Address<br>
-                    client@email.com
+                <div class="space-y-3">
+                    <input type="text" id="clientName" class="invoice-input" placeholder="Client Name">
+                    <input type="text" id="clientAddress" class="invoice-input" placeholder="Client Address">
+                    <input type="email" id="clientEmail" class="invoice-input" placeholder="client@email.com">
+                    <input type="tel" id="clientPhone" class="invoice-input" placeholder="Phone Number">
                 </div>
             </div>
             <div class="space-y-4">
@@ -386,19 +387,18 @@
 
                 try {
                     // Get client email and invoice number
-                    const clientInfo = document.getElementById('clientInfo').innerText || '';
-                    const emailMatch = clientInfo.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-                    const clientEmail = emailMatch ? emailMatch[0] : '';
+                    const clientEmail = document.getElementById('clientEmail').value.trim();
+                    const clientName = document.getElementById('clientName').value.trim();
                     const invoiceNumber = document.getElementById('invoiceNumber').value || 'Invoice';
 
                     if (!clientEmail) {
-                        alert('Please enter a valid email address in the client information section.');
+                        alert('Please enter a valid email address in the client email field.');
                         return;
                     }
 
                     // Prepare subject and body
                     const subject = `Your Invoice from Issan Cleaning Co. (${invoiceNumber})`;
-                    const body = `Hello,\n\nPlease find your invoice (${invoiceNumber}) from Issan Cleaning Co. attached.\n\nPayment is due within 15 days. Thank you for your business!\n\nBest regards,\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`;
+                    const body = `Hello ${clientName || 'there'},\n\nPlease find your invoice (${invoiceNumber}) from Issan Cleaning Co. attached.\n\nPayment is due within 15 days. Thank you for your business!\n\nBest regards,\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`;
 
                     // Generate PDF as base64
                     const jsPDF = window.jspdf.jsPDF;
