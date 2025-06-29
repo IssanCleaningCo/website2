@@ -28,7 +28,17 @@
             }
         }
         .invoice-input {
-            @apply w-full p-2 border border-gray-200 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-duration: 200ms;
+            outline: none;
+        }
+        .invoice-input:focus {
+            box-shadow: 0 0 0 2px #3b82f6;
+            border-color: transparent;
         }
         .invoice-input[contenteditable="true"] {
             cursor: text;
