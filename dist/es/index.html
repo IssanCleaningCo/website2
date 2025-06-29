@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../dist/images/favicon.png" />
+  <title>Servicios Profesionales de Limpieza en Miami | Residencial y Comercial</title>
+  <!-- Preload critical assets -->
+  <link rel="preload" href="../dist/fonts/quicksand-v30-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../videos/home.mp4" as="video" type="video/mp4">
+  
+  <!-- Inline critical CSS -->
+  <style>
+    /* Copy contents of critical.css here */
+    :root {
+      --primary-color: #333;
+      --accent-color: #4CAF50;
+      --hover-color: #45a049;
+      --light-bg: #f5f5f5;
+      --border-color: #ddd;
+    }
+    
+    body {
+      font-family: "Quicksand", sans-serif;
+      font-size: 1.1rem;
+      color: var(--primary-color);
+      line-height: 1.6;
+      margin: 0;
+    }
+    
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+    }
+    
+    .main__video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Defer non-critical CSS -->
+  <link rel="stylesheet" href="../css/style.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="../css/style.css"></noscript>
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Issan Cleaning">
+  <meta name="geo.region" content="US-FL">
+  <meta name="geo.placename" content="Miami">
+  <link rel="alternate" hreflang="es" href="https://issancleaningco.com/es/">
+  <link rel="alternate" hreflang="en" href="https://issancleaningco.com/">
+  <link rel="alternate" hreflang="x-default" href="https://issancleaningco.com/">
+  <meta name="description" content="Servicios profesionales de limpieza en Miami. Especialistas en limpieza residencial, comercial y Airbnb. Servicio confiable y garantía de satisfacción del 100%. ¡Llame ahora!">
+  <meta name="keywords" content="limpieza Miami, servicio de limpieza, limpieza residencial Miami, limpieza comercial Miami, limpieza Airbnb, servicio de limpieza profesional">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Servicio Profesional de Limpieza en Miami | Issan Cleaning">
+  <meta property="og:description" content="Servicios de limpieza profesional en Miami. Expertos en limpieza residencial, comercial y Airbnb. ¡Contáctenos hoy!">
+  <meta property="og:image" content="../dist/images/logo.png">
+  <meta property="og:url" content="https://issancleaningco.com/es/">
+  <meta property="og:site_name" content="Issan Cleaning">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Servicio de Limpieza de Confianza en Miami">
+  <meta name="twitter:description" content="Servicios profesionales de limpieza en Miami. ¡Reserve su limpieza hoy!">
+  <meta name="twitter:image" content="../dist/images/logo.png">
+  <meta property="og:locale" content="es_US">
+  <meta property="og:locale:alternate" content="en_US">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Your Cleaning Service Name",
+    "image": "../dist/images/logo.png",
+    "description": "Professional cleaning services in Miami",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Your Street Address",
+      "addressLocality": "Miami",
+      "addressRegion": "FL",
+      "postalCode": "Your Zip",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "25.7617",
+      "longitude": "-80.1918"
+    },
+    "url": "https://yourwebsite.com",
+    "telephone": "+13057013909",
+    "priceRange": "$$",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "opens": "08:00",
+      "closes": "18:00"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AggregateRating",
+    "itemReviewed": {
+      "@type": "LocalBusiness",
+      "name": "Your Cleaning Service Name",
+      "image": "../dist/images/logo.png"
+    },
+    "ratingValue": "5",
+    "bestRating": "5",
+    "worstRating": "1",
+    "ratingCount": "500",
+    "reviewCount": "500"
+  }
+  </script>
+  <link rel="canonical" href="https://issancleaningco.com/es/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Your Cleaning Service Name",
+    "url": "https://yourwebsite.com",
+    "logo": "../dist/images/logo.png",
+    "sameAs": [
+      "https://www.facebook.com/profile.php?id=61572380124099",
+      "https://www.instagram.com/issancleaningco/"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+13057013909",
+      "contactType": "customer service",
+      "areaServed": "Miami",
+      "availableLanguage": ["English", "Spanish"]
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Your Cleaning Service Name",
+    "url": "https://yourwebsite.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://yourwebsite.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <!-- Preload critical resources -->
+  <link rel="preload" href="../css/style.css" as="style">
+  <link rel="preload" href="../js/script.js" as="script">
+</head>
+
+<body>
+  <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="tel" name="phone" />
+    <select name="service"></select>
+    <textarea name="description"></textarea>
+  </form>
+  <div class="wrapper">
+    <header class="header">
+      <div class="header__container">
+        <a href="index.html" class="header__logo logo">
+          <picture>
+            <source srcset="../dist/images/logo.webp" type="image/webp">
+            <img src="../dist/images/logo.png" alt="Logo de Issan Cleaning">
+          </picture>
+        </a>
+        <div class="header__navigation">
+          <div class="language-toggle">
+            <a href="../index.html" class="language-btn">EN</a>
+            <span class="language-separator">|</span>
+            <a href="index.html" class="language-btn active">ES</a>
+          </div>
+          <div class="header__menu menu">
+            <nav class="menu__body">
+              <ul class="menu__list">
+                <li class="menu__item"><a href="index.html" class="menu__link">Inicio</a></li>
+                <li class="menu__item"><a href="sobre-nosotros.html" class="menu__link">Sobre Nosotros</a></li>
+                <li class="menu__item"><a href="servicios.html" class="menu__link">Servicios</a></li>
+                <li class="menu__item"><a href="precios.html" class="menu__link">Precios</a></li>
+                <li class="menu__item"><a href="contacto.html" class="menu__link">Contacto</a></li>
+              </ul>
+              <a href="tel:+13057013909" class="actions-header__button">(305) 701-3909</a>
+            </nav>
+          </div>
+          <button type="button" class="icon-menu">
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="page">
+      <section class="page__main main">
+        <video class="main__video" autoplay muted loop playsinline>
+          <source src="../videos/home.mp4" type="video/mp4">
+        </video>
+        <div class="main__container">
+          <h1 class="main__title"></h1>
+          <p class="main__text">Experimente la diferencia de un espacio verdaderamente limpio</p>
+          <a href="contacto.html" class="main__button button">Reservar Ahora</a>
+        </div>
+      </section>
+      <section class="page__about about">
+        <div class="about__container">
+          <div class="about__image">
+            <picture>
+              <source srcset="../dist/images/Home/Home-About.webp" type="image/webp">
+              <img src="../dist/images/Home/Home-About.jpg" alt="Imagen sobre nosotros" loading="lazy" />
+            </picture>
+          </div>
+          <div class="about__content">
+            <h2 class="about__title title">Nuestra Promesa</h2>
+            <div class="about__text">
+              <p>
+                En nuestro servicio de limpieza, combinamos métodos probados con técnicas modernas para brindar una experiencia excepcional. Nuestro equipo dedicado aporta una atención meticulosa al detalle y un compromiso inquebrantable con la excelencia en cada espacio que atendemos.
+              </p>
+              <p>
+                Entendemos que un espacio limpio es más que solo apariencia: se trata de crear un ambiente saludable y cómodo donde pueda prosperar. Usando productos premium de limpieza ecológica y métodos probados en el tiempo, nos aseguramos de que su espacio no solo esté limpio, sino que también se haya refrescado y desinfectado por completo.
+              </p>
+              <p>
+                Cada miembro de nuestro equipo es cuidadosamente seleccionado, profesionalmente capacitado y comparte nuestro compromiso con la excelencia. Nos tratamos de su espacio con el mismo cuidado y respeto que lo haríamos con nuestro propio, asegurándonos de brindar un servicio consistente, confiable y que puede confiarse.
+              </p>
+            </div>
+            <a href="contacto.html" class="about__button button">Contáctenos</a>
+          </div>
+        </div>
+      </section>
+      <section class="page__services services">
+        <div class="services__container">
+          <h2 class="services__title title">Servicios</h2>
+          <div class="services__row">
+            <div class="services__column">
+              <div class="services__item item-services">
+                <a class="item-services__top" href="servicios.html">
+                  <div class="item-services__image">
+                    <picture>
+                      <source srcset="../dist/images/Home/airbnb.webp" type="image/webp">
+                      <img src="../dist/images/Home/airbnb.jpg" alt="Servicio de limpieza Airbnb" loading="lazy" />
+                    </picture>
+                  </div>
+                  <h3 class="item-services__title">Limpieza Airbnb</h3>
+                </a>
+                <div class="item-services__text">
+                  Limpieza rápida y minuciosa para propiedades Airbnb. Listo para su próximo huésped.
+                </div>
+                <a href="servicios.html" class="item-services__button button">Más Información</a>
+              </div>
+            </div>
+            <div class="services__column">
+              <div class="services__item item-services">
+                <a class="item-services__top" href="servicios.html">
+                  <div class="item-services__image">
+                    <picture>
+                      <source srcset="../dist/images/Home/office.webp" type="image/webp">
+                      <img src="../dist/images/Home/office.jpg" alt="Servicio de limpieza de oficinas" loading="lazy" />
+                    </picture>
+                  </div>
+                  <h3 class="item-services__title">Limpieza de Oficinas</h3>
+                </a>
+                <div class="item-services__text">
+                  Limpieza profesional de oficinas. Creando espacios de trabajo saludables diariamente.
+                </div>
+                <a href="servicios.html" class="item-services__button button">Más Información</a>
+              </div>
+            </div>
+            <div class="services__column">
+              <div class="services__item item-services">
+                <a class="item-services__top" href="servicios.html">
+                  <div class="item-services__image">
+                    <picture>
+                      <source srcset="../dist/images/Home/residential.webp" type="image/webp">
+                      <img src="../dist/images/Home/residential.jpg" alt="Servicio de limpieza residencial" loading="lazy" />
+                    </picture>
+                  </div>
+                  <h3 class="item-services__title">Limpieza Residencial</h3>
+                </a>
+                <div class="item-services__text">
+                  Limpieza detallada del hogar. Soluciones personalizadas para su espacio.
+                </div>
+                <a href="servicios.html" class="item-services__button button">Más Información</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="page__offers offers">
+        <div class="offers__container">
+          <h2 class="offers__title title">Ofertas Especiales</h2>
+          <div class="offers__grid">
+            <!-- First Time Client -->
+            <div class="offer__card">
+              <div class="offer__icon">🏠</div>
+              <h3 class="offer__title">Cliente Nuevo</h3>
+              <p class="offer__discount">15% DESCUENTO</p>
+              <p class="offer__description">Su primer servicio de limpieza con nosotros</p>
+              <a href="contacto.html" class="offer__button button">Reservar Ahora</a>
+            </div>
+
+            <!-- Recurring Client -->
+            <div class="offer__card">
+              <div class="offer__icon">📅</div>
+              <h3 class="offer__title">Servicio Semanal</h3>
+              <p class="offer__discount">20% DESCUENTO</p>
+              <p class="offer__description">Programa regular de limpieza semanal</p>
+              <a href="contacto.html" class="offer__button button">Reservar Ahora</a>
+            </div>
+
+            <!-- Referral Bonus -->
+            <div class="offer__card">
+              <div class="offer__icon">🎁</div>
+              <h3 class="offer__title">Recomienda un Amigo</h3>
+              <p class="offer__discount">$50 DESCUENTO</p>
+              <p class="offer__description">¡Cuando su referido reserve su primer servicio, ambos obtienen $50 de descuento en su próxima limpieza!</p>
+              <a href="contacto.html" class="offer__button button">Contáctenos</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="page__testimonial testimonial">
+        <div class="testimonial__container">
+          <h3 class="testimonial__caption">Reseñas</h3>
+          <div class="testimonial__slider">
+            <!-- Testimonial 1 -->
+            <div class="testimonial__slide">
+              <div class="testimonial__stars">⭐⭐⭐⭐⭐</div>
+              <h2 class="testimonial__title title">
+                "Servicio excepcional. La atención al detalle es sobresaliente."
+              </h2>
+              <div class="testimonial__item item-testimonial">
+                <h4 class="item-testimonial__title">Jennifer M.</h4>
+                <div class="item-testimonial__caption">Miami Beach</div>
+              </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="testimonial__slide">
+              <div class="testimonial__stars">⭐⭐⭐⭐⭐</div>
+              <h2 class="testimonial__title title">
+                "Transformaron mi Airbnb. Los huéspedes adoran la limpieza."
+              </h2>
+              <div class="testimonial__item item-testimonial">
+                <h4 class="item-testimonial__title">Robert K.</h4>
+                <div class="item-testimonial__caption">Brickell</div>
+              </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="testimonial__slide">
+              <div class="testimonial__stars">⭐⭐⭐⭐⭐</div>
+              <h2 class="testimonial__title title">
+                "Confiables, minuciosos y siempre profesionales."
+              </h2>
+              <div class="testimonial__item item-testimonial">
+                <h4 class="item-testimonial__title">Maria S.</h4>
+                <div class="item-testimonial__caption">Coral Gables</div>
+              </div>
+            </div>
+
+            <!-- Testimonial 4 -->
+            <div class="testimonial__slide">
+              <div class="testimonial__stars">⭐⭐⭐⭐⭐</div>
+              <h2 class="testimonial__title title">
+                "El mejor servicio de limpieza en Miami. ¡Altamente recomendado!"
+              </h2>
+              <div class="testimonial__item item-testimonial">
+                <h4 class="item-testimonial__title">David L.</h4>
+                <div class="item-testimonial__caption">Downtown Miami</div>
+              </div>
+            </div>
+
+            <!-- Navigation Dots -->
+            <div class="testimonial__dots">
+              <button class="dot active" data-slide="0"></button>
+              <button class="dot" data-slide="1"></button>
+              <button class="dot" data-slide="2"></button>
+              <button class="dot" data-slide="3"></button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="page__outro outro outro_home">
+        <div class="outro__container">
+          <h2 class="outro__title title">¿Listo para Empezar?</h2>
+          <div class="outro__text">
+            Reserve su servicio de limpieza hoy. Experimente la diferencia de una limpieza profesional.
+          </div>
+          <a href="contacto.html" class="outro__button button">Reservar Ahora</a>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="footer__container">
+        <nav class="footer__nav">
+          <ul class="footer__menu">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="precios.html">Precios</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+          </ul>
+        </nav>
+          <a href="index.html" class="footer__logo logo">
+            <picture>
+              <source srcset="../dist/images/logo.webp" type="image/webp">
+              <img src="../dist/images/logo.png" alt="Logo de Issan Cleaning">
+            </picture>
+          </a>
+          <div class="footer__copyright">Copyright © 2025 Issan Cleaning – Todos los Derechos <br>Reservados</div>
+      </div>
+    </footer>
+  </div>
+  <script src="../js/script.js" defer></script>
+  <script src="../js/font-loader.js" defer></script>
+  <nav class="mobile-nav">
+    <a href="index.html" class="mobile-nav__item">
+        <i class="mobile-nav__icon">🏠</i>
+        <span>Inicio</span>
+    </a>
+    <a href="servicios.html" class="mobile-nav__item">
+        <i class="mobile-nav__icon">🧹</i>
+        <span>Servicios</span>
+    </a>
+    <a href="contacto.html" class="mobile-nav__item mobile-nav__item--cta">
+        <i class="mobile-nav__icon">📞</i>
+        <span>Reservar</span>
+    </a>
+    <a href="precios.html" class="mobile-nav__item">
+        <i class="mobile-nav__icon">💰</i>
+        <span>Precios</span>
+    </a>
+    <a href="sobre-nosotros.html" class="mobile-nav__item">
+      <i class="mobile-nav__icon">👥</i>
+      <span>Conocenos</span>
+    </a>
+    <a href="tel:+13057013909" class="mobile-nav__item">
+        <i class="mobile-nav__icon">📱</i>
+        <span>Llamar</span>
+    </a>
+  </nav>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{
+      "@type": "Question",
+      "name": "¿Qué áreas cubren?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Servimos con orgullo a Miami y áreas circundantes incluyendo Miami Beach, Coral Gables, Brickell y Downtown Miami."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Ofrecen servicios de limpieza recurrentes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, ofrecemos servicios de limpieza semanales, quincenales y mensuales con tarifas especiales para clientes regulares."
+      }
+    }]
+  }
+  </script>
+</body>
+
+</html>
