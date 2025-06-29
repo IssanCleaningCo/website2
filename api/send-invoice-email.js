@@ -1,6 +1,6 @@
 const { Resend } = require('resend');
 
-exports.handler = async function(event, context) {
+module.exports = async function(event, context) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
