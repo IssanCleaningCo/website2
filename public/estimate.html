@@ -371,82 +371,56 @@
                 }
             });
 
-            // Send by Email Button
+            // --- EMAIL FUNCTIONALITY ---
             document.getElementById('emailBtn').addEventListener('click', async function () {
                 const emailBtn = this;
                 const originalText = emailBtn.innerHTML;
-                
-                // Show loading state
                 emailBtn.innerHTML = `
-                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Sending...
-                `;
+                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"></svg>
+                    Sending...`;
                 emailBtn.disabled = true;
-
                 try {
-                    // Get client email and estimate number
-                    const clientEmail = document.getElementById('clientEmail').value.trim();
-                    const clientName = document.getElementById('clientName').value.trim();
-                    const estimateNumber = document.getElementById('estimateNumber').value || 'Estimate';
-
+                    // Collect form data
+                    const estimateNumber = document.getElementById('estimateNumber').value || '';
+                    const estimateStatus = document.getElementById('estimateStatus').value || '';
+                    const clientName = document.getElementById('clientName').value || '';
+                    const clientAddress = document.getElementById('clientAddress').value || '';
+                    const clientEmail = document.getElementById('clientEmail').value || '';
+                    const clientPhone = document.getElementById('clientPhone').value || '';
+                    const estimateDate = document.getElementById('estimateDate').value || '';
+                    const validUntil = document.getElementById('validUntil').value || '';
+                    const preparedBy = document.getElementById('preparedBy').value || '';
+                    const notes = document.getElementById('notes').innerText || '';
+                    const taxRate = document.getElementById('taxRate').value || '';
+                    const subtotal = document.getElementById('subtotal').textContent || '';
+                    const taxAmount = document.getElementById('taxAmount').textContent || '';
+                    const total = document.getElementById('total').textContent || '';
+                    // Collect items
+                    const items = Array.from(document.querySelectorAll('#itemsContainer .item-row')).map(row => ({
+                        description: row.querySelector('.description')?.innerText || '',
+                        quantity: row.querySelector('.quantity')?.innerText || '',
+                        rate: row.querySelector('.rate')?.innerText || '',
+                        amount: row.querySelector('.amount')?.textContent || ''
+                    }));
                     if (!clientEmail) {
-                        alert('Please enter a valid email address in the client email field.');
+                        alert('Please enter a valid client email.');
                         return;
                     }
-
-                    // Prepare subject and body
-                    const subject = `Your Estimate from Issan Cleaning Co. (${estimateNumber})`;
-                    const body = `Hello ${clientName || 'there'},\n\nPlease find your estimate (${estimateNumber}) from Issan Cleaning Co. attached.\n\nThank you for considering us!\n\nBest regards,\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`;
-
-                    // Generate PDF as base64
-                    const jsPDF = window.jspdf.jsPDF;
-                    const estimateElement = document.getElementById('estimate-container');
-                    const canvas = await html2canvas(estimateElement, { 
-                        scale: 2, 
-                        useCORS: false, 
-                        logging: false,
-                        backgroundColor: '#ffffff'
-                    });
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                    const pdfBlob = pdf.output('blob');
-                    const pdfBase64 = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onloadend = () => resolve(reader.result.split(',')[1]);
-                        reader.readAsDataURL(pdfBlob);
-                    });
-
-                    // Call API to send email
+                    // Prepare payload
+                    const payload = {
+                        estimateNumber, estimateStatus, clientName, clientAddress, clientEmail, clientPhone,
+                        estimateDate, validUntil, preparedBy, notes, taxRate, subtotal, taxAmount, total, items
+                    };
                     const response = await fetch('/api/send-estimate-email', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            to: clientEmail,
-                            subject,
-                            body,
-                            filename: `${estimateNumber}.pdf`,
-                            pdfBase64
-                        })
+                        body: JSON.stringify(payload)
                     });
-
-                    const result = await response.json();
-                    
-                    if (response.ok) {
-                        alert('Estimate sent successfully! Check your email.');
-                    } else {
-                        throw new Error(result.error || 'Failed to send email');
-                    }
+                    if (!response.ok) throw new Error('Failed to send email.');
+                    alert('Estimate sent successfully!');
                 } catch (err) {
-                    console.error('Email error:', err);
                     alert('Failed to send email: ' + (err.message || 'Unknown error. Please try again.'));
                 } finally {
-                    // Restore button state
                     emailBtn.innerHTML = originalText;
                     emailBtn.disabled = false;
                 }
