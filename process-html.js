@@ -5,88 +5,48 @@ console.log('Processing HTML files for Vercel deployment...');
 
 // Function to process HTML content
 function processHtmlContent(content) {
-  // Remove 'dist/' prefix from all paths
-  content = content.replace(/dist\//g, '');
-  
+  // Remove 'dist/' prefix from all asset paths
+  content = content.replace(/dist\/(images|img|videos|css|fonts|js)\//g, '$1/');
   // Remove '../dist/' prefix from image paths (for Spanish pages)
-  content = content.replace(/\.\.\/dist\//g, '../');
-  
+  content = content.replace(/\.\.\/dist\/(images|img|videos|css|fonts|js)\//g, '../$1/');
+  // Remove preload link for quicksand-v30-latin-regular.woff2
+  content = content.replace(/<link[^>]*preload[^>]*quicksand-v30-latin-regular\.woff2[^>]*>\s*/gi, '');
   return content;
 }
 
-// Function to process a single HTML file
-function processHtmlFile(sourcePath, destPath) {
-  try {
-    // Create destination directory if it doesn't exist
-    const destDir = path.dirname(destPath);
-    if (!fs.existsSync(destDir)) {
-      fs.mkdirSync(destDir, { recursive: true });
+// Recursively get all HTML files in the project (including subdirectories)
+function getAllHtmlFiles(dir, files = []) {
+  const fs = require('fs');
+  const path = require('path');
+  fs.readdirSync(dir).forEach(file => {
+    if (file === 'node_modules' || file === '.git' || file === 'dist') return;
+    const fullPath = path.join(dir, file);
+    const stat = fs.statSync(fullPath);
+    if (stat.isDirectory()) {
+      getAllHtmlFiles(fullPath, files);
+    } else if (file.endsWith('.html')) {
+      files.push(fullPath);
     }
-
-    // Read and process the file
-    const content = fs.readFileSync(sourcePath, 'utf8');
-    const processedContent = processHtmlContent(content);
-    
-    // Write the processed file
-    fs.writeFileSync(destPath, processedContent);
-    console.log(`Processed: ${sourcePath} → ${destPath}`);
-  } catch (error) {
-    console.error(`Error processing ${sourcePath}:`, error.message);
-  }
+  });
+  return files;
 }
 
-// Process root HTML files
-const rootHtmlFiles = [
-  'index.html',
-  'about.html', 
-  'services.html',
-  'contact.html',
-  'pricing.html',
-  'blog.html',
-  'estimate.html',
-  'invoice.html',
-  'offline.html'
-];
+const projectRoot = __dirname;
+const htmlFiles = getAllHtmlFiles(projectRoot);
 
-rootHtmlFiles.forEach(file => {
-  const sourcePath = path.join(__dirname, file);
-  const destPath = path.join(__dirname, 'dist', file);
-  
-  if (fs.existsSync(sourcePath)) {
-    processHtmlFile(sourcePath, destPath);
+htmlFiles.forEach(sourcePath => {
+  const relPath = path.relative(projectRoot, sourcePath);
+  const destPath = path.join(projectRoot, 'public', relPath); // changed from 'dist' to 'public'
+  // Ensure destination directory exists
+  const destDir = path.dirname(destPath);
+  if (!fs.existsSync(destDir)) {
+    fs.mkdirSync(destDir, { recursive: true });
   }
-});
-
-// Process Spanish HTML files
-const spanishHtmlFiles = [
-  'es/index.html',
-  'es/sobre-nosotros.html',
-  'es/servicios.html', 
-  'es/precios.html',
-  'es/contacto.html'
-];
-
-spanishHtmlFiles.forEach(file => {
-  const sourcePath = path.join(__dirname, file);
-  const destPath = path.join(__dirname, 'dist', file);
-  
-  if (fs.existsSync(sourcePath)) {
-    processHtmlFile(sourcePath, destPath);
-  }
-});
-
-// Process admin HTML files
-const adminHtmlFiles = [
-  'admin/calculator.html'
-];
-
-adminHtmlFiles.forEach(file => {
-  const sourcePath = path.join(__dirname, file);
-  const destPath = path.join(__dirname, 'dist', file);
-  
-  if (fs.existsSync(sourcePath)) {
-    processHtmlFile(sourcePath, destPath);
-  }
+  // Process and write the file
+  const content = fs.readFileSync(sourcePath, 'utf8');
+  const processed = processHtmlContent(content);
+  fs.writeFileSync(destPath, processed, 'utf8');
+  console.log(`Processed HTML: ${sourcePath} → ${destPath}`);
 });
 
 // Copy other files
@@ -97,8 +57,7 @@ const otherFiles = [
 
 otherFiles.forEach(file => {
   const sourcePath = path.join(__dirname, file);
-  const destPath = path.join(__dirname, 'dist', file);
-  
+  const destPath = path.join(__dirname, 'public', file); // changed from 'dist' to 'public'
   if (fs.existsSync(sourcePath)) {
     try {
       const destDir = path.dirname(destPath);
@@ -113,4 +72,4 @@ otherFiles.forEach(file => {
   }
 });
 
-console.log('HTML processing complete!'); 
+console.log('HTML processing complete!');

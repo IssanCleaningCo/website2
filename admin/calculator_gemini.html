@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miami Cleaning Calculator (Gemini Model)</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body { background: #f7f7fa; }
+        .container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 2rem; }
+        h1, h2 { color: #1a3d5c; }
+        .section { margin-bottom: 2rem; }
+        .form-row { display: flex; gap: 1.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .form__group { flex: 1; min-width: 220px; }
+        .result-box { background: #f0f6fa; border-radius: 8px; padding: 1.5rem; margin-top: 2rem; }
+        .price-breakdown { margin-top: 1rem; }
+        .total-price { font-size: 1.5rem; font-weight: 600; color: #0a7c5c; margin-top: 1rem; }
+        .add-ons { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .addon-item { background: #f9f9fc; border: 1px solid #e0e0e0; border-radius: 6px; padding: 0.5rem 1rem; }
+        @media (max-width: 700px) { .form-row { flex-direction: column; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Miami Cleaning Calculator (Gemini Model)</h1>
+    <div class="section">
+        <label for="segment">Service Type</label>
+        <select id="segment">
+            <option value="residential">Residential Cleaning</option>
+            <option value="airbnb">Airbnb/Short-Term Rental</option>
+            <option value="commercial">Commercial Cleaning</option>
+        </select>
+    </div>
+    <form id="calcForm">
+        <div id="residentialFields">
+            <div class="form-row">
+                <div class="form__group">
+                    <label for="bedrooms">Bedrooms</label>
+                    <select id="bedrooms">
+                        <option value="0">Studio</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5+</option>
+                    </select>
+                </div>
+                <div class="form__group">
+                    <label for="bathrooms">Bathrooms</label>
+                    <select id="bathrooms">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form__group">
+                    <label for="frequency">Cleaning Frequency</label>
+                    <select id="frequency">
+                        <option value="onetime">One-time</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="biweekly">Bi-Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+                <div class="form__group">
+                    <label for="firstTime">First-Time/Deep Clean?</label>
+                    <input type="checkbox" id="firstTime">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form__group">
+                    <label>Add-On Services</label>
+                    <div class="add-ons" id="resAddOns"></div>
+                </div>
+            </div>
+        </div>
+        <div id="airbnbFields" style="display:none;">
+            <div class="form-row">
+                <div class="form__group">
+                    <label for="bnbBedrooms">Bedrooms</label>
+                    <select id="bnbBedrooms">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+                <div class="form__group">
+                    <label for="bnbBathrooms">Bathrooms</label>
+                    <select id="bnbBathrooms">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form__group">
+                    <label for="bnbFrequency">Turnover Frequency</label>
+                    <select id="bnbFrequency">
+                        <option value="onetime">One-time</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="biweekly">Bi-Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form__group">
+                    <label>Add-On Services</label>
+                    <div class="add-ons" id="bnbAddOns"></div>
+                </div>
+            </div>
+        </div>
+        <div id="commercialFields" style="display:none;">
+            <div class="form-row">
+                <div class="form__group">
+                    <label for="businessType">Business Type</label>
+                    <select id="businessType">
+                        <option value="office">Standard Office</option>
+                        <option value="medical">Medical/Dental Office</option>
+                        <option value="restaurant">Restaurant</option>
+                        <option value="retail">Retail Store</option>
+                        <option value="gym">Gym/Fitness Center</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form__group">
+                    <label for="comSqft">Square Footage</label>
+                    <input type="number" id="comSqft" min="200" step="50" placeholder="e.g. 2000">
+                </div>
+                <div class="form__group">
+                    <label for="comBathrooms">Bathrooms</label>
+                    <input type="number" id="comBathrooms" min="1" step="1" value="2">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form__group">
+                    <label for="comFrequency">Cleaning Frequency</label>
+                    <select id="comFrequency">
+                        <option value="nightly">Nightly</option>
+                        <option value="3xweek">3x/Week</option>
+                        <option value="weekly">Weekly</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form__group">
+                    <label>Add-On Services</label>
+                    <div class="add-ons" id="comAddOns"></div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form__group">
+                    <label for="comName">Business Name</label>
+                    <input type="text" id="comName" placeholder="Business Name">
+                </div>
+                <div class="form__group">
+                    <label for="comContact">Contact Email</label>
+                    <input type="email" id="comContact" placeholder="Contact Email">
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="button">Calculate Price</button>
+    </form>
+    <div class="result-box" id="resultBox" style="display:none;">
+        <h2>Price Breakdown</h2>
+        <div class="price-breakdown" id="breakdown"></div>
+        <div class="total-price" id="totalPrice"></div>
+    </div>
+</div>
+<script>
+// --- Pricing Data ---
+const RES_BASE = [
+    { beds: 0, baths: 1, price: 160 }, // Studio/1 Bath
+    { beds: 1, baths: 1, price: 160 },
+    { beds: 2, baths: 1, price: 190 },
+    { beds: 2, baths: 2, price: 220 },
+    { beds: 3, baths: 2, price: 275 },
+    { beds: 3, baths: 3, price: 310 },
+    { beds: 4, baths: 3, price: 370 },
+    { beds: 5, baths: 3, price: 420 },
+];
+const RES_DEEP_EXTRA = 0.5; // 50% more for first/deep clean
+const RES_FREQ_DISCOUNT = { weekly: 0.18, biweekly: 0.12, monthly: 0.07, onetime: 0 };
+const RES_ADDONS = [
+    { id: 'fridge', label: 'Inside Fridge', price: 40 },
+    { id: 'oven', label: 'Inside Oven', price: 50 },
+    { id: 'windows', label: 'Interior Windows', price: 10, per: 'window' },
+    { id: 'cabinets', label: 'Inside Kitchen Cabinets (empty)', price: 60 },
+    { id: 'baseboards', label: 'Baseboard Detail Cleaning', price: 70 },
+    { id: 'laundry', label: 'Laundry (Wash & Fold)', price: 30, per: 'load' },
+    { id: 'blinds', label: 'Blinds/Shutter Cleaning', price: 10, per: 'set' },
+    { id: 'patio', label: 'Patio/Balcony Sweep & Mop', price: 35 }
+];
+const BNB_BASE = { base: 100, bed: 30, bath: 25 };
+const BNB_FREQ_DISCOUNT = { weekly: 0.18, biweekly: 0.12, monthly: 0.07, onetime: 0 };
+const BNB_ADDONS = [
+    { id: 'bnbLaundry', label: 'Laundry Service (linens/towels)', price: 30, per: 'load' },
+    { id: 'bnbRestock', label: 'Restocking Fee', price: 15 },
+    { id: 'bnbMidStay', label: 'Mid-Stay Tidy-Up (50% of turnover)', percent: 0.5 },
+];
+const COM_RATES = {
+    office: { nightly: 0.12, weekly: 0.16 },
+    medical: { nightly: 0.22, weekly: 0.28 },
+    restaurant: { nightly: 0.30, weekly: 0.38 },
+    retail: { nightly: 0.15, weekly: 0.20 },
+    gym: { nightly: 0.22, weekly: 0.30 },
+    other: { nightly: 0.15, weekly: 0.20 }
+};
+const COM_MIN = 140;
+const COM_ADDONS = [
+    { id: 'comCarpet', label: 'Carpet Cleaning', price: 0.30, per: 'sqft' },
+    { id: 'comWax', label: 'Floor Stripping & Waxing', price: 0.70, per: 'sqft' },
+    { id: 'comSanitize', label: 'Sanitization/Disinfection', price: 0.08, per: 'sqft' },
+    { id: 'comPost', label: 'Post-Construction Cleaning', price: 1.0, per: 'sqft' }
+];
+
+// --- UI Logic ---
+function showFields() {
+    document.getElementById('residentialFields').style.display = 'none';
+    document.getElementById('airbnbFields').style.display = 'none';
+    document.getElementById('commercialFields').style.display = 'none';
+    const seg = document.getElementById('segment').value;
+    if (seg === 'residential') document.getElementById('residentialFields').style.display = 'block';
+    if (seg === 'airbnb') document.getElementById('airbnbFields').style.display = 'block';
+    if (seg === 'commercial') document.getElementById('commercialFields').style.display = 'block';
+}
+document.getElementById('segment').addEventListener('change', showFields);
+showFields();
+function renderAddOns(list, boxId) {
+    const box = document.getElementById(boxId);
+    box.innerHTML = '';
+    list.forEach(addon => {
+        let label = addon.label + ' ($' + addon.price;
+        if (addon.per) label += '/' + addon.per;
+        if (addon.percent) label += ', ' + Math.round(addon.percent*100) + '%';
+        label += ')';
+        box.innerHTML += `<span class="addon-item"><input type="checkbox" id="${addon.id}" value="${addon.id}" data-per="${addon.per||''}" data-percent="${addon.percent||''}" data-price="${addon.price}"><label for="${addon.id}">${label}</label></span>`;
+    });
+}
+renderAddOns(RES_ADDONS, 'resAddOns');
+renderAddOns(BNB_ADDONS, 'bnbAddOns');
+renderAddOns(COM_ADDONS, 'comAddOns');
+
+// --- Calculation Logic ---
+document.getElementById('calcForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const seg = document.getElementById('segment').value;
+    let breakdown = '', total = 0;
+    if (seg === 'residential') {
+        const beds = parseInt(document.getElementById('bedrooms').value);
+        const baths = parseInt(document.getElementById('bathrooms').value);
+        let base = 0;
+        let match = RES_BASE.find(r => r.beds === beds && r.baths === baths);
+        if (!match) {
+            // fallback: use closest
+            match = RES_BASE[RES_BASE.length-1];
+        }
+        base = match.price;
+        breakdown += `<div>Base Price (${beds} bed / ${baths} bath): $${base}</div>`;
+        if (document.getElementById('firstTime').checked) {
+            let deep = Math.round(base * RES_DEEP_EXTRA);
+            base += deep;
+            breakdown += `<div>First-Time/Deep Clean: +$${deep}</div>`;
+        }
+        // Frequency discount
+        const freq = document.getElementById('frequency').value;
+        const freqDisc = RES_FREQ_DISCOUNT[freq] || 0;
+        let discAmt = Math.round(base * freqDisc);
+        if (freqDisc > 0) breakdown += `<div>Frequency Discount: -$${discAmt}</div>`;
+        // Add-ons
+        let addons = Array.from(document.querySelectorAll('#resAddOns input[type=checkbox]:checked'));
+        let addonsTotal = 0;
+        if (addons.length) breakdown += '<div>Add-Ons:';
+        addons.forEach(cb => {
+            let addon = RES_ADDONS.find(a => a.id === cb.value);
+            let qty = 1;
+            if (addon.per) qty = parseInt(prompt(`How many ${addon.per}s for ${addon.label}?`, '1')) || 1;
+            let addPrice = addon.price * qty;
+            breakdown += `<br>+ ${addon.label}: $${addPrice}`;
+            addonsTotal += addPrice;
+        });
+        if (addons.length) breakdown += '</div>';
+        total = base - discAmt + addonsTotal;
+    } else if (seg === 'airbnb') {
+        const beds = parseInt(document.getElementById('bnbBedrooms').value);
+        const baths = parseInt(document.getElementById('bnbBathrooms').value);
+        let base = BNB_BASE.base + (beds * BNB_BASE.bed) + (baths * BNB_BASE.bath);
+        breakdown += `<div>Base Turnover Fee: $${BNB_BASE.base}</div>`;
+        breakdown += `<div>Bedrooms: ${beds} × $${BNB_BASE.bed} = $${beds*BNB_BASE.bed}</div>`;
+        breakdown += `<div>Bathrooms: ${baths} × $${BNB_BASE.bath} = $${baths*BNB_BASE.bath}</div>`;
+        // Frequency discount
+        const freq = document.getElementById('bnbFrequency').value;
+        const freqDisc = BNB_FREQ_DISCOUNT[freq] || 0;
+        let discAmt = Math.round(base * freqDisc);
+        if (freqDisc > 0) breakdown += `<div>Frequency Discount: -$${discAmt}</div>`;
+        // Add-ons
+        let addons = Array.from(document.querySelectorAll('#bnbAddOns input[type=checkbox]:checked'));
+        let addonsTotal = 0;
+        if (addons.length) breakdown += '<div>Add-Ons:';
+        addons.forEach(cb => {
+            let addon = BNB_ADDONS.find(a => a.id === cb.value);
+            let qty = 1;
+            if (addon.per) qty = parseInt(prompt(`How many ${addon.per}s for ${addon.label}?`, '1')) || 1;
+            let addPrice = addon.price * qty;
+            if (addon.percent) addPrice = Math.round(base * addon.percent);
+            breakdown += `<br>+ ${addon.label}: $${addPrice}`;
+            addonsTotal += addPrice;
+        });
+        if (addons.length) breakdown += '</div>';
+        total = base - discAmt + addonsTotal;
+    } else if (seg === 'commercial') {
+        const type = document.getElementById('businessType').value;
+        const sqft = parseInt(document.getElementById('comSqft').value) || 0;
+        const freq = document.getElementById('comFrequency').value;
+        let rate = COM_RATES[type]?.[freq] || 0.15;
+        let base = Math.round(sqft * rate);
+        breakdown += `<div>Base Rate: ${sqft} sqft × $${rate}/sqft = $${base}</div>`;
+        if (base < COM_MIN) {
+            breakdown += `<div>Minimum Charge Applied: $${COM_MIN}</div>`;
+            base = COM_MIN;
+        }
+        // Add-ons
+        let addons = Array.from(document.querySelectorAll('#comAddOns input[type=checkbox]:checked'));
+        let addonsTotal = 0;
+        if (addons.length) breakdown += '<div>Add-Ons:';
+        addons.forEach(cb => {
+            let addon = COM_ADDONS.find(a => a.id === cb.value);
+            let qty = 1;
+            if (addon.per) qty = parseInt(prompt(`How many ${addon.per}s for ${addon.label}?`, '1')) || 1;
+            let addPrice = Math.round(addon.price * qty * (addon.per === 'sqft' ? sqft : 1));
+            breakdown += `<br>+ ${addon.label}: $${addPrice}`;
+            addonsTotal += addPrice;
+        });
+        if (addons.length) breakdown += '</div>';
+        total = base + addonsTotal;
+        breakdown += `<div><em>Note: Commercial quotes are estimates. We'll contact you for a custom proposal.</em></div>`;
+    }
+    document.getElementById('breakdown').innerHTML = breakdown;
+    document.getElementById('totalPrice').textContent = `Total Price: $${total}`;
+    document.getElementById('resultBox').style.display = 'block';
+});
+</script>
+</body>
+</html>

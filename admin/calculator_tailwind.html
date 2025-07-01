@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miami Cleaning Service Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for active tab */
+        .tab-active {
+            background-color: #06b6d4; /* cyan-500 */
+            color: white;
+            border-color: #06b6d4;
+        }
+        /* Custom styles for inactive tab */
+        .tab-inactive {
+            background-color: #f1f5f9; /* slate-100 */
+            color: #475569; /* slate-600 */
+        }
+        /* Input field styling */
+        .counter-input {
+            width: 4rem;
+            text-align: center;
+            border: 1px solid #cbd5e1; /* slate-300 */
+            border-radius: 0.375rem;
+        }
+        /* Custom focus ring */
+        input:focus, select:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 2px #06b6d4;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Instant Cleaning Estimate</h1>
+            <p class="text-slate-600 mt-2">Get a transparent, upfront price for your cleaning needs in Miami, FL.</p>
+        </header>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <!-- Tabs Navigation -->
+            <div class="flex justify-center border-b border-slate-200 mb-6">
+                <nav class="flex space-x-2" aria-label="Tabs">
+                    <button id="tab-residential" class="tab-active text-sm md:text-base font-medium py-3 px-4 md:px-6 rounded-t-lg transition-colors duration-200 ease-in-out" onclick="changeTab('residential')">Residential</button>
+                    <button id="tab-airbnb" class="tab-inactive text-sm md:text-base font-medium py-3 px-4 md:px-6 rounded-t-lg transition-colors duration-200 ease-in-out" onclick="changeTab('airbnb')">Airbnb Turnover</button>
+                    <button id="tab-commercial" class="tab-inactive text-sm md:text-base font-medium py-3 px-4 md:px-6 rounded-t-lg transition-colors duration-200 ease-in-out" onclick="changeTab('commercial')">Commercial</button>
+                </nav>
+            </div>
+
+            <!-- Calculator Sections -->
+            <div id="calculator-content">
+                <!-- Residential Calculator -->
+                <div id="residential-calculator">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Left Side: Inputs -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-slate-700 mb-4">1. Home Size</h3>
+                            <div class="space-y-4">
+                                <!-- Bedrooms -->
+                                <div class="flex justify-between items-center">
+                                    <label for="res-bedrooms" class="text-slate-600">Bedrooms</label>
+                                    <div class="flex items-center space-x-2">
+                                        <button onclick="updateCounter('res-bedrooms', -1)" class="p-1 rounded-full bg-slate-200 text-slate-700 hover:bg-cyan-500 hover:text-white transition-colors">-</button>
+                                        <input type="number" id="res-bedrooms" value="2" min="1" max="6" class="counter-input p-1" onchange="calculatePrice()">
+                                        <button onclick="updateCounter('res-bedrooms', 1)" class="p-1 rounded-full bg-slate-200 text-slate-700 hover:bg-cyan-500 hover:text-white transition-colors">+</button>
+                                    </div>
+                                </div>
+                                <!-- Bathrooms -->
+                                <div class="flex justify-between items-center">
+                                    <label for="res-bathrooms" class="text-slate-600">Bathrooms</label>
+                                    <div class="flex items-center space-x-2">
+                                        <button onclick="updateCounter('res-bathrooms', -1)" class="p-1 rounded-full bg-slate-200 text-slate-700 hover:bg-cyan-500 hover:text-white transition-colors">-</button>
+                                        <input type="number" id="res-bathrooms" value="1" min="1" max="6" class="counter-input p-1" onchange="calculatePrice()">
+                                        <button onclick="updateCounter('res-bathrooms', 1)" class="p-1 rounded-full bg-slate-200 text-slate-700 hover:bg-cyan-500 hover:text-white transition-colors">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="text-xl font-semibold text-slate-700 mt-6 mb-4">2. Service Frequency</h3>
+                            <div id="res-frequency" class="grid grid-cols-2 gap-2">
+                                <button onclick="selectFrequency(this, 'onetime')" class="freq-btn-active w-full p-2 border rounded-lg font-medium">One-Time</button>
+                                <button onclick="selectFrequency(this, 'weekly')" class="freq-btn-inactive w-full p-2 border rounded-lg font-medium">Weekly</button>
+                                <button onclick="selectFrequency(this, 'biweekly')" class="freq-btn-inactive w-full p-2 border rounded-lg font-medium">Bi-Weekly</button>
+                                <button onclick="selectFrequency(this, 'monthly')" class="freq-btn-inactive w-full p-2 border rounded-lg font-medium">Monthly</button>
+                            </div>
+
+                            <h3 class="text-xl font-semibold text-slate-700 mt-6 mb-4">3. Add Extras</h3>
+                            <div id="res-addons" class="space-y-3">
+                                <div class="flex items-center"><input type="checkbox" id="addon-fridge" data-price="40" class="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500" onchange="calculatePrice()"><label for="addon-fridge" class="ml-3 text-slate-600">Inside Fridge ($40)</label></div>
+                                <div class="flex items-center"><input type="checkbox" id="addon-oven" data-price="45" class="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500" onchange="calculatePrice()"><label for="addon-oven" class="ml-3 text-slate-600">Inside Oven ($45)</label></div>
+                                <div class="flex items-center"><input type="checkbox" id="addon-windows" data-price="60" class="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500" onchange="calculatePrice()"><label for="addon-windows" class="ml-3 text-slate-600">Interior Windows ($60)</label></div>
+                                <div class="flex items-center"><input type="checkbox" id="addon-cabinets" data-price="50" class="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500" onchange="calculatePrice()"><label for="addon-cabinets" class="ml-3 text-slate-600">Inside Cabinets ($50)</label></div>
+                            </div>
+                        </div>
+                        <!-- Right Side: Price Summary -->
+                        <div class="bg-cyan-50 rounded-lg p-6 flex flex-col justify-center items-center text-center">
+                            <p class="text-cyan-800 font-semibold">ESTIMATED PRICE</p>
+                            <p id="res-price" class="text-4xl md:text-5xl font-bold text-cyan-900 my-2">$0.00</p>
+                            <p id="res-price-note" class="text-cyan-700 text-sm"></p>
+                            <button class="mt-6 bg-cyan-500 text-white font-bold py-3 px-8 rounded-lg hover:bg-cyan-600 transition-colors shadow-md">Book Now</button>
+                            <p class="text-xs text-slate-500 mt-4">*Final price may vary based on home condition.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Airbnb Calculator -->
+                <div id="airbnb-calculator" class="hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Left Side: Inputs -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-slate-700 mb-4">1. Property Size</h3>
+                            <div class="space-y-4">
+                                <!-- Bedrooms -->
+                                <div class="flex justify-between items-center">
+                                    <label for="airbnb-bedrooms" class="text-slate-600">Bedrooms</label>
+                                    <div class="flex items-center space-x-2">
+                                        <button onclick="updateCounter('airbnb-bedrooms', -1)" class="p-1 rounded-full bg-slate-200 text-slate-700 hover:bg-cyan-500 hover:text-white transition-colors">-</button>
+                                        <input type="number" id="airbnb-bedrooms" value="2" min="1" max="6" class="counter-input p-1" onchange="calculatePrice()">
+                                        <button onclick="updateCounter('airbnb-bedrooms', 1)" class="p-1 rounded-full bg-slate-200 text-slate-700 hover:bg-cyan-500 hover:text-white transition-colors">+</button>
+                                    </div>
+                                </div>
+                                <!-- Bathrooms -->
+                                <div class="flex justify-between items-center">
+                                    <label for="airbnb-bathrooms" class="text-slate-600">Bathrooms</label>
+                                    <div class="flex items-center space-x-2">
+                                        <button onclick="updateCounter('airbnb-bathrooms', -1)" class="p-1 rounded-full bg-slate-200 text-slate-700 hover:bg-cyan-500 hover:text-white transition-colors">-</button>
+                                        <input type="number" id="airbnb-bathrooms" value="1" min="1" max="6" class="counter-input p-1" onchange="calculatePrice()">
+                                        <button onclick="updateCounter('airbnb-bathrooms', 1)" class="p-1 rounded-full bg-slate-200 text-slate-700 hover:bg-cyan-500 hover:text-white transition-colors">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="text-xl font-semibold text-slate-700 mt-6 mb-4">2. Add Turnover Services</h3>
+                            <div id="airbnb-addons" class="space-y-3">
+                                <div class="flex items-center"><input type="checkbox" id="addon-laundry" data-price="30" class="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500" onchange="calculatePrice()"><label for="addon-laundry" class="ml-3 text-slate-600">Laundry Service (2 loads) ($30)</label></div>
+                                <div class="flex items-center"><input type="checkbox" id="addon-restock" data-price="15" class="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500" onchange="calculatePrice()"><label for="addon-restock" class="ml-3 text-slate-600">Restocking Fee ($15 + cost of items)</label></div>
+                            </div>
+                        </div>
+                        <!-- Right Side: Price Summary -->
+                        <div class="bg-cyan-50 rounded-lg p-6 flex flex-col justify-center items-center text-center">
+                            <p class="text-cyan-800 font-semibold">TURNOVER ESTIMATE</p>
+                            <p id="airbnb-price" class="text-4xl md:text-5xl font-bold text-cyan-900 my-2">$0.00</p>
+                            <button class="mt-6 bg-cyan-500 text-white font-bold py-3 px-8 rounded-lg hover:bg-cyan-600 transition-colors shadow-md">Request Turnover Service</button>
+                            <p class="text-xs text-slate-500 mt-4">*Includes staging, damage reporting, and hotel-style cleaning.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commercial Calculator -->
+                <div id="commercial-calculator" class="hidden">
+                    <div class="text-center max-w-2xl mx-auto">
+                        <h3 class="text-2xl font-semibold text-slate-700 mb-4">Custom Commercial Quotes</h3>
+                        <p class="text-slate-600 mb-6">Commercial spaces vary greatly. Please provide some details, and we'll contact you with a personalized, competitive quote tailored to your business needs.</p>
+                        <form class="space-y-4 text-left">
+                            <div>
+                                <label for="com-sqft" class="block text-sm font-medium text-slate-700">Approximate Square Footage</label>
+                                <input type="number" id="com-sqft" placeholder="e.g., 2500" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500">
+                            </div>
+                             <div>
+                                <label for="com-type" class="block text-sm font-medium text-slate-700">Business Type</label>
+                                <select id="com-type" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500">
+                                    <option>Standard Office</option>
+                                    <option>Medical / Dental</option>
+                                    <option>Retail Store</option>
+                                    <option>Restaurant</option>
+                                    <option>Gym / Fitness Center</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label for="com-freq" class="block text-sm font-medium text-slate-700">Desired Frequency</label>
+                                <select id="com-freq" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500">
+                                    <option>Daily</option>
+                                    <option>3-5 times a week</option>
+                                    <option>Weekly</option>
+                                    <option>Bi-Weekly</option>
+                                </select>
+                            </div>
+                            <div class="pt-4">
+                                <button type="submit" class="w-full bg-cyan-500 text-white font-bold py-3 px-8 rounded-lg hover:bg-cyan-600 transition-colors shadow-md">Request My Quote</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="text-center mt-8">
+            <p class="text-sm text-slate-500">&copy; 2025 Your Cleaning Company Name | Licensed & Insured</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- CONFIGURATION --- //
+        // This is where you set your base prices.
+        const RESIDENTIAL_PRICES = {
+            // Format: "Bedrooms_Bathrooms": price
+            "1_1": 160, "1_2": 180,
+            "2_1": 190, "2_2": 220, "2_3": 250,
+            "3_1": 250, "3_2": 280, "3_3": 310, "3_4": 340,
+            "4_2": 350, "4_3": 390, "4_4": 430,
+            "5_3": 450, "5_4": 490, "5_5": 530,
+            "6_4": 550, "6_5": 590, "6_6": 630,
+        };
+        const PRICE_PER_EXTRA_BED = 40;
+        const PRICE_PER_EXTRA_BATH = 30;
+        
+        const FREQUENCY_DISCOUNTS = {
+            onetime: { discount: 0, note: "One-Time Standard Clean" },
+            weekly: { discount: 0.20, note: "20% off for weekly service" },
+            biweekly: { discount: 0.15, note: "15% off for bi-weekly service" },
+            monthly: { discount: 0.10, note: "10% off for monthly service" },
+        };
+
+        const AIRBNB_PRICES = {
+            base_fee: 100,
+            per_bedroom: 30,
+            per_bathroom: 25,
+        };
+
+        // --- STATE MANAGEMENT --- //
+        let currentTab = 'residential';
+        let currentFrequency = 'onetime';
+
+        // --- UI FUNCTIONS --- //
+
+        function changeTab(tabName) {
+            currentTab = tabName;
+            // Hide all calculators
+            document.getElementById('residential-calculator').classList.add('hidden');
+            document.getElementById('airbnb-calculator').classList.add('hidden');
+            document.getElementById('commercial-calculator').classList.add('hidden');
+
+            // Deactivate all tabs
+            document.getElementById('tab-residential').classList.replace('tab-active', 'tab-inactive');
+            document.getElementById('tab-airbnb').classList.replace('tab-active', 'tab-inactive');
+            document.getElementById('tab-commercial').classList.replace('tab-active', 'tab-inactive');
+            
+            // Show the selected calculator and activate its tab
+            document.getElementById(`${tabName}-calculator`).classList.remove('hidden');
+            document.getElementById(`tab-${tabName}`).classList.replace('tab-inactive', 'tab-active');
+
+            calculatePrice();
+        }
+
+        function updateCounter(elementId, change) {
+            const input = document.getElementById(elementId);
+            let currentValue = parseInt(input.value);
+            let newValue = currentValue + change;
+            
+            const min = parseInt(input.min);
+            const max = parseInt(input.max);
+
+            if (newValue >= min && newValue <= max) {
+                input.value = newValue;
+                calculatePrice();
+            }
+        }
+
+        function selectFrequency(button, frequency) {
+            currentFrequency = frequency;
+            // Update button styles
+            const buttons = document.querySelectorAll('#res-frequency button');
+            buttons.forEach(btn => {
+                btn.classList.remove('freq-btn-active');
+                btn.classList.add('freq-btn-inactive');
+            });
+            button.classList.add('freq-btn-active');
+            button.classList.remove('freq-btn-inactive');
+            
+            calculatePrice();
+        }
+
+        // --- CALCULATION LOGIC --- //
+        
+        function calculatePrice() {
+            if (currentTab === 'residential') {
+                calculateResidentialPrice();
+            } else if (currentTab === 'airbnb') {
+                calculateAirbnbPrice();
+            }
+        }
+
+        function calculateResidentialPrice() {
+            const beds = parseInt(document.getElementById('res-bedrooms').value);
+            const baths = parseInt(document.getElementById('res-bathrooms').value);
+            
+            // 1. Calculate base price from the price table
+            let basePrice = 0;
+            const key = `${beds}_${baths}`;
+            if (RESIDENTIAL_PRICES[key]) {
+                basePrice = RESIDENTIAL_PRICES[key];
+            } else {
+                // Fallback for combinations not in the table (e.g., 1 bed, 3 bath)
+                // We take the price for the number of bedrooms and 1 bath, then add for extra baths.
+                const baseKey = `${beds}_1`;
+                if(RESIDENTIAL_PRICES[baseKey]){
+                    basePrice = RESIDENTIAL_PRICES[baseKey] + (baths - 1) * PRICE_PER_EXTRA_BATH;
+                } else {
+                    // Fallback if even the bedroom count is off the chart
+                     basePrice = RESIDENTIAL_PRICES["1_1"] + (beds - 1) * PRICE_PER_EXTRA_BED + (baths - 1) * PRICE_PER_EXTRA_BATH;
+                }
+            }
+
+            // 2. Apply frequency discount
+            const frequencyInfo = FREQUENCY_DISCOUNTS[currentFrequency];
+            let discountedPrice = basePrice * (1 - frequencyInfo.discount);
+
+            // 3. Add cost of add-ons
+            let addonsTotal = 0;
+            const addons = document.querySelectorAll('#res-addons input[type="checkbox"]:checked');
+            addons.forEach(addon => {
+                addonsTotal += parseFloat(addon.dataset.price);
+            });
+
+            const finalPrice = discountedPrice + addonsTotal;
+
+            // 4. Update the UI
+            document.getElementById('res-price').textContent = formatCurrency(finalPrice);
+            const priceNote = document.getElementById('res-price-note');
+            priceNote.textContent = frequencyInfo.note;
+            if (currentFrequency === 'onetime') {
+                 priceNote.textContent = "First-time or One-Time Clean";
+            } else {
+                 priceNote.textContent = `Recurring Price (${frequencyInfo.note})`;
+            }
+        }
+
+        function calculateAirbnbPrice() {
+            const beds = parseInt(document.getElementById('airbnb-bedrooms').value);
+            const baths = parseInt(document.getElementById('airbnb-bathrooms').value);
+
+            // 1. Calculate base price
+            let basePrice = AIRBNB_PRICES.base_fee + (beds * AIRBNB_PRICES.per_bedroom) + (baths * AIRBNB_PRICES.per_bathroom);
+
+            // 2. Add cost of add-ons
+            let addonsTotal = 0;
+            const addons = document.querySelectorAll('#airbnb-addons input[type="checkbox"]:checked');
+            addons.forEach(addon => {
+                addonsTotal += parseFloat(addon.dataset.price);
+            });
+
+            const finalPrice = basePrice + addonsTotal;
+
+            // 3. Update UI
+            document.getElementById('airbnb-price').textContent = formatCurrency(finalPrice);
+        }
+
+        // --- UTILITY FUNCTIONS --- //
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }).format(amount);
+        }
+
+        // Initial calculation on page load
+        window.onload = () => {
+            // Add custom styles for frequency buttons
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .freq-btn-active { background-color: #cffafe; border-color: #06b6d4; color: #0891b2; }
+                .freq-btn-inactive { background-color: #f8fafc; border-color: #e2e8f0; color: #475569; }
+                .freq-btn-inactive:hover { background-color: #f1f5f9; }
+            `;
+            document.head.appendChild(style);
+            
+            calculatePrice();
+        };
+
+    </script>
+</body>
+</html>

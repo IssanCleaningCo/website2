@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Miami Cleaning Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6 text-gray-800">
+
+  <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-bold mb-4 text-center">Cleaning Service Price Calculator - Miami</h1>
+
+    <!-- Tabs -->
+    <div class="flex justify-center mb-6 space-x-4">
+      <button onclick="showTab('residential')" class="tab-btn px-4 py-2 rounded bg-blue-100 hover:bg-blue-200" id="btn-residential">Residential</button>
+      <button onclick="showTab('commercial')" class="tab-btn px-4 py-2 rounded bg-gray-100 hover:bg-blue-200" id="btn-commercial">Commercial</button>
+      <button onclick="showTab('airbnb')" class="tab-btn px-4 py-2 rounded bg-gray-100 hover:bg-blue-200" id="btn-airbnb">Airbnb</button>
+    </div>
+
+    <!-- Residential -->
+    <div id="residential" class="tab-content">
+      <h2 class="text-xl font-semibold mb-3">Residential Cleaning</h2>
+      <div class="grid grid-cols-1 gap-4">
+        <input type="number" id="resBedrooms" class="input" placeholder="Bedrooms" value="1" />
+        <input type="number" id="resBathrooms" class="input" placeholder="Bathrooms" value="1" />
+        <label><input type="checkbox" id="resDeep" class="mr-2"> Deep Cleaning (+$40)</label>
+        <label><input type="checkbox" id="resPets" class="mr-2"> Pet Hair Removal (+$20)</label>
+      </div>
+      <div class="mt-4 space-y-2">
+        <label><input type="checkbox" class="resAddOn mr-2" data-cost="25"> Inside Oven</label>
+        <label><input type="checkbox" class="resAddOn mr-2" data-cost="25"> Inside Fridge</label>
+        <label><input type="checkbox" class="resAddOn mr-2" data-cost="10"> Interior Windows</label>
+        <label><input type="checkbox" class="resAddOn mr-2" data-cost="15"> Laundry Service</label>
+      </div>
+      <div class="mt-4">
+        <button onclick="calculateResidential()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Calculate</button>
+        <p class="mt-2 font-bold">Total: $<span id="resTotal">0</span></p>
+      </div>
+    </div>
+
+    <!-- Commercial -->
+    <div id="commercial" class="tab-content hidden">
+      <h2 class="text-xl font-semibold mb-3">Commercial Cleaning</h2>
+      <div class="grid grid-cols-1 gap-4">
+        <input type="number" id="comSqft" class="input" placeholder="Square Footage" value="1000" />
+        <select id="comFrequency" class="input">
+          <option value="1">One-time</option>
+          <option value="0.9">Weekly (10% off)</option>
+          <option value="0.85">Bi-Weekly (15% off)</option>
+          <option value="0.8">Daily (20% off)</option>
+        </select>
+      </div>
+      <div class="mt-4 space-y-2">
+        <label><input type="checkbox" class="comAddOn mr-2" data-cost="0.3"> Floor Buffing ($0.30/sq ft)</label>
+        <label><input type="checkbox" class="comAddOn mr-2" data-cost="0.25"> Carpet Shampoo ($0.25/sq ft)</label>
+        <label><input type="checkbox" class="comAddOn mr-2" data-cost="0.1"> Disinfecting ($0.10/sq ft)</label>
+      </div>
+      <div class="mt-4">
+        <button onclick="calculateCommercial()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Calculate</button>
+        <p class="mt-2 font-bold">Total: $<span id="comTotal">0</span></p>
+      </div>
+    </div>
+
+    <!-- Airbnb -->
+    <div id="airbnb" class="tab-content hidden">
+      <h2 class="text-xl font-semibold mb-3">Airbnb Turnover</h2>
+      <div class="grid grid-cols-1 gap-4">
+        <input type="number" id="bnbBedrooms" class="input" placeholder="Bedrooms" value="1" />
+        <input type="number" id="bnbBathrooms" class="input" placeholder="Bathrooms" value="1" />
+        <label><input type="checkbox" id="bnbDeep" class="mr-2"> Deep Cleaning (+$40)</label>
+        <label><input type="checkbox" id="bnbSameDay" class="mr-2"> Same-Day Turnaround (+$30)</label>
+      </div>
+      <div class="mt-4 space-y-2">
+        <label><input type="checkbox" class="bnbAddOn mr-2" data-cost="25"> Laundry Service</label>
+        <label><input type="checkbox" class="bnbAddOn mr-2" data-cost="15"> Restocking Amenities</label>
+        <label><input type="checkbox" class="bnbAddOn mr-2" data-cost="20"> Balcony Cleaning</label>
+      </div>
+      <div class="mt-4">
+        <button onclick="calculateAirbnb()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Calculate</button>
+        <p class="mt-2 font-bold">Total: $<span id="bnbTotal">0</span></p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function showTab(id) {
+      const tabs = ['residential', 'commercial', 'airbnb'];
+      tabs.forEach(tab => {
+        document.getElementById(tab).classList.add('hidden');
+        document.getElementById('btn-' + tab).classList.remove('bg-blue-200');
+        document.getElementById('btn-' + tab).classList.add('bg-gray-100');
+      });
+      document.getElementById(id).classList.remove('hidden');
+      document.getElementById('btn-' + id).classList.remove('bg-gray-100');
+      document.getElementById('btn-' + id).classList.add('bg-blue-200');
+    }
+
+    function calculateResidential() {
+      let bed = parseInt(document.getElementById('resBedrooms').value) || 0;
+      let bath = parseInt(document.getElementById('resBathrooms').value) || 0;
+      let base = 70 + bed * 20 + bath * 15;
+      if (document.getElementById('resDeep').checked) base += 40;
+      if (document.getElementById('resPets').checked) base += 20;
+      document.querySelectorAll('.resAddOn:checked').forEach(box => {
+        base += parseFloat(box.dataset.cost);
+      });
+      document.getElementById('resTotal').innerText = base.toFixed(2);
+    }
+
+    function calculateCommercial() {
+      let sqft = parseInt(document.getElementById('comSqft').value) || 0;
+      let base = sqft * 0.15;
+      document.querySelectorAll('.comAddOn:checked').forEach(box => {
+        base += sqft * parseFloat(box.dataset.cost);
+      });
+      let discount = parseFloat(document.getElementById('comFrequency').value);
+      base *= discount;
+      document.getElementById('comTotal').innerText = base.toFixed(2);
+    }
+
+    function calculateAirbnb() {
+      let bed = parseInt(document.getElementById('bnbBedrooms').value) || 0;
+      let bath = parseInt(document.getElementById('bnbBathrooms').value) || 0;
+      let base = 80 + bed * 20 + bath * 15;
+      if (document.getElementById('bnbDeep').checked) base += 40;
+      if (document.getElementById('bnbSameDay').checked) base += 30;
+      document.querySelectorAll('.bnbAddOn:checked').forEach(box => {
+        base += parseFloat(box.dataset.cost);
+      });
+      document.getElementById('bnbTotal').innerText = base.toFixed(2);
+    }
+  </script>
+
+  <style>
+    .input {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      border: 1px solid #ccc;
+    }
+  </style>
+
+</body>
+</html>
