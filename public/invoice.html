@@ -9,23 +9,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+        body { font-family: 'Inter', sans-serif; }
         @media print {
-            body {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .no-print {
-                display: none !important;
-            }
-            #invoice-container {
-                margin: 0;
-                padding: 0;
-                border: none;
-                box-shadow: none;
-            }
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .no-print { display: none !important; }
+            #invoice-container { margin: 0; padding: 0; border: none; box-shadow: none; }
         }
         .invoice-input {
             width: 100%;
@@ -34,34 +22,27 @@
             border-radius: 0.375rem;
             transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
             transition-duration: 200ms;
-            outline: none;
         }
         .invoice-input:focus {
+            outline: none;
             box-shadow: 0 0 0 2px #3b82f6;
             border-color: transparent;
         }
-        .invoice-input[contenteditable="true"] {
-            cursor: text;
-        }
-        .item-row:hover .delete-row-btn {
-            opacity: 1;
-        }
+        .invoice-input[contenteditable="true"] { cursor: text; }
+        .item-row:hover .delete-row-btn { opacity: 1; }
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-6 lg:p-8">
 
     <div id="invoice-container" class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 lg:p-10">
-        <!-- Header Section -->
         <header class="flex flex-col sm:flex-row justify-between items-start pb-8 border-b border-gray-200">
             <div class="flex items-center gap-4 mb-6 sm:mb-0">
-                <!-- Robust Logo with WebP fallback -->
                 <picture>
                     <source srcset="images/logo.webp" type="image/webp">
                     <img src="images/logo.png" alt="Issan Cleaning Co logo" class="h-14 w-14 object-contain"
                          onerror="this.onerror=null;this.src='https://placehold.co/60x60/20c997/FFFFFF?text=Logo';">
                 </picture>
                 <div>
-                    <!-- Updated Company Name and Address -->
                     <h1 class="text-2xl font-bold text-gray-800" contenteditable="true" id="companyName">Issan Cleaning Co.</h1>
                     <p class="text-sm text-gray-500" contenteditable="true" id="companyAddress">Miami, FL</p>
                     <p class="text-sm text-gray-500">
@@ -76,11 +57,11 @@
                     <span class="text-gray-500 font-semibold mr-2">#</span>
                     <input type="text" id="invoiceNumber" class="invoice-input w-24 text-right" value="INV-001">
                 </div>
-                <!-- Invoice Status Dropdown -->
                 <div class="mt-2">
                     <label for="invoiceStatus" class="text-gray-500 font-semibold mr-2">Status:</label>
                     <select id="invoiceStatus" class="invoice-input w-32 text-gray-800">
-                        <option value="Unpaid">Unpaid</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Sent">Sent</option>
                         <option value="Paid">Paid</option>
                         <option value="Overdue">Overdue</option>
                     </select>
@@ -88,10 +69,9 @@
             </div>
         </header>
 
-        <!-- Bill To and From Section -->
         <section class="grid grid-cols-1 sm:grid-cols-2 gap-8 my-8">
             <div>
-                <h3 class="font-semibold text-gray-500 mb-3">Bill To:</h3>
+                <h3 class="font-semibold text-gray-500 mb-3">Invoice For:</h3>
                 <div class="space-y-3">
                     <input type="text" id="clientName" class="invoice-input" placeholder="Client Name">
                     <input type="text" id="clientAddress" class="invoice-input" placeholder="Client Address">
@@ -111,7 +91,6 @@
             </div>
         </section>
 
-        <!-- Invoice Items Table -->
         <section>
             <div class="overflow-x-auto">
                 <table class="w-full text-left" id="invoiceItems">
@@ -125,8 +104,7 @@
                         </tr>
                     </thead>
                     <tbody id="itemsContainer">
-                        <!-- Item rows will be dynamically added here -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
 
@@ -138,7 +116,6 @@
             </button>
         </section>
 
-        <!-- Totals Section -->
         <section class="grid grid-cols-2 sm:grid-cols-3 gap-8 mt-8 pt-8 border-t border-gray-200">
             <div class="sm:col-start-2 col-span-full sm:col-span-2 space-y-3">
                  <div class="flex justify-between items-center">
@@ -160,50 +137,59 @@
             </div>
         </section>
 
-        <!-- Payment Methods Section -->
-        <section class="mt-8">
-            <h4 class="font-semibold text-gray-500 mb-2">Payment Methods</h4>
-            <ul class="list-disc pl-6 text-gray-700 text-sm">
-                <li>Zelle: issancleaningco@gmail.com</li>
-                <li>Venmo: @issancleaningco</li>
-                <li>Cash or Check accepted</li>
-                <li>Contact us for other options</li>
-            </ul>
-        </section>
-
-        <!-- Prepared By Section -->
         <section class="mt-8">
             <h4 class="font-semibold text-gray-500 mb-2">Prepared By</h4>
             <input type="text" id="preparedBy" class="invoice-input w-full max-w-xs" placeholder="Your Name">
         </section>
 
-        <!-- Terms & Conditions Section -->
         <section class="mt-8">
-            <h4 class="font-semibold text-gray-500 mb-2">Terms &amp; Conditions</h4>
+            <h4 class="font-semibold text-gray-500 mb-2">Payment Methods</h4>
             <ul class="list-disc pl-6 text-gray-700 text-sm">
-                <li>Payment is due within 15 days of invoice date.</li>
-                <li>Late payments may be subject to a 5% late fee per month.</li>
-                <li>Please contact us if you have any questions regarding this invoice.</li>
-                <li>Services rendered are subject to our standard service agreement.</li>
+                <li>Cash</li>
+                <li>Check (payable to Issan Cleaning Co.)</li>
+                <li>Zelle: <span class="font-mono">issancleaningco@gmail.com</span></li>
+                <li>Venmo: <span class="font-mono">@issancleaningco</span></li>
+                <li>Credit/Debit Card (processing fees may apply)</li>
             </ul>
         </section>
 
-        <!-- Notes Section -->
+        <section class="mt-8">
+            <h4 class="font-semibold text-gray-500 mb-2">Approval &amp; Signature <span class="text-xs text-gray-400">(Optional)</span></h4>
+            <div class="flex flex-col sm:flex-row gap-6">
+                <div class="flex-1">
+                    <label class="block text-gray-600 text-sm mb-1" for="clientSignature">Client Signature:</label>
+                    <div id="clientSignature" contenteditable="true" class="invoice-input h-12"></div>
+                </div>
+                <div class="flex-1">
+                    <label class="block text-gray-600 text-sm mb-1" for="approvalDate">Date:</label>
+                    <input type="date" id="approvalDate" class="invoice-input w-full">
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-8">
+            <h4 class="font-semibold text-gray-500 mb-2">Terms &amp; Conditions</h4>
+            <ul class="list-disc pl-6 text-gray-700 text-sm">
+                <li>This invoice is due upon receipt unless otherwise noted.</li>
+                <li>Late payments may be subject to additional fees.</li>
+                <li>Please contact us if you have any questions regarding this invoice.</li>
+            </ul>
+        </section>
+
         <footer class="mt-12 pt-8 border-t border-gray-200">
             <h4 class="font-semibold text-gray-500 mb-2">Notes</h4>
             <div id="notes" contenteditable="true" class="invoice-input leading-relaxed">
-                Feel free to add any additional notes or instructions here. This could include special requests, reminders, or anything else relevant to the client.
+                Please add any additional notes or instructions for this invoice.
             </div>
         </footer>
 
     </div>
 
-    <!-- Thank You / Branding Footer -->
     <div class="max-w-4xl mx-auto mt-8 text-center text-gray-600 text-sm opacity-80">
         <hr class="my-4">
         <div>
-            <strong>Thank you for choosing Issan Cleaning Co.</strong><br>
-            We appreciate your business and look forward to serving you again!
+            <strong>Thank you for your business with Issan Cleaning Co.</strong><br>
+            We look forward to working with you again!
         </div>
         <div class="mt-4 flex flex-col items-center gap-2">
             <img src="images/logo.png" alt="Issan Cleaning Co logo" class="mx-auto h-8 w-auto" style="opacity:0.7;">
@@ -213,7 +199,6 @@
         </div>
     </div>
 
-    <!-- Action Buttons -->
     <div class="max-w-4xl mx-auto mt-6 flex justify-end gap-3 no-print">
         <button id="printBtn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -247,7 +232,7 @@
             const formatDate = (date) => date.toISOString().split('T')[0];
             document.getElementById('invoiceDate').value = formatDate(today);
             const dueDate = new Date(today);
-            dueDate.setDate(today.getDate() + 15); // Default due date 15 days from now
+            dueDate.setDate(today.getDate() + 30); // Default due date 30 days from now
             document.getElementById('dueDate').value = formatDate(dueDate);
 
             // --- DYNAMIC ITEM ROWS ---
@@ -272,7 +257,7 @@
                     </td>
                     <td class="p-3 text-center">
                         <button class="delete-row-btn text-red-500 opacity-0 hover:text-red-700 transition-opacity no-print">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" /></svg>
                         </button>
                     </td>
                 `;
@@ -283,7 +268,6 @@
                     updateTotals();
                 });
 
-                // Add input event listener to update totals when editing new row
                 row.addEventListener('input', (e) => {
                     if (
                         e.target.classList.contains('quantity') ||
@@ -293,22 +277,18 @@
                     }
                 });
 
-                // Update totals after adding a new row
                 updateTotals();
             }
 
             addItemBtn.addEventListener('click', createItemRow);
-            
-            // --- AUTO CALCULATION ---
+
             function updateTotals() {
                 let subtotal = 0;
                 itemsContainer.querySelectorAll('.item-row').forEach(row => {
                     const quantityText = row.querySelector('.quantity').innerText.trim() || '0';
                     const rateText = row.querySelector('.rate').innerText.trim() || '0';
-                    
                     const quantity = parseFloat(quantityText.replace(/[^0-9.]/g, '')) || 0;
                     const rate = parseFloat(rateText.replace(/[^0-9.]/g, '')) || 0;
-                    
                     const amount = quantity * rate;
                     row.querySelector('.amount').textContent = formatCurrency(amount);
                     subtotal += amount;
@@ -326,32 +306,27 @@
             function formatCurrency(value) {
                 return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
             }
-            
+
             invoiceContainer.addEventListener('input', (e) => {
                 if (e.target.classList.contains('quantity') || e.target.classList.contains('rate') || e.target.id === 'taxRate') {
                     updateTotals();
                 }
             });
 
-            // --- ACTION BUTTONS ---
             document.getElementById('printBtn').addEventListener('click', () => {
                 window.print();
             });
 
-            document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
+            document.getElementById('downloadPdfBtn').addEventListener('click', async function() {
                 const downloadBtn = this;
                 const originalText = downloadBtn.innerHTML;
-                
-                // Show loading state
                 downloadBtn.innerHTML = `
                     <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Generating...
-                `;
+                    Generating...`;
                 downloadBtn.disabled = true;
-
                 try {
                     const jsPDF = window.jspdf.jsPDF;
                     const invoiceElement = document.getElementById('invoice-container');
@@ -374,118 +349,115 @@
                     console.error('PDF generation error:', err);
                     alert('PDF generation failed. Please try again.');
                 } finally {
-                    // Restore button state
                     downloadBtn.innerHTML = originalText;
                     downloadBtn.disabled = false;
                 }
             });
 
-            // Send by Email Button
             document.getElementById('emailBtn').addEventListener('click', async function () {
                 const emailBtn = this;
                 const originalText = emailBtn.innerHTML;
-                
-                // Show loading state
                 emailBtn.innerHTML = `
-                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Sending...
-                `;
+                    Sending...`;
                 emailBtn.disabled = true;
-
                 try {
-                    // Get client email and invoice number
                     const clientEmail = document.getElementById('clientEmail').value.trim();
                     const clientName = document.getElementById('clientName').value.trim();
                     const invoiceNumber = document.getElementById('invoiceNumber').value || 'Invoice';
-
                     if (!clientEmail) {
                         alert('Please enter a valid email address in the client email field.');
                         return;
                     }
-
-                    // Prepare subject and body
-                    const subject = `Your Invoice from Issan Cleaning Co. (${invoiceNumber})`;
-                    const body = `Hello ${clientName || 'there'},\n\nPlease find your invoice (${invoiceNumber}) from Issan Cleaning Co. attached.\n\nPayment is due within 15 days. Thank you for your business!\n\nBest regards,\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`;
-
                     // Generate PDF as base64
                     const jsPDF = window.jspdf.jsPDF;
                     const invoiceElement = document.getElementById('invoice-container');
-                    const canvas = await html2canvas(invoiceElement, {
-                        scale: 2,
-                        useCORS: false,
+                    const canvas = await html2canvas(invoiceElement, { 
+                        scale: 2, 
+                        useCORS: false, 
                         logging: false,
                         backgroundColor: '#ffffff'
                     });
-
                     const imgData = canvas.toDataURL('image/png');
                     const pdf = new jsPDF('p', 'mm', 'a4');
                     const pdfWidth = pdf.internal.pageSize.getWidth();
                     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
                     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
                     const pdfBlob = pdf.output('blob');
-                    const pdfBase64 = await new Promise((resolve) => {
+                    const pdfBase64 = await new Promise((resolve, reject) => {
                         const reader = new FileReader();
                         reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                        reader.onerror = reject;
                         reader.readAsDataURL(pdfBlob);
                     });
-
-                    // Call API to send email
+                    // Collect other form data for the email body and server-side processing
+                    const payload = {
+                        invoiceNumber: invoiceNumber,
+                        invoiceStatus: document.getElementById('invoiceStatus').value || '',
+                        clientName: clientName,
+                        clientAddress: document.getElementById('clientAddress').value || '',
+                        clientEmail: clientEmail,
+                        clientPhone: document.getElementById('clientPhone').value || '',
+                        invoiceDate: document.getElementById('invoiceDate').value || '',
+                        dueDate: document.getElementById('dueDate').value || '',
+                        preparedBy: document.getElementById('preparedBy').value || '',
+                        notes: document.getElementById('notes').innerText || '',
+                        taxRate: document.getElementById('taxRate')?.value || '0',
+                        subtotal: document.getElementById('subtotal').textContent || '$0.00',
+                        taxAmount: document.getElementById('taxAmount').textContent || '$0.00',
+                        total: document.getElementById('total').textContent || '$0.00',
+                        items: Array.from(document.querySelectorAll('#itemsContainer .item-row')).map(row => ({
+                            description: row.querySelector('.description')?.innerText || '',
+                            quantity: row.querySelector('.quantity')?.innerText || '',
+                            rate: row.querySelector('.rate')?.innerText || '',
+                            amount: row.querySelector('.amount')?.textContent || ''
+                        })),
+                        pdfBase64: pdfBase64, // Pass the Base64 PDF content
+                        filename: `${invoiceNumber}.pdf` // Pass the desired filename
+                    };
                     const response = await fetch('/api/send-invoice-email', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            to: clientEmail,
-                            subject,
-                            body,
-                            filename: `${invoiceNumber}.pdf`,
-                            pdfBase64
-                        })
+                        body: JSON.stringify(payload)
                     });
-
                     const result = await response.json();
-                    
                     if (response.ok) {
-                        alert('Invoice sent successfully! Check your email.');
+                        alert('Invoice sent successfully!');
                     } else {
-                        throw new Error(result.error || 'Failed to send email');
+                        throw new Error(result.error || 'Failed to send email. Check console for details.');
                     }
                 } catch (err) {
                     console.error('Email error:', err);
                     alert('Failed to send email: ' + (err.message || 'Unknown error. Please try again.'));
                 } finally {
-                    // Restore button state
                     emailBtn.innerHTML = originalText;
                     emailBtn.disabled = false;
                 }
             });
 
-            // Initialize with one item row
+            // Initialize with two item rows
             createItemRow();
-            // Add another for demonstration
             createItemRow();
-            
+
             // Prefill sample data for demonstration
             const firstRow = itemsContainer.querySelector('.item-row');
             if (firstRow) {
-                firstRow.querySelector('.description').innerText = 'Deep Cleaning Service';
-                firstRow.querySelector('.quantity').innerText = '4';
-                firstRow.querySelector('.rate').innerText = '75.00';
+                firstRow.querySelector('.description').innerText = 'Move-Out Cleaning';
+                firstRow.querySelector('.quantity').innerText = '2';
+                firstRow.querySelector('.rate').innerText = '100.00';
             }
             const secondRow = itemsContainer.querySelectorAll('.item-row')[1];
             if (secondRow) {
-                secondRow.querySelector('.description').innerText = 'Window Cleaning';
+                secondRow.querySelector('.description').innerText = 'Carpet Shampoo';
                 secondRow.querySelector('.quantity').innerText = '1';
-                secondRow.querySelector('.rate').innerText = '120.00';
+                secondRow.querySelector('.rate').innerText = '80.00';
             }
-            
+
             updateTotals();
         });
     </script>
 </body>
 </html>
-<!-- No code changes required. Serve your files using a local web server instead of opening them directly. -->
-<!-- No code changes required. Serve your files using a local web server instead of opening them directly. -->

@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         @media print {
@@ -35,7 +36,6 @@
 <body class="bg-gray-100 p-4 sm:p-6 lg:p-8">
 
     <div id="estimate-container" class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 lg:p-10">
-        <!-- Header Section -->
         <header class="flex flex-col sm:flex-row justify-between items-start pb-8 border-b border-gray-200">
             <div class="flex items-center gap-4 mb-6 sm:mb-0">
                 <picture>
@@ -70,7 +70,6 @@
             </div>
         </header>
 
-        <!-- Bill To and From Section -->
         <section class="grid grid-cols-1 sm:grid-cols-2 gap-8 my-8">
             <div>
                 <h3 class="font-semibold text-gray-500 mb-3">Estimate For:</h3>
@@ -93,7 +92,6 @@
             </div>
         </section>
 
-        <!-- Estimate Items Table -->
         <section>
             <div class="overflow-x-auto">
                 <table class="w-full text-left" id="estimateItems">
@@ -107,8 +105,7 @@
                         </tr>
                     </thead>
                     <tbody id="itemsContainer">
-                        <!-- Item rows will be dynamically added here -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
 
@@ -120,7 +117,6 @@
             </button>
         </section>
 
-        <!-- Totals Section -->
         <section class="grid grid-cols-2 sm:grid-cols-3 gap-8 mt-8 pt-8 border-t border-gray-200">
             <div class="sm:col-start-2 col-span-full sm:col-span-2 space-y-3">
                  <div class="flex justify-between items-center">
@@ -142,13 +138,11 @@
             </div>
         </section>
 
-        <!-- Prepared By Section -->
         <section class="mt-8">
             <h4 class="font-semibold text-gray-500 mb-2">Prepared By</h4>
             <input type="text" id="preparedBy" class="estimate-input w-full max-w-xs" placeholder="Your Name">
         </section>
 
-        <!-- Payment Methods Section -->
         <section class="mt-8">
             <h4 class="font-semibold text-gray-500 mb-2">Payment Methods</h4>
             <ul class="list-disc pl-6 text-gray-700 text-sm">
@@ -160,7 +154,6 @@
             </ul>
         </section>
 
-        <!-- Signature/Approval Section -->
         <section class="mt-8">
             <h4 class="font-semibold text-gray-500 mb-2">Approval &amp; Signature <span class="text-xs text-gray-400">(Optional)</span></h4>
             <div class="flex flex-col sm:flex-row gap-6">
@@ -175,7 +168,6 @@
             </div>
         </section>
 
-        <!-- Terms & Conditions Section -->
         <section class="mt-8">
             <h4 class="font-semibold text-gray-500 mb-2">Terms &amp; Conditions</h4>
             <ul class="list-disc pl-6 text-gray-700 text-sm">
@@ -185,7 +177,6 @@
             </ul>
         </section>
 
-        <!-- Notes Section -->
         <footer class="mt-12 pt-8 border-t border-gray-200">
             <h4 class="font-semibold text-gray-500 mb-2">Notes</h4>
             <div id="notes" contenteditable="true" class="estimate-input leading-relaxed">
@@ -195,7 +186,6 @@
 
     </div>
 
-    <!-- Thank You / Branding Footer -->
     <div class="max-w-4xl mx-auto mt-8 text-center text-gray-600 text-sm opacity-80">
         <hr class="my-4">
         <div>
@@ -210,7 +200,6 @@
         </div>
     </div>
 
-    <!-- Action Buttons -->
     <div class="max-w-4xl mx-auto mt-6 flex justify-end gap-3 no-print">
         <button id="printBtn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -230,6 +219,77 @@
             </svg>
             Send by Email
         </button>
+    </div>
+
+    <!-- Hidden print-optimized template for PDF generation -->
+    <div id="pdf-estimate-template" style="display:none; font-family:Inter,sans-serif; background:#fff; color:#222; width:100%; max-width:800px; margin:auto; padding:24px;">
+        <table style="width:100%; border-bottom:1px solid #eee; margin-bottom:24px;">
+            <tr>
+                <td style="vertical-align:top;">
+                    <img id="pdf-logo" src="images/logo.png" alt="Logo" style="height:48px; width:48px; object-fit:contain;">
+                </td>
+                <td style="text-align:right;">
+                    <h2 style="margin:0; font-size:2rem; font-weight:800; letter-spacing:2px;">ESTIMATE</h2>
+                    <div style="font-size:1rem; color:#666; margin-top:4px;">
+                        <span id="pdf-estimate-number"></span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table style="width:100%; margin-bottom:16px;">
+            <tr>
+                <td style="width:50%; vertical-align:top;">
+                    <div style="font-weight:600; color:#555; margin-bottom:4px;">From:</div>
+                    <div id="pdf-company-name"></div>
+                    <div id="pdf-company-address"></div>
+                    <div style="font-size:0.95em; color:#888;">Email: issancleaningco@gmail.com | Phone: (305) 701-3909</div>
+                </td>
+                <td style="width:50%; vertical-align:top;">
+                    <div style="font-weight:600; color:#555; margin-bottom:4px;">Estimate For:</div>
+                    <div id="pdf-client-name"></div>
+                    <div id="pdf-client-address"></div>
+                    <div id="pdf-client-email"></div>
+                    <div id="pdf-client-phone"></div>
+                </td>
+            </tr>
+        </table>
+        <table style="width:100%; margin-bottom:16px;">
+            <tr>
+                <td>Date Issued: <span id="pdf-estimate-date"></span></td>
+                <td>Valid Until: <span id="pdf-valid-until"></span></td>
+                <td>Status: <span id="pdf-estimate-status"></span></td>
+            </tr>
+        </table>
+        <table style="width:100%; border-collapse:collapse; margin-bottom:24px;">
+            <thead>
+                <tr style="background:#f8fafc; color:#666; font-size:14px;">
+                    <th style="padding:8px; border:1px solid #eee; text-align:left;">Service / Description</th>
+                    <th style="padding:8px; border:1px solid #eee; text-align:center;">Qty</th>
+                    <th style="padding:8px; border:1px solid #eee; text-align:right;">Rate</th>
+                    <th style="padding:8px; border:1px solid #eee; text-align:right;">Amount</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-items"></tbody>
+        </table>
+        <table style="width:100%; margin-bottom:16px;">
+            <tr>
+                <td style="text-align:right; font-weight:600;">Subtotal:</td>
+                <td style="text-align:right;" id="pdf-subtotal"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right; font-weight:600;">Tax (<span id="pdf-tax-rate"></span>%):</td>
+                <td style="text-align:right;" id="pdf-tax-amount"></td>
+            </tr>
+            <tr>
+                <td style="text-align:right; font-weight:800; font-size:1.2em;">Total:</td>
+                <td style="text-align:right; font-weight:800; font-size:1.2em;" id="pdf-total"></td>
+            </tr>
+        </table>
+        <div style="margin-bottom:12px;"><strong>Prepared By:</strong> <span id="pdf-prepared-by"></span></div>
+        <div style="margin-bottom:12px;"><strong>Notes:</strong> <span id="pdf-notes"></span></div>
+        <div style="margin-bottom:12px;"><strong>Payment Methods:</strong> Cash, Check, Zelle (issancleaningco@gmail.com), Venmo (@issancleaningco), Credit/Debit Card</div>
+        <div style="margin-bottom:12px;"><strong>Terms & Conditions:</strong> This estimate is valid for 30 days from the date issued. Final pricing may vary based on actual work performed or additional services requested. Please contact us if you have any questions regarding this estimate.</div>
+        <div style="margin-top:32px; text-align:center; color:#888; font-size:0.95em;">Thank you for considering Issan Cleaning Co.!</div>
     </div>
 
     <script>
@@ -269,7 +329,7 @@
                     </td>
                     <td class="p-3 text-center">
                         <button class="delete-row-btn text-red-500 opacity-0 hover:text-red-700 transition-opacity no-print">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" /></svg>
                         </button>
                     </td>
                 `;
@@ -329,20 +389,69 @@
                 window.print();
             });
 
-            document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
+            // Utility: create a print-optimized clone for PDF
+            function createPdfClone(element) {
+                const clone = element.cloneNode(true);
+                clone.id = 'pdf-estimate-container';
+                clone.style.maxWidth = 'none';
+                clone.style.width = '100%';
+                clone.style.background = '#fff';
+                clone.style.boxShadow = 'none';
+                clone.style.borderRadius = '0';
+                clone.style.padding = '16px'; // minimal padding
+                clone.classList.remove('max-w-4xl', 'shadow-lg', 'rounded-xl', 'p-6', 'sm:p-8', 'lg:p-10');
+                // Remove Tailwind paddings
+                clone.classList.remove('p-6', 'sm:p-8', 'lg:p-10');
+                // Remove any no-print elements
+                clone.querySelectorAll('.no-print').forEach(el => el.remove());
+                // Remove focus from any active element
+                if (document.activeElement) document.activeElement.blur();
+                return clone;
+            }
+
+            // Fill the print-optimized template with current form data
+            function fillPdfTemplate() {
+                document.getElementById('pdf-logo').src = document.querySelector('img[alt="Issan Cleaning Co logo"]').src;
+                document.getElementById('pdf-estimate-number').textContent = document.getElementById('estimateNumber').value || '';
+                document.getElementById('pdf-company-name').textContent = document.getElementById('companyName').textContent || '';
+                document.getElementById('pdf-company-address').textContent = document.getElementById('companyAddress').textContent || '';
+                document.getElementById('pdf-client-name').textContent = document.getElementById('clientName').value || '';
+                document.getElementById('pdf-client-address').textContent = document.getElementById('clientAddress').value || '';
+                document.getElementById('pdf-client-email').textContent = document.getElementById('clientEmail').value || '';
+                document.getElementById('pdf-client-phone').textContent = document.getElementById('clientPhone').value || '';
+                document.getElementById('pdf-estimate-date').textContent = document.getElementById('estimateDate').value || '';
+                document.getElementById('pdf-valid-until').textContent = document.getElementById('validUntil').value || '';
+                document.getElementById('pdf-estimate-status').textContent = document.getElementById('estimateStatus').value || '';
+                document.getElementById('pdf-subtotal').textContent = document.getElementById('subtotal').textContent || '';
+                document.getElementById('pdf-tax-rate').textContent = document.getElementById('taxRate').value || '';
+                document.getElementById('pdf-tax-amount').textContent = document.getElementById('taxAmount').textContent || '';
+                document.getElementById('pdf-total').textContent = document.getElementById('total').textContent || '';
+                document.getElementById('pdf-prepared-by').textContent = document.getElementById('preparedBy').value || '';
+                document.getElementById('pdf-notes').textContent = document.getElementById('notes').innerText || '';
+                // Items
+                const itemsTbody = document.getElementById('pdf-items');
+                itemsTbody.innerHTML = '';
+                document.querySelectorAll('#itemsContainer .item-row').forEach(row => {
+                    const desc = row.querySelector('.description')?.innerText || '';
+                    const qty = row.querySelector('.quantity')?.innerText || '';
+                    const rate = row.querySelector('.rate')?.innerText || '';
+                    const amount = row.querySelector('.amount')?.textContent || '';
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td style='padding:8px;border:1px solid #eee;'>${desc}</td><td style='padding:8px;border:1px solid #eee;text-align:center;'>${qty}</td><td style='padding:8px;border:1px solid #eee;text-align:right;'>${rate}</td><td style='padding:8px;border:1px solid #eee;text-align:right;'>${amount}</td>`;
+                    itemsTbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('downloadPdfBtn').addEventListener('click', async function() {
                 const downloadBtn = this;
                 const originalText = downloadBtn.innerHTML;
-                
-                // Show loading state
                 downloadBtn.innerHTML = `
                     <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Generating...
-                `;
+                    Generating...`;
                 downloadBtn.disabled = true;
-
                 try {
                     const jsPDF = window.jspdf.jsPDF;
                     const estimateElement = document.getElementById('estimate-container');
@@ -365,35 +474,29 @@
                     console.error('PDF generation error:', err);
                     alert('PDF generation failed. Please try again.');
                 } finally {
-                    // Restore button state
                     downloadBtn.innerHTML = originalText;
                     downloadBtn.disabled = false;
                 }
             });
 
-            // --- EMAIL FUNCTIONALITY ---
             document.getElementById('emailBtn').addEventListener('click', async function () {
                 const emailBtn = this;
                 const originalText = emailBtn.innerHTML;
                 emailBtn.innerHTML = `
-                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"></svg>
+                    <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
                     Sending...`;
                 emailBtn.disabled = true;
                 try {
-                    // Get client email and estimate number
                     const clientEmail = document.getElementById('clientEmail').value.trim();
                     const clientName = document.getElementById('clientName').value.trim();
                     const estimateNumber = document.getElementById('estimateNumber').value || 'Estimate';
-
                     if (!clientEmail) {
                         alert('Please enter a valid email address in the client email field.');
                         return;
                     }
-
-                    // Prepare subject and body
-                    const subject = `Your Estimate from Issan Cleaning Co. (${estimateNumber})`;
-                    const body = `Hello ${clientName || 'there'},\n\nPlease find your estimate (${estimateNumber}) from Issan Cleaning Co. attached.\n\nThank you for considering us!\n\nBest regards,\nIssan Cleaning Co.\nissancleaningco@gmail.com\n(305) 701-3909`;
-
                     // Generate PDF as base64
                     const jsPDF = window.jspdf.jsPDF;
                     const estimateElement = document.getElementById('estimate-container');
@@ -409,43 +512,58 @@
                     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
                     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
                     const pdfBlob = pdf.output('blob');
-                    const pdfBase64 = await new Promise((resolve) => {
+                    const pdfBase64 = await new Promise((resolve, reject) => {
                         const reader = new FileReader();
                         reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                        reader.onerror = reject;
                         reader.readAsDataURL(pdfBlob);
                     });
-
-                    // Call API to send email
+                    // Collect other form data for the email body and server-side processing
+                    const payload = {
+                        estimateNumber: estimateNumber,
+                        estimateStatus: document.getElementById('estimateStatus').value || '',
+                        clientName: clientName,
+                        clientAddress: document.getElementById('clientAddress').value || '',
+                        clientEmail: clientEmail,
+                        clientPhone: document.getElementById('clientPhone').value || '',
+                        estimateDate: document.getElementById('estimateDate').value || '',
+                        validUntil: document.getElementById('validUntil').value || '',
+                        preparedBy: document.getElementById('preparedBy').value || '',
+                        notes: document.getElementById('notes').innerText || '',
+                        taxRate: document.getElementById('taxRate')?.value || '0',
+                        subtotal: document.getElementById('subtotal').textContent || '$0.00',
+                        taxAmount: document.getElementById('taxAmount').textContent || '$0.00',
+                        total: document.getElementById('total').textContent || '$0.00',
+                        items: Array.from(document.querySelectorAll('#itemsContainer .item-row')).map(row => ({
+                            description: row.querySelector('.description')?.innerText || '',
+                            quantity: row.querySelector('.quantity')?.innerText || '',
+                            rate: row.querySelector('.rate')?.innerText || '',
+                            amount: row.querySelector('.amount')?.textContent || ''
+                        })),
+                        pdfBase64: pdfBase64, // Pass the Base64 PDF content
+                        filename: `${estimateNumber}.pdf` // Pass the desired filename
+                    };
                     const response = await fetch('/api/send-estimate-email', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            to: clientEmail,
-                            subject,
-                            body,
-                            filename: `${estimateNumber}.pdf`,
-                            pdfBase64
-                        })
+                        body: JSON.stringify(payload)
                     });
-
                     const result = await response.json();
-                    
                     if (response.ok) {
-                        alert('Estimate sent successfully! Check your email.');
+                        alert('Estimate sent successfully!');
                     } else {
-                        throw new Error(result.error || 'Failed to send email');
+                        throw new Error(result.error || 'Failed to send email. Check console for details.');
                     }
                 } catch (err) {
                     console.error('Email error:', err);
                     alert('Failed to send email: ' + (err.message || 'Unknown error. Please try again.'));
                 } finally {
-                    // Restore button state
                     emailBtn.innerHTML = originalText;
                     emailBtn.disabled = false;
                 }
             });
 
-            // Initialize with one item row
+            // Initialize with two item rows
             createItemRow();
             createItemRow();
 

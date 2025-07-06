@@ -25,6 +25,7 @@
     "@sendgrid/mail": "^8.1.5",
     "connect-history-api-fallback": "^2.0.0",
     "http-server": "^14.1.1",
+    "node-fetch": "^3.3.2",
     "resend": "^4.6.0",
     "sharp": "^0.33.5"
   },
