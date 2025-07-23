@@ -1,3 +1,5 @@
+// ✅ FIXED sw.js
+
 const CACHE_NAME = 'issan-cleaning-v1';
 const ASSETS_TO_CACHE = [
   '/',
@@ -24,17 +26,12 @@ const ASSETS_TO_CACHE = [
   'https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap'
 ];
 
-// Install event - cache assets
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(ASSETS_TO_CACHE);
-      })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS_TO_CACHE))
   );
 });
 
-// Activate event - clean up old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -49,40 +46,28 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch event - serve from cache, fall back to network
 self.addEventListener('fetch', event => {
-  // Handle navigation requests (SPA/fallback for index.html)
+  if (!event.request.url.startsWith('http')) return; // Skip non-http(s)
+
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      caches.match('/index.html').then(response => {
-        return response || fetch('/index.html');
-      })
+      caches.match('/index.html').then(response => response || fetch('/index.html'))
     );
     return;
   }
-  // Default: cache-first for other requests
+
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request)
-          .then(fetchResponse => {
-            // Only cache http(s) requests, not chrome-extension or other schemes
-            if (event.request.url.startsWith('http')) {
-              return caches.open(CACHE_NAME)
-                .then(cache => {
-                  cache.put(event.request, fetchResponse.clone());
-                  return fetchResponse;
-                });
-            } else {
-              return fetchResponse;
-            }
-          });
-      })
-      .catch(() => {
-        // Return offline page if both cache and network fail
-        if (event.request.destination === 'document') {
-          return caches.match('/offline.html');
-        }
-      })
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request).then(fetchResponse => {
+        return caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, fetchResponse.clone());
+          return fetchResponse;
+        });
+      });
+    }).catch(() => {
+      if (event.request.destination === 'document') {
+        return caches.match('/offline.html');
+      }
+    })
   );
 });

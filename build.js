@@ -7,30 +7,36 @@ console.log('Starting build process...');
 
 // 1. Generate missing .webp images for every .png/.jpg in img/
 const srcImgDir = path.join(__dirname, 'img');
-function generateWebpRecursive(dir) {
+async function generateWebpRecursive(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const promises = [];
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      generateWebpRecursive(fullPath);
+      promises.push(generateWebpRecursive(fullPath));
     } else if (entry.isFile()) {
       if (/\.(png|jpg|jpeg)$/i.test(entry.name)) {
         const webpPath = fullPath.replace(/\.(png|jpg|jpeg)$/i, '.webp');
         if (!fs.existsSync(webpPath)) {
-          sharp(fullPath)
-            .toFile(webpPath)
-            .then(() => console.log('Generated', webpPath))
-            .catch(err => console.error('Error generating webp for', fullPath, err));
+          promises.push(
+            sharp(fullPath)
+              .toFile(webpPath)
+              .then(() => console.log('Generated', webpPath))
+              .catch(err => console.error('Error generating webp for', fullPath, err))
+          );
         }
       }
     }
   }
+  await Promise.all(promises);
 }
-if (fs.existsSync(srcImgDir)) {
-  generateWebpRecursive(srcImgDir);
-} else {
-  console.warn('img/ directory not found, skipping webp generation.');
-}
+
+(async () => {
+  if (fs.existsSync(srcImgDir)) {
+    await generateWebpRecursive(srcImgDir);
+  } else {
+    console.warn('img/ directory not found, skipping webp generation.');
+  }
 
 // 2. Copy all images from img/ to dist/img/ (preserve structure)
 function copyImagesRecursive(srcDir, destDir) {
@@ -121,4 +127,60 @@ if (fs.existsSync(srcJsDir)) {
   console.warn('js/ directory not found, skipping JS copy.');
 }
 
-console.log('Build completed successfully!'); 
+// 6. Copy all HTML files to public/ (with link-fixing for Spanish pages)
+const srcEsDir = path.join(__dirname, 'es');
+const publicEsDir = path.join(__dirname, 'public', 'es');
+const publicDir = path.join(__dirname, 'public');
+
+const esPages = [
+  'index.html',
+  'sobre-nosotros.html',
+  'servicios.html',
+  'precios.html',
+  'contacto.html'
+];
+
+function fixEsLinks(content) {
+  let updated = content;
+  esPages.forEach(page => {
+    const regex = new RegExp(`href=["']${page}["']`, 'g');
+    updated = updated.replace(regex, `href="/es/${page}"`);
+  });
+  return updated;
+}
+
+function copyHtmlRecursive(srcDir, destDir, isEs = false) {
+  if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
+  const entries = fs.readdirSync(srcDir, { withFileTypes: true });
+  for (const entry of entries) {
+    // Skip the public directory to avoid infinite recursion
+    if (entry.isDirectory() && entry.name === 'public') continue;
+    const srcPath = path.join(srcDir, entry.name);
+    const destPath = path.join(destDir, entry.name);
+    if (entry.isDirectory()) {
+      copyHtmlRecursive(srcPath, destPath, isEs && entry.name === 'es');
+    } else if (entry.isFile() && entry.name.endsWith('.html')) {
+      let content = fs.readFileSync(srcPath, 'utf8');
+      if (isEs) {
+        content = fixEsLinks(content);
+      }
+      fs.writeFileSync(destPath, content, 'utf8');
+      // console.log('Copied HTML', srcPath, '->', destPath);
+    }
+  }
+}
+
+// Copy root HTML files
+copyHtmlRecursive(__dirname, publicDir, false);
+// Copy es/ HTML files with link-fixing
+//debugger;
+if (fs.existsSync(srcEsDir)) {
+  copyHtmlRecursive(srcEsDir, publicEsDir, true);
+  console.log('Spanish HTML files copied to public/es/ with link-fixing.');
+} else {
+  console.warn('es/ directory not found, skipping Spanish HTML copy.');
+}
+console.log('All HTML files copied to public/.');
+
+console.log('Build completed successfully!');
+})(); 

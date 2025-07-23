@@ -5,16 +5,16 @@ const ASSETS_TO_CACHE = [
   '/es/index.html',
   '/css/style.css',
   '/js/script.js',
-  '/public/images/logo.webp',
-  '/public/images/logo.png',
-  '/public/images/Home/Home-About.webp',
-  '/public/images/Home/Home-About.jpg',
-  '/public/images/Home/airbnb.webp',
-  '/public/images/Home/airbnb.jpg',
-  '/public/images/Home/office.webp',
-  '/public/images/Home/office.jpg',
-  '/public/images/Home/residential.webp',
-  '/public/images/Home/residential.jpg',
+  '/images/logo.webp',
+  '/images/logo.png',
+  '/images/Home/Home-About.webp',
+  '/images/Home/Home-About.jpg',
+  '/images/Home/airbnb.webp',
+  '/images/Home/airbnb.jpg',
+  '/images/Home/office.webp',
+  '/images/Home/office.jpg',
+  '/images/Home/residential.webp',
+  '/images/Home/residential.jpg',
   '/img/contact/fb.png',
   '/img/contact/ig.jpeg',
   '/videos/home.mp4',
@@ -55,7 +55,7 @@ self.addEventListener('fetch', event => {
   if (event.request.mode === 'navigate') {
     event.respondWith(
       caches.match('/index.html').then(response => {
-        return response || fetch('/index.html');
+        return response || fetch('/index.html', { redirect: 'follow' });
       })
     );
     return;
@@ -64,7 +64,7 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        return response || fetch(event.request)
+        return response || fetch(event.request, { redirect: 'follow' })
           .then(fetchResponse => {
             // Only cache http(s) requests, not chrome-extension or other schemes
             if (event.request.url.startsWith('http')) {

@@ -1,21 +1,22 @@
 {
   "version": 2,
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/(.*)/$",
-      "destination": "/$1/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/$1.html"
-    }
+    { "source": "/api/(.*)",          "destination": "/api/$1" },
+    { "source": "/",                  "destination": "/index.html" },
+
+
+    { "source": "/es",                "destination": "/es/index.html" },
+    { "source": "/es/",               "destination": "/es/index.html" },
+
+   
+    { "source": "/sitemap.xml",       "destination": "/sitemap.xml" },
+    { "source": "/offline.html",      "destination": "/offline.html" },
+
+    
+    { "source": "/admin",             "destination": "/admin/calculator.html" },
+    { "source": "/admin/",            "destination": "/admin/calculator.html" },
+
+   
+    { "source": "/(.*)",              "destination": "/$1.html" }
   ]
 }
