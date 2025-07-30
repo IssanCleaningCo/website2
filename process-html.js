@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log('Processing HTML files for Vercel deployment...');
+console.log('Processing HTML files...');
 
 // Function to process HTML content
 function processHtmlContent(content) {

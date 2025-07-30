@@ -38,6 +38,7 @@ async function generateWebpRecursive(dir) {
     console.warn('img/ directory not found, skipping webp generation.');
   }
 
+
 // 2. Copy all images from img/ to dist/img/ (preserve structure)
 function copyImagesRecursive(srcDir, destDir) {
   if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
@@ -62,6 +63,19 @@ if (fs.existsSync(srcImgDir)) {
 } else {
   console.warn('img/ directory not found, skipping image copy.');
 }
+
+// 2b. Copy logo.png and logo.webp from images/ to dist/images/
+const srcImagesDir = path.join(__dirname, 'images');
+const distImagesDir = path.join(__dirname, 'dist', 'images');
+if (!fs.existsSync(distImagesDir)) fs.mkdirSync(distImagesDir, { recursive: true });
+['logo.png', 'logo.webp'].forEach(filename => {
+  const srcLogo = path.join(srcImagesDir, filename);
+  const distLogo = path.join(distImagesDir, filename);
+  if (fs.existsSync(srcLogo)) {
+    fs.copyFileSync(srcLogo, distLogo);
+    // console.log('Copied', srcLogo, '->', distLogo);
+  }
+});
 
 // 3. Ensure dist/js directory exists
 const distJsDir = path.join(__dirname, 'dist', 'js');
