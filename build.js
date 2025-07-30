@@ -127,10 +127,11 @@ if (fs.existsSync(srcJsDir)) {
   console.warn('js/ directory not found, skipping JS copy.');
 }
 
-// 6. Copy all HTML files to public/ (with link-fixing for Spanish pages)
+
+// 6. Copy all HTML files to dist/ (with link-fixing for Spanish pages)
 const srcEsDir = path.join(__dirname, 'es');
-const publicEsDir = path.join(__dirname, 'public', 'es');
-const publicDir = path.join(__dirname, 'public');
+const distEsDir = path.join(__dirname, 'dist', 'es');
+const distDir = path.join(__dirname, 'dist');
 
 const esPages = [
   'index.html',
@@ -149,12 +150,13 @@ function fixEsLinks(content) {
   return updated;
 }
 
+
 function copyHtmlRecursive(srcDir, destDir, isEs = false) {
   if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
   const entries = fs.readdirSync(srcDir, { withFileTypes: true });
   for (const entry of entries) {
-    // Skip the public directory to avoid infinite recursion
-    if (entry.isDirectory() && entry.name === 'public') continue;
+    // Skip the dist directory to avoid infinite recursion
+    if (entry.isDirectory() && entry.name === 'dist') continue;
     const srcPath = path.join(srcDir, entry.name);
     const destPath = path.join(destDir, entry.name);
     if (entry.isDirectory()) {
@@ -171,16 +173,15 @@ function copyHtmlRecursive(srcDir, destDir, isEs = false) {
 }
 
 // Copy root HTML files
-copyHtmlRecursive(__dirname, publicDir, false);
+copyHtmlRecursive(__dirname, distDir, false);
 // Copy es/ HTML files with link-fixing
-//debugger;
 if (fs.existsSync(srcEsDir)) {
-  copyHtmlRecursive(srcEsDir, publicEsDir, true);
-  console.log('Spanish HTML files copied to public/es/ with link-fixing.');
+  copyHtmlRecursive(srcEsDir, distEsDir, true);
+  console.log('Spanish HTML files copied to dist/es/ with link-fixing.');
 } else {
   console.warn('es/ directory not found, skipping Spanish HTML copy.');
 }
-console.log('All HTML files copied to public/.');
+console.log('All HTML files copied to dist/.');
 
 console.log('Build completed successfully!');
 })(); 
