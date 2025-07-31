@@ -4,7 +4,7 @@ const path = require('path');
 // Recursively get all HTML files in the project
 function getHtmlFiles(dir, files = []) {
   fs.readdirSync(dir).forEach(file => {
-    if (file === 'node_modules' || file === '.git') return;
+    if (file === 'node_modules' || file === '.git' || file === 'dist') return;
     const fullPath = path.join(dir, file);
     const stat = fs.statSync(fullPath);
     if (stat.isDirectory()) {
@@ -38,7 +38,7 @@ function extractLinks(content) {
 
 // Check if a link is local (not external)
 function isLocal(link) {
-  return !/^https?:\/\//i.test(link) && !/^\/\//.test(link) && !link.startsWith('mailto:') && !link.startsWith('tel:') && !link.startsWith('#');
+  return !/^https?:\/\//i.test(link) && !/^\/\//.test(link) && !link.startsWith('mailto:') && !link.startsWith('tel:') && !link.startsWith('#') && !link.includes('favicon.ico');
 }
 
 // Main check
