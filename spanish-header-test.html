@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanish Header Test</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/spanish-header-fixes.css">
+</head>
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="header__container">
+                <a href="es/index.html" class="header__logo logo">
+                    <picture>
+                        <source srcset="images/logo.webp" type="image/webp">
+                        <img src="images/logo.png" alt="Servicio de Limpieza Profesional">
+                    </picture>
+                </a>
+                <div class="header__navigation">
+                    <div class="language-toggle">
+                        <a href="contact.html" class="language-btn">EN</a>
+                        <span class="language-separator">|</span>
+                        <a href="es/contacto.html" class="language-btn active">ES</a>
+                    </div>
+                    <div class="header__menu menu">
+                        <nav class="menu__body">
+                            <ul class="menu__list">
+                                <li class="menu__item"><a href="es/index.html" class="menu__link">Inicio</a></li>
+                                <li class="menu__item"><a href="es/sobre-nosotros.html" class="menu__link">Sobre Nosotros</a></li>
+                                <li class="menu__item"><a href="es/servicios.html" class="menu__link">Servicios</a></li>
+                                <li class="menu__item"><a href="es/precios.html" class="menu__link">Precios</a></li>
+                                <li class="menu__item"><a href="es/contacto.html" class="menu__link">Contacto</a></li>
+                            </ul>
+                            <a href="tel:+13057013909" class="actions-header__button">(305) 701-3909</a>
+                            <a href="es/contacto.html#booking-form" class="actions-header__button actions-header__button--quote">¡Cotiza aquí!</a>
+                        </nav>
+                    </div>
+                </div>
+                <button type="button" class="icon-menu">
+                    <span></span>
+                </button>
+            </div>
+        </header>
+        
+        <main style="padding-top: 150px; text-align: center;">
+            <h1>Test de Header en Español</h1>
+            <p>Redimensiona la ventana para probar el comportamiento responsive del header.</p>
+            <div style="margin: 20px; padding: 20px; border: 1px solid #ccc;">
+                <h3>Elementos Largos en Español:</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li>✓ "Sobre Nosotros" vs "About"</li>
+                    <li>✓ "¡Cotiza aquí!" vs "Get a quote"</li>
+                    <li>✓ Espaciado optimizado</li>
+                    <li>✓ Responsive design</li>
+                </ul>
+            </div>
+            
+            <!-- Simulate the booking form section -->
+            <div id="booking-form" style="margin-top: 50px; padding: 30px; background: #f0f9ff; border: 2px solid #00A79D; border-radius: 12px;">
+                <h3 style="color: #00A79D; margin-top: 0;">📍 Sección de Formularios (Simulada)</h3>
+                <p><strong>¡Aquí estaría el formulario de contacto!</strong></p>
+                <p>El enlace "¡Cotiza aquí!" debería:</p>
+                <ol>
+                    <li>Llevar a esta sección</li>
+                    <li>Activar la pestaña "Formulario de Contacto"</li>
+                    <li>Hacer scroll automático hasta aquí</li>
+                </ol>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Tab switching functionality for testing
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate the contact form activation and scroll
+            if (window.location.hash === '#booking-form') {
+                alert('¡Funciona! El enlace "¡Cotiza aquí!" te llevaría al formulario de contacto y haría scroll automático.');
+                // Simulate scrolling behavior
+                window.scrollTo(0, 400);
+            }
+        });
+    </script>
+</body>
+</html>

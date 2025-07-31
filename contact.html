@@ -91,6 +91,7 @@
                   <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
                 </ul>
               <a href="tel:+13057013909" class="actions-header__button">(305) 701-3909</a>
+              <a href="contact.html#booking-form" class="actions-header__button actions-header__button--quote">Get a quote</a>
               </nav>
           </div>
         </div>
@@ -147,7 +148,7 @@
           </div>
         </div>
       </section>
-      <section class="page__booking booking">
+      <section class="page__booking booking" id="booking-form">
         <div class="booking__container">
           <div class="booking__tabs">
             <button class="booking__tab active" data-tab="contact">Contact Form</button>
@@ -159,7 +160,7 @@
             <div class="booking__panel active" id="contact-panel">
               <div class="contact__info">
                 <h2 class="contact__title">Get in Touch</h2>
-                <form class="contact__form" id="contact-form" novalidate>
+                  <form class="contact__form" id="contact-form" onsubmit="return sendEmail(event)">
                   <!-- Only one form tag should exist, with onsubmit handler -->
                   <div id="contact-form-messages" class="form__messages" aria-live="polite"></div>
                   <div class="form__group">

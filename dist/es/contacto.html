@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
@@ -6,6 +6,7 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <title>Contáctenos | Servicio de Limpieza en Miami</title>
     <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/spanish-header-fixes.css" />
     <meta name="description" content="Contáctenos para servicios profesionales de limpieza en Miami. Presupuestos gratuitos, respuesta rápida y atención personalizada. ¡Llámenos hoy al (305) 317-2735!">
     <meta name="keywords" content="contacto limpieza Miami, presupuesto limpieza, servicio limpieza Miami, contratar limpieza">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -64,6 +65,7 @@
                                 <li class="menu__item"><a href="/es/contacto.html" class="menu__link">Contacto</a></li>
                             </ul>
                             <a href="tel:+13057013909" class="actions-header__button">(305) 701-3909</a>
+                            <a href="contacto.html#booking-form" class="actions-header__button actions-header__button--quote">¡Cotiza aquí!</a>
                         </nav>
                     </div>
                     <button type="button" class="icon-menu">
@@ -122,7 +124,7 @@
                 </div>
               </section>
 
-              <section class="page__booking booking">
+              <section class="page__booking booking" id="booking-form">
                 <div class="booking__container">
                   <div class="booking__tabs">
                     <button class="booking__tab active" data-tab="contact">Formulario de Contacto</button>
@@ -505,6 +507,47 @@
 
             return false;
         }
+
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.booking__tab');
+            const panels = document.querySelectorAll('.booking__panel');
+            
+            // Set minimum date to today for the date picker
+            const dateInput = document.getElementById('preferred-date');
+            if (dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.min = today;
+            }
+            
+            // If the URL has the '#booking-form' hash, activate the contact tab and scroll to section
+            if (window.location.hash === '#booking-form') {
+                const contactTab = document.querySelector('.booking__tab[data-tab="contact"]');
+                const bookingSection = document.getElementById('booking-form');
+                if (contactTab) {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panels.forEach(p => p.classList.remove('active'));
+                    contactTab.classList.add('active');
+                    document.getElementById('contact-panel').classList.add('active');
+                }
+                // Scroll to the booking section
+                if (bookingSection) {
+                    setTimeout(() => {
+                        bookingSection.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                }
+            }
+            
+            // Add click handlers for tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panels.forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(`${tab.dataset.tab}-panel`).classList.add('active');
+                });
+            });
+        });
     </script>
 </body>
 </html>
