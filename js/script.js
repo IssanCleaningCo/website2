@@ -94,6 +94,12 @@ spollerButtons.forEach((button) => {
 document.addEventListener('DOMContentLoaded', function() {
   const slides = document.querySelectorAll('.testimonial__slide');
   const dots = document.querySelectorAll('.dot');
+  
+  // Only run if testimonial elements exist
+  if (slides.length === 0 || dots.length === 0) {
+    return;
+  }
+  
   let currentSlide = 0;
   let slideInterval;
 
@@ -131,8 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Pause on hover
   const slider = document.querySelector('.testimonial__slider');
-  slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
-  slider.addEventListener('mouseleave', startSlideShow);
+  if (slider) {
+    slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
+    slider.addEventListener('mouseleave', startSlideShow);
+  }
 });
 
 // Booking System Tabs
@@ -189,8 +197,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Floating Header
 document.addEventListener('DOMContentLoaded', function() {
-  let lastScroll = 0;
   const header = document.querySelector('.header');
+  
+  // Only run if header exists
+  if (!header) {
+    return;
+  }
+  
+  let lastScroll = 0;
   const scrollThreshold = 100; // Amount of scroll before hiding header
 
   window.addEventListener('scroll', () => {
@@ -481,10 +495,10 @@ function debounceSubmit(func, wait) {
     };
 }
 
-// Apply to form submissions
-const debouncedSubmit = debounceSubmit((e) => {
-    sendEmail(e);
-}, 300);
+// Apply to form submissions (commented out since sendEmail is not defined)
+// const debouncedSubmit = debounceSubmit((e) => {
+//     sendEmail(e);
+// }, 300);
 
 // Register service worker
 if ('serviceWorker' in navigator) {
