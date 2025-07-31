@@ -160,23 +160,24 @@
               <div class="contact__info">
                 <h2 class="contact__title">Get in Touch</h2>
                 <form class="contact__form" id="contact-form" novalidate>
+                  <!-- Only one form tag should exist, with onsubmit handler -->
+                  <div id="contact-form-messages" class="form__messages" aria-live="polite"></div>
                   <div class="form__group">
                     <label for="name">Name *</label>
                     <input type="text" id="name" name="name" required 
                            pattern="[A-Za-z\s]+" 
                            title="Please enter a valid name">
+                    <div class="form__error" id="error-name"></div>
                   </div>
-                  
                   <div class="form__group">
                     <label for="email">Email *</label>
                     <input type="email" id="email" name="email" required>
+                    <div class="form__error" id="error-email"></div>
                   </div>
-                  
                   <div class="form__group">
                     <label for="phone">Phone (Optional)</label>
                     <input type="tel" id="phone" name="phone">
                   </div>
-                  
                   <div class="form__group">
                     <label for="service">Service Type (Optional)</label>
                     <select id="service" name="service">
@@ -186,12 +187,11 @@
                       <option value="airbnb">Airbnb Turnover</option>
                     </select>
                   </div>
-                  
                   <div class="form__group">
                     <label for="description">Description of Work Needed *</label>
                     <textarea id="description" name="description" rows="4" required></textarea>
+                    <div class="form__error" id="error-description"></div>
                   </div>
-                  
                   <button type="submit" class="form__button button">Send Message</button>
                 </form>
               </div>
@@ -201,6 +201,7 @@
             <div class="booking__panel" id="booking-panel">
               <h2 class="booking__title">Schedule Your Cleaning</h2>
               <form class="booking__form" id="booking-form" onsubmit="return sendBooking(event)">
+                <div id="booking-form-messages" class="form__messages" aria-live="polite"></div>
                 <!-- Service Type -->
                 <div class="form__group">
                   <label for="booking-service">Service Type *</label>
@@ -210,9 +211,8 @@
                     <option value="commercial">Commercial Cleaning</option>
                     <option value="airbnb">Airbnb Turnover</option>
                   </select>
+                  <div class="form__error" id="error-booking-service"></div>
                 </div>
-
-                <!-- Add this right after the Service Type selection in the booking form -->
                 <div class="form__group service-checklist hidden" id="service-checklist">
                   <label class="checklist-label">What's Included:</label>
                   
@@ -337,6 +337,7 @@
                     <option value="medium">Medium (1,000-2,000 sq ft)</option>
                     <option value="large">Large (2,000+ sq ft)</option>
                   </select>
+                  <div class="form__error" id="error-property-size"></div>
                 </div>
 
                 <!-- Date and Time -->
@@ -367,6 +368,7 @@
                       <option value="3">3</option>
                       <option value="4">4+</option>
                     </select>
+                    <div class="form__error" id="error-bedrooms"></div>
                   </div>
                   <div class="form__group half bathroom-field">
                     <label for="bathrooms">Bathrooms *</label>
@@ -377,6 +379,7 @@
                       <option value="3">3</option>
                       <option value="4">4+</option>
                     </select>
+                    <div class="form__error" id="error-bathrooms"></div>
                   </div>
                 </div>
 
@@ -384,16 +387,17 @@
                 <div class="form__group">
                   <label for="booking-name">Name *</label>
                   <input type="text" id="booking-name" name="name" required>
+                  <div class="form__error" id="error-booking-name"></div>
                 </div>
-
                 <div class="form__group">
                   <label for="booking-email">Email *</label>
                   <input type="email" id="booking-email" name="email" required>
+                  <div class="form__error" id="error-booking-email"></div>
                 </div>
-
                 <div class="form__group">
                   <label for="booking-phone">Phone *</label>
                   <input type="tel" id="booking-phone" name="phone" required>
+                  <div class="form__error" id="error-booking-phone"></div>
                 </div>
 
                 <!-- Special Instructions -->
@@ -498,68 +502,142 @@
     </a>
   </nav>
   <script type="text/javascript">
+    // --- Form Validation Feedback ---
+    function showError(id, message) {
+      document.getElementById(id).textContent = message || '';
+    }
+    function clearErrors(ids) {
+      ids.forEach(id => showError(id, ''));
+    }
+    function showFormMessage(formId, message, isSuccess) {
+      const el = document.getElementById(formId);
+      el.innerHTML = `<div class="form__${isSuccess ? 'success' : 'fail'}">${message}</div>`;
+    }
+
     function sendEmail(e) {
       e.preventDefault();
-      
-      // Get form data
       const form = document.getElementById('contact-form');
-      const templateParams = {
-        name: form.name.value,
-        email: form.email.value,
-        phone: form.phone.value,
-        service: form.service.value,
-        additionalInfo: form.description.value
-      };
-
+      const messages = document.getElementById('contact-form-messages');
+      clearErrors(['error-name', 'error-email', 'error-description']);
+      messages.innerHTML = '';
+      let valid = true;
+      // Name
+      if (!form.name.value.trim()) {
+        showError('error-name', 'Name is required.');
+        valid = false;
+      } else if (!/^[A-Za-z\s]+$/.test(form.name.value.trim())) {
+        showError('error-name', 'Please enter a valid name.');
+        valid = false;
+      }
+      // Email
+      if (!form.email.value.trim()) {
+        showError('error-email', 'Email is required.');
+        valid = false;
+      } else if (!/^\S+@\S+\.\S+$/.test(form.email.value.trim())) {
+        showError('error-email', 'Please enter a valid email.');
+        valid = false;
+      }
+      // Description
+      if (!form.description.value.trim()) {
+        showError('error-description', 'Description is required.');
+        valid = false;
+      }
+      if (!valid) return false;
       // Send email using EmailJS
+      const templateParams = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
+        service: form.service.value,
+        additionalInfo: form.description.value.trim()
+      };
+      showFormMessage('contact-form-messages', 'Sending...', true);
       emailjs.send('service_6cikdqq', 'template_rsq8lj2', templateParams)
         .then(
           function(response) {
-            console.log("SUCCESS", response);
-            alert("Message sent successfully!");
+            showFormMessage('contact-form-messages', 'Message sent successfully!', true);
             form.reset();
           },
           function(error) {
-            console.log("FAILED", error);
-            alert("Failed to send message. Please try again.");
+            showFormMessage('contact-form-messages', 'Failed to send message. Please try again.', false);
           }
         );
-
       return false;
     }
 
     function sendBooking(e) {
       e.preventDefault();
-      
-      // Get booking form data
       const form = document.getElementById('booking-form');
+      const messages = document.getElementById('booking-form-messages');
+      clearErrors([
+        'error-booking-service', 'error-property-size', 'error-bedrooms', 'error-bathrooms',
+        'error-booking-name', 'error-booking-email', 'error-booking-phone'
+      ]);
+      messages.innerHTML = '';
+      let valid = true;
+      // Service
+      if (!form.service.value) {
+        showError('error-booking-service', 'Service type is required.');
+        valid = false;
+      }
+      // Property size
+      if (!form.size.value) {
+        showError('error-property-size', 'Property size is required.');
+        valid = false;
+      }
+      // Bedrooms
+      if (!form.bedrooms.value) {
+        showError('error-bedrooms', 'Number of bedrooms is required.');
+        valid = false;
+      }
+      // Bathrooms
+      if (!form.bathrooms.value) {
+        showError('error-bathrooms', 'Number of bathrooms is required.');
+        valid = false;
+      }
+      // Name
+      if (!form.name.value.trim()) {
+        showError('error-booking-name', 'Name is required.');
+        valid = false;
+      }
+      // Email
+      if (!form.email.value.trim()) {
+        showError('error-booking-email', 'Email is required.');
+        valid = false;
+      } else if (!/^\S+@\S+\.\S+$/.test(form.email.value.trim())) {
+        showError('error-booking-email', 'Please enter a valid email.');
+        valid = false;
+      }
+      // Phone
+      if (!form.phone.value.trim()) {
+        showError('error-booking-phone', 'Phone is required.');
+        valid = false;
+      }
+      if (!valid) return false;
+      // Send email using EmailJS
       const templateParams = {
-        name: form.name.value,
-        email: form.email.value,
-        phone: form.phone.value,
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
         service: form.service.value,
         size: form.size.value,
         bedrooms: form.bedrooms.value,
         bathrooms: form.bathrooms.value,
         date: form.date.value,
         time: form.time.value,
-        notes: form.notes.value
+        notes: form.notes.value.trim()
       };
-
-      // Send email using EmailJS - we'll use a different template for bookings
+      showFormMessage('booking-form-messages', 'Sending...', true);
       emailjs.send('service_6cikdqq', 'template_n99giqi', templateParams)
         .then(
           function(response) {
-            console.log("SUCCESS", response);
-            alert("Booking request sent successfully! We'll contact you shortly to confirm.");
+            showFormMessage('booking-form-messages', "Booking request sent successfully! We'll contact you shortly to confirm.", true);
             form.reset();
           },
           function(error) {
-            console.log("FAILED", error);
-            alert("Failed to send booking request. Please try again.");
+            showFormMessage('booking-form-messages', 'Failed to send booking request. Please try again.', false);
           }
         );
-
       return false;
     }
 
@@ -567,19 +645,14 @@
     document.addEventListener('DOMContentLoaded', function() {
       const tabs = document.querySelectorAll('.booking__tab');
       const panels = document.querySelectorAll('.booking__panel');
-      
       // Set minimum date to today for the date picker
       const dateInput = document.getElementById('preferred-date');
       const today = new Date().toISOString().split('T')[0];
       dateInput.min = today;
-
       tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-          // Remove active class from all tabs and panels
           tabs.forEach(t => t.classList.remove('active'));
           panels.forEach(p => p.classList.remove('active'));
-
-          // Add active class to clicked tab and corresponding panel
           tab.classList.add('active');
           document.getElementById(`${tab.dataset.tab}-panel`).classList.add('active');
         });

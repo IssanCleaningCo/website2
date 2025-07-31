@@ -105,7 +105,7 @@ try {
   process.exit(1);
 }
 
-// 4. Copy fonts directory to dist/fonts
+// 4. Copy fonts, css, images, and videos directories to dist/
 const srcFontsDir = path.join(__dirname, 'fonts');
 const distFontsDir = path.join(__dirname, 'dist', 'fonts');
 function copyDirRecursive(srcDir, destDir) {
@@ -122,11 +122,39 @@ function copyDirRecursive(srcDir, destDir) {
     }
   }
 }
+// Fonts
 if (fs.existsSync(srcFontsDir)) {
   copyDirRecursive(srcFontsDir, distFontsDir);
   console.log('Fonts copied to dist/fonts/');
 } else {
   console.warn('fonts/ directory not found, skipping font copy.');
+}
+// CSS
+const srcCssDir = path.join(__dirname, 'css');
+const distCssDir = path.join(__dirname, 'dist', 'css');
+if (fs.existsSync(srcCssDir)) {
+  copyDirRecursive(srcCssDir, distCssDir);
+  console.log('CSS copied to dist/css/');
+} else {
+  console.warn('css/ directory not found, skipping css copy.');
+}
+// Images
+const srcImagesDirAll = path.join(__dirname, 'images');
+const distImagesDirAll = path.join(__dirname, 'dist', 'images');
+if (fs.existsSync(srcImagesDirAll)) {
+  copyDirRecursive(srcImagesDirAll, distImagesDirAll);
+  console.log('Images copied to dist/images/');
+} else {
+  console.warn('images/ directory not found, skipping images copy.');
+}
+// Videos
+const srcVideosDir = path.join(__dirname, 'videos');
+const distVideosDir = path.join(__dirname, 'dist', 'videos');
+if (fs.existsSync(srcVideosDir)) {
+  copyDirRecursive(srcVideosDir, distVideosDir);
+  console.log('Videos copied to dist/videos/');
+} else {
+  console.warn('videos/ directory not found, skipping videos copy.');
 }
 
 // 5. Copy all .js files from js/ to dist/js/ (except script.js, which is minified)
