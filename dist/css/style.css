@@ -276,3 +276,10 @@
     transform: translateY(0);
   }
 }
+
+/* Hide hamburger menu on mobile when bottom mobile nav is present */
+@media (max-width: 768px) {
+    .icon-menu {
+        display: none !important;
+    }
+}
