@@ -49,10 +49,8 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if (!event.request.url.startsWith('http')) return; // Skip non-http(s)
 
+  // Don't intercept navigation requests - let them go through normally
   if (event.request.mode === 'navigate') {
-    event.respondWith(
-      caches.match('/index.html').then(response => response || fetch('/index.html'))
-    );
     return;
   }
 

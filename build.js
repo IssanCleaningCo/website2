@@ -225,8 +225,8 @@ if (fs.existsSync(srcEsDir)) {
 }
 console.log('All HTML files copied to dist/.');
 
-// 7. Copy additional root files (sw.js, favicon.ico, sitemap.xml, vercel.json, etc.)
-const rootFiles = ['sw.js', 'favicon.ico', 'sitemap.xml', 'vercel.json', 'offline.html'];
+// 7. Copy additional root files (sw.js, favicon.ico, sitemap.xml, _redirects, etc.)
+const rootFiles = ['sw.js', 'favicon.ico', 'sitemap.xml', '_redirects', 'offline.html'];
 rootFiles.forEach(file => {
   const srcFile = path.join(__dirname, file);
   const destFile = path.join(distDir, file);

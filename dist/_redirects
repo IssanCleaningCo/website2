@@ -1,0 +1,10 @@
+# Netlify redirects file
+
+# Handle Spanish pages
+/es/* /es/:splat 200
+
+# Handle root pages  
+/* /:splat 200
+
+# 404 fallback
+/* /index.html 404
