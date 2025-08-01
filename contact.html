@@ -45,6 +45,111 @@
   <meta name="twitter:image" content="https://issancleaningco.com/images/contact/contact-hero.webp">
   <meta name="twitter:site" content="@IssanCleaning">
   
+  <!-- Critical Header CSS -->
+  <style>
+  /* Only the CSS needed for header, nav, and hero section for above-the-fold */
+  body {
+    font-family: "Quicksand", sans-serif;
+    color: #303a4d;
+    margin: 0;
+  }
+  .header {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    background: rgba(255,255,255,0.95);
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+  }
+  .header__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .header__brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .header__logo img {
+    height: 50px;
+    width: auto;
+  }
+  .header__company {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+  .header__company-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #00A79D;
+    margin: 0;
+  }
+  .header__company-tagline {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+    margin: 0;
+  }
+  .logo { font-weight: 700; font-size: 1.5rem; }
+  .header__navigation { display: flex; align-items: center; gap: 1.5rem; }
+  .menu__body { display: flex; gap: 1.5rem; align-items: center; }
+  .menu__list { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+  .menu__link { text-decoration: none; color: #303a4d; font-weight: 500; }
+  .actions-header__button { 
+    border: 2px solid #303a4d; border-radius: 30px; 
+    display: inline-block; font-weight: 600; 
+    padding: 0.75rem 1.5rem; text-decoration: none; 
+    color: #303a4d; transition: all 0.3s; 
+  }
+  .language-toggle { display: flex; align-items: center; gap: 0.5rem; margin-right: 1rem; }
+  .language-btn { text-decoration: none; color: #666; font-size: 0.9rem; padding: 0.25rem; }
+  .language-btn.active { color: #00A79D; font-weight: 600; }
+  .language-separator { color: #ccc; }
+  .button { background: #00A79D; color: #fff; border-radius: 12px; }
+  
+  /* Trust signals */
+  .trust { padding: 2rem 0; background: #f8f9fa; }
+  .trust__row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .trust__item { text-align: center; padding: 1rem; }
+  .trust__icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .trust__title { font-weight: 600; margin: 0.5rem 0; }
+  .trust__text { color: #666; margin: 0; }
+  
+  /* Floating CTA */
+  .floating-cta { position: fixed; bottom: 20px; right: 20px; z-index: 999; }
+  .floating-cta__button { 
+    display: flex; align-items: center; gap: 0.5rem; 
+    background: #00A79D; color: white; padding: 12px 20px; 
+    border-radius: 25px; text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  
+  @media (max-width: 768px) {
+    .header { padding: 0.5rem 0; }
+    .header__container { padding: 0.75rem 1rem; }
+    .header__brand { gap: 0.75rem; }
+    .header__logo img { height: 40px; }
+    .header__company-name { font-size: 1.1rem; }
+    .header__company-tagline { font-size: 0.8rem; }
+    .floating-cta__text { display: none; }
+    .floating-cta__button { padding: 12px; border-radius: 50%; }
+  }
+  
+  @media (max-width: 480px) {
+    .header__brand { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+    .header__company { text-align: left; }
+    .header__company-name { font-size: 1rem; }
+    .header__company-tagline { font-size: 0.75rem; }
+  }
+  </style>
+  
+  <link rel="stylesheet" href="css/critical.css">
+  
   <!-- Enhanced FAQ Schema Markup -->
   <script type="application/ld+json">
   {
@@ -194,12 +299,18 @@
   <div class="wrapper">
     <header class="header">
       <div class="header__container">
-        <a href="index.html" class="header__logo logo">
-          <picture>
-            <source srcset="images/logo.webp" type="image/webp">
-            <img src="images/logo.png" alt="Professional Cleaning Service">
-          </picture>
-        </a>
+        <div class="header__brand">
+          <a href="index.html" class="header__logo logo">
+            <picture>
+              <source srcset="images/logo.webp" type="image/webp">
+              <img src="images/logo.png" alt="Professional Cleaning Service">
+            </picture>
+          </a>
+          <div class="header__company">
+            <span class="header__company-name">Issan Cleaning Co. LLC</span>
+            <span class="header__company-tagline">Professional Cleaning Services</span>
+          </div>
+        </div>
         <div class="header__navigation">
           <div class="language-toggle">
             <a href="contact.html" class="language-btn active">EN</a>
@@ -219,9 +330,6 @@
               </nav>
           </div>
         </div>
-        <button type="button" class="icon-menu">
-          <span></span>
-        </button>
       </div>
     </header>
     <main class="page">
@@ -597,7 +705,7 @@
             <img src="images/logo.png" alt="Issan Cleaning logo">
           </picture>
         </a>
-        <div class="footer__copyright">Copyright © 2025 Issan Cleaning – All Rights Reserved</div>
+        <div class="footer__copyright">Copyright © 2025 Issan Cleaning Co. LLC – All Rights Reserved</div>
       </div>
     </footer>
     

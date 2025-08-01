@@ -128,6 +128,51 @@
     ]
     </script>
     
+    <!-- Critical Header CSS -->
+    <style>
+    .header__container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .header__brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .header__logo img {
+      height: 50px;
+      width: auto;
+    }
+    .header__company {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .header__company-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #00A79D;
+      margin: 0;
+    }
+    .header__company-tagline {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: 500;
+      margin: 0;
+    }
+    @media (max-width: 768px) {
+      .header__container { padding: 0.75rem 1rem; }
+      .header__brand { gap: 0.75rem; }
+      .header__logo img { height: 40px; }
+      .header__company-name { font-size: 1.1rem; }
+      .header__company-tagline { font-size: 0.8rem; }
+    }
+    </style>
+    
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/spanish-header-fixes.css" />
 </head>
@@ -135,12 +180,18 @@
     <div class="wrapper">
         <header class="header">
             <div class="header__container">
-                <a href="index.html" class="header__logo logo">
-                    <picture>
-                        <source srcset="../images/logo.webp" type="image/webp">
-                        <img src="../images/logo.png" alt="Servicio de Limpieza Profesional">
-                    </picture>
-                </a>
+                <div class="header__brand">
+                    <a href="index.html" class="header__logo logo">
+                        <picture>
+                            <source srcset="../images/logo.webp" type="image/webp">
+                            <img src="../images/logo.png" alt="Servicio de Limpieza Profesional">
+                        </picture>
+                    </a>
+                    <div class="header__company">
+                        <span class="header__company-name">Issan Cleaning Co. LLC</span>
+                        <span class="header__company-tagline">Servicios Profesionales de Limpieza</span>
+                    </div>
+                </div>
                 <div class="header__navigation">
                     <div class="language-toggle">
                         <a href="../services.html" class="language-btn">EN</a>
@@ -347,7 +398,7 @@
                         <img src="../images/logo.png" alt="Logo de Issan Cleaning">
                     </picture>
                 </a>
-                <div class="footer__copyright">Copyright © 2025 Issan Cleaning – Todos los Derechos <br>Reservados</div>
+                <div class="footer__copyright">Copyright © 2025 Issan Cleaning Co. LLC – Todos los Derechos <br>Reservados</div>
             </div>
         </footer>
         
