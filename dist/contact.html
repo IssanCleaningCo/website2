@@ -247,7 +247,6 @@
                 <h2 class="contact__title">Get in Touch</h2>
                   <form class="contact__form" id="contact-form" onsubmit="return sendEmail(event)">
                   <!-- Only one form tag should exist, with onsubmit handler -->
-                  <div id="contact-form-messages" class="form__messages" aria-live="polite"></div>
                   <div class="form__group">
                     <label for="name">Name *</label>
                     <input type="text" id="name" name="name" required 
@@ -278,6 +277,8 @@
                     <textarea id="description" name="description" rows="4" required></textarea>
                     <div class="form__error" id="error-description"></div>
                   </div>
+                  
+                  <div id="contact-form-messages" class="form__messages" aria-live="polite"></div>
                   <button type="submit" class="form__button button">Send Message</button>
                 </form>
               </div>
@@ -286,8 +287,7 @@
             <!-- Booking Form Tab -->
             <div class="booking__panel" id="booking-panel">
               <h2 class="booking__title">Schedule Your Cleaning</h2>
-              <form class="booking__form" id="booking-form" onsubmit="return sendBooking(event)">
-                <div id="booking-form-messages" class="form__messages" aria-live="polite"></div>
+              <form class="booking__form" id="booking-form-element" onsubmit="return sendBooking(event)">
                 <!-- Service Type -->
                 <div class="form__group">
                   <label for="booking-service">Service Type *</label>
@@ -492,6 +492,7 @@
                   <textarea id="booking-notes" name="notes" rows="4"></textarea>
                 </div>
 
+                <div id="booking-form-messages" class="form__messages" aria-live="polite"></div>
                 <button type="submit" class="form__button button">Book Now</button>
               </form>
             </div>
@@ -674,7 +675,7 @@
 
     function sendBooking(e) {
       e.preventDefault();
-      const form = document.getElementById('booking-form');
+      const form = document.getElementById('booking-form-element');
       const messages = document.getElementById('booking-form-messages');
       clearErrors([
         'error-booking-service', 'error-property-size', 'error-bedrooms', 'error-bathrooms',

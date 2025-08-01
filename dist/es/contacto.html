@@ -175,6 +175,7 @@
                             <textarea id="description" name="description" rows="4" required></textarea>
                           </div>
                           
+                          <div id="contact-form-messages" class="form__messages" aria-live="polite"></div>
                           <button type="submit" class="form__button button">Enviar Mensaje</button>
                         </form>
                       </div>
@@ -384,6 +385,7 @@
                           <textarea id="booking-notes" name="notes" rows="4"></textarea>
                         </div>
         
+                        <div id="booking-form-messages" class="form__messages" aria-live="polite"></div>
                         <button type="submit" class="form__button button">Reservar</button>
                       </form>
                     </div>
@@ -506,16 +508,17 @@
                 additionalInfo: form.description.value
             };
 
+            showFormMessage('contact-form-messages', 'Enviando...', true);
             emailjs.send('service_6cikdqq', 'template_rsq8lj2', templateParams)
                 .then(
                     function(response) {
                         console.log("SUCCESS", response);
-                        alert("¡Mensaje enviado con éxito!");
+                        showFormMessage('contact-form-messages', '¡Mensaje enviado con éxito!', true);
                         form.reset();
                     },
                     function(error) {
                         console.log("FAILED", error);
-                        alert("Error al enviar el mensaje. Por favor intente nuevamente.");
+                        showFormMessage('contact-form-messages', 'Error al enviar el mensaje. Por favor intente nuevamente.', false);
                     }
                 );
 
