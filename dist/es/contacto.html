@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="../css/spanish-header-fixes.css" />
     <meta name="description" content="Contáctenos para servicios profesionales de limpieza en Miami. Presupuestos gratuitos, respuesta rápida y atención personalizada. ¡Llámenos hoy al (305) 317-2735!">
     <meta name="keywords" content="contacto limpieza Miami, presupuesto limpieza, servicio limpieza Miami, contratar limpieza">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Issan Cleaning">
+    <meta name="geo.region" content="US-FL">
+    <meta name="geo.placename" content="Miami">
+    <link rel="alternate" hreflang="en" href="https://issancleaningco.com/contact.html">
+    <link rel="alternate" hreflang="es" href="https://issancleaningco.com/es/contacto.html">
+    <link rel="canonical" href="https://issancleaningco.com/es/contacto.html">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
         (function(){
@@ -65,7 +72,6 @@
                                 <li class="menu__item"><a href="/es/contacto.html" class="menu__link">Contacto</a></li>
                             </ul>
                             <a href="tel:+13057013909" class="actions-header__button">(305) 701-3909</a>
-                            <a href="contacto.html#booking-form" class="actions-header__button actions-header__button--quote">¡Cotiza aquí!</a>
                         </nav>
                     </div>
                     <button type="button" class="icon-menu">
@@ -136,7 +142,7 @@
                     <div class="booking__panel active" id="contact-panel">
                       <div class="contact__info">
                         <h2 class="contact__title">Contáctenos</h2>
-                        <form class="contact__form" id="contact-form" novalidate>
+                        <form class="contact__form" id="contact-form" onsubmit="return sendEmail(event)">
                           <div class="form__group">
                             <label for="name">Nombre *</label>
                             <input type="text" id="name" name="name" required 
@@ -177,7 +183,7 @@
                     <!-- Booking Form Tab -->
                     <div class="booking__panel" id="booking-panel">
                       <h2 class="booking__title">Programe su Limpieza</h2>
-                      <form class="booking__form" id="booking-form" onsubmit="return sendBooking(event)">
+                      <form class="booking__form" id="booking-form-element" onsubmit="return sendBooking(event)">
                         <!-- Service Type -->
                         <div class="form__group">
                           <label for="booking-service">Tipo de Servicio *</label>
@@ -449,6 +455,14 @@
             </div>
 
           </footer>
+          
+          <!-- Floating CTA Button -->
+          <div class="floating-cta">
+            <a href="#booking-form" class="floating-cta__button" aria-label="Reservar Servicio Ahora">
+              <span class="floating-cta__icon">📅</span>
+              <span class="floating-cta__text">¡Reservar!</span>
+            </a>
+          </div>
         </div>
         <script src="../js/script.js"></script>
         <nav class="mobile-nav">
@@ -508,6 +522,99 @@
             return false;
         }
 
+        function sendBooking(e) {
+          e.preventDefault();
+          const form = document.getElementById('booking-form-element');
+          const messages = document.getElementById('booking-form-messages');
+          clearErrors([
+            'error-booking-service', 'error-property-size', 'error-bedrooms', 'error-bathrooms',
+            'error-booking-name', 'error-booking-email', 'error-booking-phone'
+          ]);
+          messages.innerHTML = '';
+          let valid = true;
+          // Service
+          if (!form.service.value) {
+            showError('error-booking-service', 'Tipo de servicio es requerido.');
+            valid = false;
+          }
+          // Property size
+          if (!form.size.value) {
+            showError('error-property-size', 'Tamaño de propiedad es requerido.');
+            valid = false;
+          }
+          // Bedrooms
+          if (!form.bedrooms.value) {
+            showError('error-bedrooms', 'Número de habitaciones es requerido.');
+            valid = false;
+          }
+          // Bathrooms
+          if (!form.bathrooms.value) {
+            showError('error-bathrooms', 'Número de baños es requerido.');
+            valid = false;
+          }
+          // Name
+          if (!form.name.value.trim()) {
+            showError('error-booking-name', 'Nombre es requerido.');
+            valid = false;
+          }
+          // Email
+          if (!form.email.value.trim()) {
+            showError('error-booking-email', 'Email es requerido.');
+            valid = false;
+          } else if (!/^\S+@\S+\.\S+$/.test(form.email.value.trim())) {
+            showError('error-booking-email', 'Por favor ingrese un email válido.');
+            valid = false;
+          }
+          // Phone
+          if (!form.phone.value.trim()) {
+            showError('error-booking-phone', 'Teléfono es requerido.');
+            valid = false;
+          }
+          if (!valid) return false;
+          // Send email using EmailJS
+          const templateParams = {
+            name: form.name.value.trim(),
+            email: form.email.value.trim(),
+            phone: form.phone.value.trim(),
+            service: form.service.value,
+            size: form.size.value,
+            bedrooms: form.bedrooms.value,
+            bathrooms: form.bathrooms.value,
+            date: form.date.value,
+            time: form.time.value,
+            notes: form.notes.value.trim()
+          };
+          showFormMessage('booking-form-messages', 'Enviando...', true);
+          emailjs.send('service_6cikdqq', 'template_n99giqi', templateParams)
+            .then(
+              function(response) {
+                showFormMessage('booking-form-messages', "¡Solicitud de reserva enviada exitosamente! Nos pondremos en contacto pronto para confirmar.", true);
+                form.reset();
+              },
+              function(error) {
+                showFormMessage('booking-form-messages', 'Error al enviar solicitud de reserva. Por favor intente nuevamente.', false);
+              }
+            );
+          return false;
+        }
+
+        // Form validation helper functions
+        function showError(id, message) {
+          const element = document.getElementById(id);
+          if (element) {
+            element.textContent = message || '';
+          }
+        }
+        function clearErrors(ids) {
+          ids.forEach(id => showError(id, ''));
+        }
+        function showFormMessage(formId, message, isSuccess) {
+          const el = document.getElementById(formId);
+          if (el) {
+            el.innerHTML = `<div class="form__${isSuccess ? 'success' : 'fail'}">${message}</div>`;
+          }
+        }
+
         // Tab switching functionality
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = document.querySelectorAll('.booking__tab');
@@ -520,8 +627,8 @@
                 dateInput.min = today;
             }
             
-            // If the URL has the '#booking-form' hash, activate the contact tab and scroll to section
-            if (window.location.hash === '#booking-form') {
+            // Function to activate contact tab and scroll to section
+            function activateBookingForm() {
                 const contactTab = document.querySelector('.booking__tab[data-tab="contact"]');
                 const bookingSection = document.getElementById('booking-form');
                 if (contactTab) {
@@ -537,6 +644,26 @@
                     }, 100);
                 }
             }
+            
+            // If the URL has the '#booking-form' hash, activate the contact tab and scroll to section
+            if (window.location.hash === '#booking-form') {
+                activateBookingForm();
+            }
+            
+            // Handle floating CTA and other hash links
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a[href="#booking-form"]');
+                if (link) {
+                    e.preventDefault();
+                    activateBookingForm();
+                    // Update URL hash
+                    if (history.pushState) {
+                        history.pushState(null, null, '#booking-form');
+                    } else {
+                        window.location.hash = '#booking-form';
+                    }
+                }
+            });
             
             // Add click handlers for tab switching
             tabs.forEach(tab => {

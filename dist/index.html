@@ -4,17 +4,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#00A79D">
+  <meta name="format-detection" content="telephone=yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+                </ul>
+              <a href="tel:+13057013909" class="actions-header__button">(305) 701-3909</a>
+              </nav>eta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Issan Cleaning">
   <meta name="geo.region" content="US-FL">
   <meta name="geo.placename" content="Miami">
-  <link rel="alternate" hreflang="es" href="https://yourwebsite.com/es/">
-  <link rel="alternate" hreflang="en" href="https://yourwebsite.com/">
-  <link rel="alternate" hreflang="x-default" href="https://yourwebsite.com/">
+  <link rel="alternate" hreflang="es" href="https://issancleaningco.com/es/">
+  <link rel="alternate" hreflang="en" href="https://issancleaningco.com/">
+  <link rel="alternate" hreflang="x-default" href="https://issancleaningco.com/">
+  <link rel="canonical" href="https://issancleaningco.com/">
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <title>Professional House Cleaning Services in Miami | Residential & Commercial</title>
   <!-- Preload critical assets -->
   <link rel="preload" href="videos/home.mp4" as="video" type="video/mp4">
+  <link rel="preload" href="css/style.css" as="style">
+  <link rel="preload" href="js/script.js" as="script">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
   
   <!-- Inline critical CSS -->
   <style>
@@ -33,9 +44,30 @@
   .logo { font-weight: 700; font-size: 1.5rem; }
   .menu__body { display: flex; gap: 1.5rem; }
   .button { background: #00A79D; color: #fff; border-radius: 12px; }
+  
+  /* Trust signals */
+  .trust { padding: 2rem 0; background: #f8f9fa; }
+  .trust__row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .trust__item { text-align: center; padding: 1rem; }
+  .trust__icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .trust__title { font-weight: 600; margin: 0.5rem 0; }
+  .trust__text { color: #666; margin: 0; }
+  
+  /* Floating CTA */
+  .floating-cta { position: fixed; bottom: 20px; right: 20px; z-index: 999; }
+  .floating-cta__button { 
+    display: flex; align-items: center; gap: 0.5rem; 
+    background: #00A79D; color: white; padding: 12px 20px; 
+    border-radius: 25px; text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  
   @media (max-width: 768px) {
     .header { padding: 0.5rem 0; }
     .icon-menu { display: block; }
+    .floating-cta__text { display: none; }
+    .floating-cta__button { padding: 12px; border-radius: 50%; }
   }
 </style>
 <link rel="stylesheet" href="css/critical.css">
@@ -50,14 +82,17 @@
   <meta name="description" content="Top-rated cleaning service in Miami. Professional residential, commercial & Airbnb cleaning. 100% satisfaction guaranteed. Book your cleaning today!">
   <meta name="keywords" content="Miami cleaning service, house cleaning Miami, commercial cleaning, Airbnb cleaning, maid service Miami, office cleaning, residential cleaning">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Miami's Trusted Cleaning Service">
+  <meta property="og:title" content="Miami's Trusted Cleaning Service | Issan Cleaning Co">
   <meta property="og:description" content="Professional cleaning services in Miami. Residential, commercial & Airbnb cleaning with 100% satisfaction guarantee.">
-  <meta property="og:image" content="images/logo.png">
-  <meta property="og:url" content="https://yourwebsite.com">
+  <meta property="og:image" content="https://issancleaningco.com/images/logo.webp">
+  <meta property="og:url" content="https://issancleaningco.com">
+  <meta property="og:site_name" content="Issan Cleaning Co">
+  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Miami's Trusted Cleaning Service">
   <meta name="twitter:description" content="Professional cleaning services in Miami. Book your cleaning today!">
-  <meta name="twitter:image" content="images/logo.png">
+  <meta name="twitter:image" content="https://issancleaningco.com/images/logo.webp">
+  <meta name="twitter:site" content="@IssanCleaning">
   <script type="application/ld+json">
 [
   {
@@ -65,7 +100,11 @@
     "@type": "LocalBusiness",
     "name": "Issan Cleaning",
     "alternateName": "Issan Cleaning Services Miami",
-    "image": "images/logo.png",
+    "image": "https://issancleaningco.com/images/logo.webp",
+    "telephone": "(305) 317-2735",
+    "email": "issancleaningco@gmail.com",
+    "url": "https://issancleaningco.com",
+    "priceRange": "$$",
     "description": "Professional residential and commercial cleaning services in Miami. Specializing in home cleaning, office cleaning, and Airbnb turnover services.",
     "areaServed": {
       "@type": "City",
@@ -174,6 +213,40 @@
   }
 ]
 </script>
+
+<!-- FAQ Schema for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What areas in Miami do you serve?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We serve all of Miami including Miami Beach, Coral Gables, Brickell, Downtown Miami, and surrounding areas."
+      }
+    },
+    {
+      "@type": "Question", 
+      "name": "How much does cleaning service cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our cleaning services start at $150 for residential cleaning. Commercial and Airbnb cleaning rates vary based on size and frequency."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are you insured and licensed?", 
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we are fully licensed, insured, and bonded for your protection and peace of mind."
+      }
+    }
+  ]
+}
+</script>
   <link rel="canonical" href="https://yourwebsite.com">
   <script type="application/ld+json">
   {
@@ -243,7 +316,6 @@
                 <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
               </ul>
               <a href="tel:+13057013909" class="actions-header__button">(305) 701-3909</a>
-              <a href="contact.html#booking-form" class="actions-header__button actions-header__button--quote">Get a quote</a>
             </nav>
           </div>
           <button type="button" class="icon-menu">
@@ -266,6 +338,43 @@
           <a href="contact.html" class="main__button button">Book Now</a>
         </div>
       </section>
+      
+      <!-- Trust Signals Section -->
+      <section class="page__trust trust">
+        <div class="trust__container">
+          <div class="trust__row">
+            <div class="trust__item">
+              <div class="trust__icon">⭐</div>
+              <div class="trust__content">
+                <h3 class="trust__title">5.0 Rating</h3>
+                <p class="trust__text">150+ Happy Customers</p>
+              </div>
+            </div>
+            <div class="trust__item">
+              <div class="trust__icon">🛡️</div>
+              <div class="trust__content">
+                <h3 class="trust__title">Fully Insured</h3>
+                <p class="trust__text">Licensed & Bonded</p>
+              </div>
+            </div>
+            <div class="trust__item">
+              <div class="trust__icon">✅</div>
+              <div class="trust__content">
+                <h3 class="trust__title">100% Guarantee</h3>
+                <p class="trust__text">Satisfaction Promise</p>
+              </div>
+            </div>
+            <div class="trust__item">
+              <div class="trust__icon">🕒</div>
+              <div class="trust__content">
+                <h3 class="trust__title">Same Day</h3>
+                <p class="trust__text">Emergency Service</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       <section class="page__about about">
         <div class="about__container">
           <div class="about__image">
@@ -474,6 +583,14 @@
         <div class="footer__copyright">Copyright © 2025 Issan Cleaning – All Rights Reserved</div>
       </div>
     </footer>
+    
+    <!-- Floating CTA Button -->
+    <div class="floating-cta">
+      <a href="contact.html#booking-form" class="floating-cta__button" aria-label="Get Free Quote">
+        <span class="floating-cta__icon">📞</span>
+        <span class="floating-cta__text">Free Quote!</span>
+      </a>
+    </div>
   </div>
   <script src="js/script.js" defer></script>
   <script>

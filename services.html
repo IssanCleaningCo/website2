@@ -4,43 +4,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#00A79D">
+  <meta name="format-detection" content="telephone=yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Issan Cleaning">
+  <meta name="geo.region" content="US-FL">
+  <meta name="geo.placename" content="Miami">
+  <link rel="alternate" hreflang="es" href="https://issancleaningco.com/es/servicios.html">
+  <link rel="alternate" hreflang="en" href="https://issancleaningco.com/services.html">
+  <link rel="alternate" hreflang="x-default" href="https://issancleaningco.com/services.html">
+  <link rel="canonical" href="https://issancleaningco.com/services.html">
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  <title>SERVICES</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Professional Cleaning Services Miami | Residential & Commercial</title>
+  
+  <!-- Preload critical assets -->
+  <link rel="preload" href="videos/services.mp4" as="video" type="video/mp4">
+  <link rel="preload" href="css/style.css" as="style">
+  <link rel="preload" href="js/script.js" as="script">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+  
+  <!-- Enhanced meta tags -->
+  <meta name="description" content="Professional cleaning services in Miami: residential, commercial, office & Airbnb cleaning. Expert team, eco-friendly products, 100% satisfaction guaranteed.">
+  <meta name="keywords" content="Miami cleaning services, residential cleaning, commercial cleaning, office cleaning, Airbnb cleaning, maid service Miami, professional cleaners">
+  
+  <!-- Social Media Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Professional Cleaning Services Miami | Residential & Commercial">
+  <meta property="og:description" content="Expert cleaning services in Miami: residential, commercial, office & Airbnb cleaning. Eco-friendly products, professional team, 100% satisfaction guarantee.">
+  <meta property="og:image" content="https://issancleaningco.com/images/services/service-hero.webp">
+  <meta property="og:url" content="https://issancleaningco.com/services.html">
+  <meta property="og:site_name" content="Issan Cleaning Co">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Professional Cleaning Services Miami">
+  <meta name="twitter:description" content="Expert cleaning services: residential, commercial, office & Airbnb cleaning in Miami.">
+  <meta name="twitter:image" content="https://issancleaningco.com/images/services/service-hero.webp">
+  <meta name="twitter:site" content="@IssanCleaning">
+  
+  <!-- Enhanced Schema Markup for Services -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "serviceType": "Cleaning Service",
-    "provider": {
-      "@type": "LocalBusiness",
-      "name": "Your Cleaning Service Name"
-    },
-    "areaServed": [
-      {
-        "@type": "City",
-        "name": "Miami Beach"
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Residential Cleaning Service",
+      "name": "Residential Cleaning",
+      "description": "Comprehensive home cleaning services tailored to your specific needs. Deep cleaning of all living spaces, kitchen, bathrooms, and floors using eco-friendly products.",
+      "provider": {
+        "@type": "LocalBusiness",
+        "@id": "https://issancleaningco.com/#organization",
+        "name": "Issan Cleaning Co",
+        "telephone": "(305) 317-2735",
+        "email": "issancleaningco@gmail.com",
+        "url": "https://issancleaningco.com"
       },
-      {
+      "areaServed": {
         "@type": "City",
-        "name": "Coral Gables"
+        "name": "Miami",
+        "sameAs": "https://en.wikipedia.org/wiki/Miami"
       },
-      {
-        "@type": "City",
-        "name": "Brickell"
-      },
-      {
-        "@type": "City",
-        "name": "Downtown Miami"
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "priceRange": "$$"
       }
-    ],
-    "serviceOutput": "Clean and sanitized spaces",
-    "termsOfService": "24-hour cancellation policy required"
-  }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Commercial Cleaning Service",
+      "name": "Office Cleaning",
+      "description": "Professional office cleaning services that create a healthy, productive workspace. Regular sanitization, floor care, workspace cleaning, and restroom maintenance.",
+      "provider": {
+        "@type": "LocalBusiness",
+        "@id": "https://issancleaningco.com/#organization"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Miami"
+      },
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "priceRange": "$$"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Vacation Rental Cleaning",
+      "name": "Airbnb Turnover Cleaning",
+      "description": "Specialized cleaning service for Airbnb hosts. Quick turnaround times, deep cleaning, fresh linens, and attention to guest-facing details to maintain high ratings.",
+      "provider": {
+        "@type": "LocalBusiness",
+        "@id": "https://issancleaningco.com/#organization"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Miami Beach"
+        },
+        {
+          "@type": "City",
+          "name": "Coral Gables"
+        },
+        {
+          "@type": "City",
+          "name": "Brickell"
+        },
+        {
+          "@type": "City",
+          "name": "Downtown Miami"
+        }
+      ],
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "priceRange": "$$"
+      }
+    }
+  ]
   </script>
+  
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
+  <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="tel" name="phone" />
+    <select name="service"></select>
+    <textarea name="description"></textarea>
+  </form>
   <div class="wrapper">
     <header class="header">
       <div class="header__container">
@@ -66,7 +165,6 @@
                 <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
               </ul>
               <a href="tel:+13057013909" class="actions-header__button">(305) 701-3909</a>
-              <a href="contact.html#booking-form" class="actions-header__button actions-header__button--quote">Get a quote</a>
             </nav>
           </div>
           <button type="button" class="icon-menu">
@@ -77,8 +175,9 @@
     </header>
     <main class="page">
       <section class="page__main main main_services main_pages">
-        <video class="main__video" autoplay muted loop playsinline>
+        <video class="main__video" autoplay muted loop playsinline title="Professional cleaning services in action" aria-label="Background video showing our professional cleaning services">
           <source src="videos/services.mp4" type="video/mp4">
+          Your browser does not support the video tag.
         </video>
         <div class="main__container main__container_pages">
           <h1 class="main__title">Our Services</h1>
@@ -213,11 +312,17 @@
             <div class="before-after__item">
               <div class="before-after__images">
                 <div class="before-after__before">
-                  <img src="images/services/service-3.jpg" alt="Before cleaning service">
+                  <picture>
+                    <source srcset="images/services/service-3.webp" type="image/webp">
+                    <img src="images/services/service-3.jpg" alt="Before cleaning service" loading="lazy">
+                  </picture>
                   <span class="before-after__label">Before</span>
                 </div>
                 <div class="before-after__after">
-                  <img src="images/services/service-1.jpg" alt="After cleaning service">
+                  <picture>
+                    <source srcset="images/services/service-1.webp" type="image/webp">
+                    <img src="images/services/service-1.jpg" alt="After cleaning service" loading="lazy">
+                  </picture>
                   <span class="before-after__label">After</span>
                 </div>
               </div>
@@ -226,6 +331,36 @@
           </div>
         </div>
       </section>
+      
+      <!-- Service Features Section -->
+      <section class="page__features service-features">
+        <div class="service-features__container">
+          <h2 class="service-features__title title">Why Choose Our Services?</h2>
+          <div class="service-features__grid">
+            <div class="service-features__item">
+              <div class="service-features__icon">🌿</div>
+              <h3 class="service-features__name">Eco-Friendly Products</h3>
+              <p class="service-features__description">Safe, non-toxic cleaning products that are better for your health and the environment.</p>
+            </div>
+            <div class="service-features__item">
+              <div class="service-features__icon">🛡️</div>
+              <h3 class="service-features__name">Fully Insured & Bonded</h3>
+              <p class="service-features__description">Complete peace of mind with comprehensive insurance coverage and bonded team members.</p>
+            </div>
+            <div class="service-features__item">
+              <div class="service-features__icon">⚡</div>
+              <h3 class="service-features__name">Quick Response</h3>
+              <p class="service-features__description">Same-day service available for urgent cleaning needs and emergency situations.</p>
+            </div>
+            <div class="service-features__item">
+              <div class="service-features__icon">✅</div>
+              <h3 class="service-features__name">Satisfaction Guarantee</h3>
+              <p class="service-features__description">100% satisfaction guaranteed or we'll come back and make it right at no extra charge.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       <section class="page__outro outro outro_services">
         <div class="outro__container">
           <h2 class="outro__title title">Book Today</h2>
@@ -256,31 +391,52 @@
         <div class="footer__copyright">Copyright © 2025 Issan Cleaning – All Rights Reserved</div>
       </div>
     </footer>
+    
+    <!-- Floating CTA Button -->
+    <div class="floating-cta">
+      <a href="contact.html#booking-form" class="floating-cta__button" aria-label="Get Free Quote">
+        <span class="floating-cta__icon">📞</span>
+        <span class="floating-cta__text">Free Quote!</span>
+      </a>
+    </div>
   </div>
-  <script src="js/script.js"></script>
+  <script src="js/script.js" defer></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registered:', registration);
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed:', error);
+          });
+      });
+    }
+  </script>
   <nav class="mobile-nav">
-    <a href="/" class="mobile-nav__item">
-      <i class="mobile-nav__icon">🏠</i>
+    <a href="index.html" class="mobile-nav__item" aria-label="Home">
+      <i class="mobile-nav__icon" aria-hidden="true">🏠</i>
       <span>Home</span>
     </a>
-    <a href="services.html" class="mobile-nav__item">
-      <i class="mobile-nav__icon">🧹</i>
+    <a href="services.html" class="mobile-nav__item" aria-label="Services">
+      <i class="mobile-nav__icon" aria-hidden="true">🧹</i>
       <span>Services</span>
     </a>
-    <a href="contact.html" class="mobile-nav__item mobile-nav__item--cta">
-      <i class="mobile-nav__icon">📞</i>
+    <a href="contact.html" class="mobile-nav__item mobile-nav__item--cta" aria-label="Book Now">
+      <i class="mobile-nav__icon" aria-hidden="true">📞</i>
       <span>Book Now</span>
     </a>
-    <a href="pricing.html" class="mobile-nav__item">
-      <i class="mobile-nav__icon">💰</i>
+    <a href="pricing.html" class="mobile-nav__item" aria-label="Pricing">
+      <i class="mobile-nav__icon" aria-hidden="true">💰</i>
       <span>Pricing</span>
     </a>
-    <a href="about.html" class="mobile-nav__item">
-      <i class="mobile-nav__icon">👥</i>
+    <a href="about.html" class="mobile-nav__item" aria-label="About Us">
+      <i class="mobile-nav__icon" aria-hidden="true">👥</i>
       <span>About Us</span>
     </a>
-    <a href="tel:+13057013909" class="mobile-nav__item">
-      <i class="mobile-nav__icon">📱</i>
+    <a href="tel:+13057013909" class="mobile-nav__item" aria-label="Call">
+      <i class="mobile-nav__icon" aria-hidden="true">📱</i>
       <span>Call</span>
     </a>
   </nav>

@@ -3,80 +3,133 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#00A79D">
+    <meta name="format-detection" content="telephone=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Issan Cleaning">
+    <meta name="geo.region" content="US-FL">
+    <meta name="geo.placename" content="Miami">
+    <link rel="alternate" hreflang="en" href="https://issancleaningco.com/services.html">
+    <link rel="alternate" hreflang="es" href="https://issancleaningco.com/es/servicios.html">
+    <link rel="alternate" hreflang="x-default" href="https://issancleaningco.com/services.html">
+    <link rel="canonical" href="https://issancleaningco.com/es/servicios.html">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <title>Servicios de Limpieza en Miami | Residencial, Comercial y Airbnb</title>
+    <title>Servicios Profesionales de Limpieza en Miami | Residencial y Comercial</title>
+    
     <!-- Preload critical assets -->
     <link rel="preload" href="../videos/services.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="../css/style.css" as="style">
+    <link rel="preload" href="../js/script.js" as="script">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
     
-    <!-- Inline critical CSS -->
-    <style>
-      /* Copy contents of critical.css here */
-    </style>
+    <!-- Enhanced meta tags -->
+    <meta name="description" content="Servicios profesionales de limpieza en Miami: residencial, comercial, oficinas y Airbnb. Equipo experto, productos ecológicos, 100% de satisfacción garantizada.">
+    <meta name="keywords" content="servicios limpieza Miami, limpieza residencial, limpieza comercial, limpieza oficinas, limpieza Airbnb, servicio limpieza profesional Miami, limpiadores Miami">
     
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Defer non-critical CSS -->
-    <link rel="stylesheet" href="../css/style.css" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="../css/spanish-header-fixes.css" media="print" onload="this.media='all'" />
-    <noscript><link rel="stylesheet" href="../css/style.css"></noscript>
-    <noscript><link rel="stylesheet" href="../css/spanish-header-fixes.css"></noscript>
-    <noscript><link rel="stylesheet" href="../css/style.css"></noscript>
-    <meta name="description" content="Ofrecemos servicios completos de limpieza en Miami: limpieza residencial, comercial, y servicios especializados para Airbnb. Presupuesto gratuito. ¡Llame ahora!">
-    <meta name="keywords" content="servicios de limpieza Miami, limpieza de casas, limpieza de oficinas, limpieza Airbnb Miami, servicio de limpieza profesional">
-    
-    <meta property="og:locale" content="es_US">
+    <!-- Social Media Meta Tags -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Servicios de Limpieza Profesional en Miami | Issan Cleaning">
-    <meta property="og:description" content="Servicios completos de limpieza en Miami. Expertos en limpieza residencial, comercial y Airbnb. ¡Contáctenos hoy!">
+    <meta property="og:title" content="Servicios Profesionales de Limpieza en Miami | Residencial y Comercial">
+    <meta property="og:description" content="Servicios expertos de limpieza en Miami: residencial, comercial, oficinas y limpieza Airbnb. Productos ecológicos, equipo profesional, 100% de garantía de satisfacción.">
+    <meta property="og:image" content="https://issancleaningco.com/images/services/service-hero.webp">
+    <meta property="og:url" content="https://issancleaningco.com/es/servicios.html">
+    <meta property="og:site_name" content="Issan Cleaning Co">
+    <meta property="og:locale" content="es_ES">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Servicios Profesionales de Limpieza Miami">
+    <meta name="twitter:description" content="Servicios expertos de limpieza: residencial, comercial, oficinas y limpieza Airbnb en Miami.">
+    <meta name="twitter:image" content="https://issancleaningco.com/images/services/service-hero.webp">
+    <meta name="twitter:site" content="@IssanCleaning">
     
+    <!-- Enhanced Schema Markup for Services -->
     <script type="application/ld+json">
-    {
+    [
+      {
         "@context": "https://schema.org",
         "@type": "Service",
-        "serviceType": "Servicio de Limpieza",
+        "serviceType": "Servicio de Limpieza Residencial",
+        "name": "Limpieza Residencial",
+        "description": "Servicios completos de limpieza del hogar adaptados a sus necesidades específicas. Limpieza profunda de todos los espacios habitables, cocina, baños y pisos usando productos ecológicos.",
         "provider": {
-            "@type": "LocalBusiness",
-            "name": "Issan Cleaning",
-            "description": "Servicio profesional de limpieza en Miami",
-            "url": "https://issancleaningco.com/es/",
-            "telephone": "+13057013909",
-            "priceRange": "$$",
-            "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Miami",
-                "addressRegion": "FL",
-                "addressCountry": "US"
-            }
+          "@type": "LocalBusiness",
+          "@id": "https://issancleaningco.com/#organization",
+          "name": "Issan Cleaning Co",
+          "telephone": "(305) 317-2735",
+          "email": "issancleaningco@gmail.com",
+          "url": "https://issancleaningco.com"
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "Miami",
+          "sameAs": "https://en.wikipedia.org/wiki/Miami"
         },
         "offers": {
-            "@type": "Offer",
-            "availability": "https://schema.org/InStock",
-            "priceCurrency": "USD"
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "priceRange": "$$"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": "Servicio de Limpieza Comercial",
+        "name": "Limpieza de Oficinas",
+        "description": "Servicios profesionales de limpieza de oficinas que crean un espacio de trabajo saludable y productivo. Sanitización regular, cuidado de pisos, limpieza de espacios de trabajo y mantenimiento de baños.",
+        "provider": {
+          "@type": "LocalBusiness",
+          "@id": "https://issancleaningco.com/#organization"
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "Miami"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "priceRange": "$$"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": "Servicio de Limpieza para Alquiler Vacacional",
+        "name": "Limpieza Airbnb",
+        "description": "Servicio especializado de limpieza para anfitriones de Airbnb. Tiempos de respuesta rápidos, limpieza profunda, ropa de cama fresca y atención a los detalles orientados al huésped para mantener altas calificaciones.",
+        "provider": {
+          "@type": "LocalBusiness",
+          "@id": "https://issancleaningco.com/#organization"
         },
         "areaServed": [
-            {
-                "@type": "City",
-                "name": "Miami Beach"
-            },
-            {
-                "@type": "City",
-                "name": "Coral Gables"
-            },
-            {
-                "@type": "City",
-                "name": "Brickell"
-            },
-            {
-                "@type": "City",
-                "name": "Downtown Miami"
-            }
+          {
+            "@type": "City",
+            "name": "Miami Beach"
+          },
+          {
+            "@type": "City",
+            "name": "Coral Gables"
+          },
+          {
+            "@type": "City",
+            "name": "Brickell"
+          },
+          {
+            "@type": "City",
+            "name": "Downtown Miami"
+          }
         ],
-        "serviceOutput": "Espacios limpios y desinfectados",
-        "termsOfService": "Se requiere cancelación con 24 horas de anticipación"
-    }
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "priceRange": "$$"
+        }
+      }
+    ]
     </script>
+    
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/spanish-header-fixes.css" />
 </head>
 <body>
     <div class="wrapper">
@@ -104,7 +157,6 @@
                                 <li class="menu__item"><a href="contacto.html" class="menu__link">Contacto</a></li>
                             </ul>
                             <a href="tel:+13057013909" class="actions-header__button">(305) 701-3909</a>
-                            <a href="contacto.html#booking-form" class="actions-header__button actions-header__button--quote">¡Cotiza aquí!</a>
                         </nav>
                     </div>
                     <button type="button" class="icon-menu">
@@ -298,35 +350,44 @@
                 <div class="footer__copyright">Copyright © 2025 Issan Cleaning – Todos los Derechos <br>Reservados</div>
             </div>
         </footer>
+        
+        <!-- Floating CTA Button -->
+        <div class="floating-cta">
+            <a href="/es/contacto.html#booking-form" class="floating-cta__button" aria-label="Obtener Cotización Gratuita">
+                <span class="floating-cta__icon">📞</span>
+                <span class="floating-cta__text">¡Cotiza Gratis!</span>
+            </a>
+        </div>
+        
+        <nav class="mobile-nav">
+            <a href="index.html" class="mobile-nav__item">
+                <i class="mobile-nav__icon">🏠</i>
+                <span>Inicio</span>
+            </a>
+            <a href="servicios.html" class="mobile-nav__item">
+                <i class="mobile-nav__icon">🧹</i>
+                <span>Servicios</span>
+            </a>
+            <a href="contacto.html" class="mobile-nav__item mobile-nav__item--cta">
+                <i class="mobile-nav__icon">📞</i>
+                <span>Reservar</span>
+            </a>
+            <a href="precios.html" class="mobile-nav__item">
+                <i class="mobile-nav__icon">💰</i>
+                <span>Precios</span>
+            </a>
+            <a href="sobre-nosotros.html" class="mobile-nav__item">
+                <i class="mobile-nav__icon">👥</i>
+                <span>Conocenos</span>
+            </a>
+            <a href="tel:+13057013909" class="mobile-nav__item">
+                <i class="mobile-nav__icon">📱</i>
+                <span>Llamar</span>
+            </a>
+        </nav>
     </div>
 
     <script src="../js/script.js" defer></script>
     <script src="../js/font-loader.js" defer></script>
-    <nav class="mobile-nav">
-      <a href="index.html" class="mobile-nav__item">
-        <i class="mobile-nav__icon">🏠</i>
-        <span>Inicio</span>
-    </a>
-    <a href="servicios.html" class="mobile-nav__item">
-        <i class="mobile-nav__icon">🧹</i>
-        <span>Servicios</span>
-    </a>
-    <a href="contacto.html" class="mobile-nav__item mobile-nav__item--cta">
-        <i class="mobile-nav__icon">📞</i>
-        <span>Reservar</span>
-    </a>
-    <a href="precios.html" class="mobile-nav__item">
-        <i class="mobile-nav__icon">💰</i>
-        <span>Precios</span>
-    </a>
-    <a href="sobre-nosotros.html" class="mobile-nav__item">
-      <i class="mobile-nav__icon">👥</i>
-      <span>Conocenos</span>
-      </a>
-    <a href="tel:+13057013909" class="mobile-nav__item">
-        <i class="mobile-nav__icon">📱</i>
-        <span>Llamar</span>
-    </a>
-  </nav>
 </body>
 </html>

@@ -3,11 +3,86 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#00A79D">
+    <meta name="format-detection" content="telephone=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Issan Cleaning">
+    <meta name="geo.region" content="US-FL">
+    <meta name="geo.placename" content="Miami">
+    <link rel="alternate" hreflang="en" href="https://issancleaningco.com/about.html">
+    <link rel="alternate" hreflang="es" href="https://issancleaningco.com/es/sobre-nosotros.html">
+    <link rel="alternate" hreflang="x-default" href="https://issancleaningco.com/about.html">
+    <link rel="canonical" href="https://issancleaningco.com/es/sobre-nosotros.html">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <title>Sobre Nosotros | Servicio de Limpieza Profesional en Miami</title>
+    <title>Sobre Nosotros | Equipo Profesional de Limpieza en Miami</title>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="../videos/cleaning.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="../css/style.css" as="style">
+    <link rel="preload" href="../js/script.js" as="script">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    
+    <!-- Enhanced meta tags -->
+    <meta name="description" content="Conozca a Issan Cleaning Co - profesionales de limpieza de confianza en Miami. Más de 10 años de experiencia, equipo completamente asegurado, productos ecológicos y 100% de garantía de satisfacción.">
+    <meta name="keywords" content="sobre Issan Cleaning, empresa limpieza Miami, equipo profesional limpieza, limpiadores experimentados, servicio limpieza confiable, limpieza ecológica Miami">
+    
+    <!-- Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sobre Nosotros | Equipo de Limpieza de Confianza en Miami">
+    <meta property="og:description" content="Conozca a los profesionales de limpieza más confiables de Miami. 10+ años de experiencia, completamente asegurados, productos ecológicos, 100% de garantía de satisfacción.">
+    <meta property="og:image" content="https://issancleaningco.com/images/about/about-hero.webp">
+    <meta property="og:url" content="https://issancleaningco.com/es/sobre-nosotros.html">
+    <meta property="og:site_name" content="Issan Cleaning Co">
+    <meta property="og:locale" content="es_ES">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sobre Nosotros | Expertos en Limpieza de Miami">
+    <meta name="twitter:description" content="Conozca a nuestro equipo experimentado de limpieza en Miami. Servicio profesional, confiable y ecológico.">
+    <meta name="twitter:image" content="https://issancleaningco.com/images/about/about-hero.webp">
+    <meta name="twitter:site" content="@IssanCleaning">
+    
+    <!-- Schema Markup for About Page -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "mainEntity": {
+        "@type": "LocalBusiness",
+        "name": "Issan Cleaning Co",
+        "description": "Servicios profesionales de limpieza en Miami con más de 10 años de experiencia. Especializados en limpieza residencial, comercial y Airbnb con productos ecológicos.",
+        "foundingDate": "2014",
+        "founder": {
+          "@type": "Person",
+          "name": "Sandra",
+          "jobTitle": "Fundadora y Limpiadora Principal"
+        },
+        "numberOfEmployees": "3-10",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Miami",
+          "addressRegion": "FL",
+          "addressCountry": "US"
+        },
+        "telephone": "(305) 317-2735",
+        "email": "issancleaningco@gmail.com",
+        "url": "https://issancleaningco.com",
+        "sameAs": [
+          "https://www.facebook.com/profile.php?id=61572380124099",
+          "https://www.instagram.com/issancleaningco/"
+        ],
+        "priceRange": "$$",
+        "areaServed": {
+          "@type": "City",
+          "name": "Miami"
+        }
+      }
+    }
+    </script>
+    
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/spanish-header-fixes.css" />
-    <meta name="description" content="Conozca más sobre nuestro equipo profesional de limpieza en Miami. Más de 10 años de experiencia brindando servicios excepcionales.">
 </head>
 <body>
     <div class="wrapper">
@@ -36,7 +111,6 @@
                                 <li class="menu__item"><a href="contacto.html" class="menu__link">Contacto</a></li>
                             </ul>
                             <a href="tel:+13057013909" class="actions-header__button">(305) 701-3909</a>
-                            <a href="contacto.html#booking-form" class="actions-header__button actions-header__button--quote">¡Cotiza aquí!</a>
                         </nav>
                     </div>
                     <button type="button" class="icon-menu">
@@ -204,31 +278,54 @@
 
             </div>
           </footer>
+          
+          <!-- Floating CTA Button -->
+          <div class="floating-cta">
+            <a href="/es/contacto.html#booking-form" class="floating-cta__button" aria-label="Obtener Cotización Gratuita">
+              <span class="floating-cta__icon">📞</span>
+              <span class="floating-cta__text">¡Cotiza Gratis!</span>
+            </a>
+          </div>
         </div>
-        <script src="../js/script.js"></script>
+        
+        <script src="../js/script.js" defer></script>
+        <script>
+          if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+              navigator.serviceWorker.register('../sw.js')
+                .then(registration => {
+                  console.log('ServiceWorker registered:', registration);
+                })
+                .catch(error => {
+                  console.log('ServiceWorker registration failed:', error);
+                });
+            });
+          }
+        </script>
+        
         <nav class="mobile-nav">
-          <a href="index.html" class="mobile-nav__item">
-              <i class="mobile-nav__icon">🏠</i>
+          <a href="index.html" class="mobile-nav__item" aria-label="Inicio">
+              <i class="mobile-nav__icon" aria-hidden="true">🏠</i>
               <span>Inicio</span>
           </a>
-          <a href="servicios.html" class="mobile-nav__item">
-              <i class="mobile-nav__icon">🧹</i>
+          <a href="servicios.html" class="mobile-nav__item" aria-label="Servicios">
+              <i class="mobile-nav__icon" aria-hidden="true">🧹</i>
               <span>Servicios</span>
           </a>
-          <a href="contacto.html" class="mobile-nav__item mobile-nav__item--cta">
-              <i class="mobile-nav__icon">📞</i>
+          <a href="contacto.html" class="mobile-nav__item mobile-nav__item--cta" aria-label="Reservar Ahora">
+              <i class="mobile-nav__icon" aria-hidden="true">📞</i>
               <span>Reservar</span>
           </a>
-          <a href="precios.html" class="mobile-nav__item">
-              <i class="mobile-nav__icon">💰</i>
+          <a href="precios.html" class="mobile-nav__item" aria-label="Precios">
+              <i class="mobile-nav__icon" aria-hidden="true">💰</i>
               <span>Precios</span>
           </a>
-          <a href="sobre-nosotros.html" class="mobile-nav__item">
-            <i class="mobile-nav__icon">👥</i>
+          <a href="sobre-nosotros.html" class="mobile-nav__item" aria-label="Sobre Nosotros">
+            <i class="mobile-nav__icon" aria-hidden="true">👥</i>
             <span>Conocenos</span>
-            </a>
-          <a href="tel:+13057013909" class="mobile-nav__item">
-              <i class="mobile-nav__icon">📱</i>
+          </a>
+          <a href="tel:+13057013909" class="mobile-nav__item" aria-label="Llamar">
+              <i class="mobile-nav__icon" aria-hidden="true">📱</i>
               <span>Llamar</span>
           </a>
         </nav>
