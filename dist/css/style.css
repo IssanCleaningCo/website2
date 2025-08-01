@@ -228,23 +228,42 @@
 }
 
 .form__success {
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  color: #155724;
-  padding: 0.75rem 1rem;
-  border-radius: 0.375rem;
-  margin-bottom: 1rem;
+  background-color: #d4edda !important;
+  border: 1px solid #c3e6cb !important;
+  color: #155724 !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 0.375rem !important;
+  margin-bottom: 1rem !important;
   animation: fadeIn 0.3s ease-in;
+  display: block !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
 
 .form__fail {
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  color: #721c24;
-  padding: 0.75rem 1rem;
-  border-radius: 0.375rem;
-  margin-bottom: 1rem;
+  background-color: #f8d7da !important;
+  border: 1px solid #f5c6cb !important;
+  color: #721c24 !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 0.375rem !important;
+  margin-bottom: 1rem !important;
   animation: fadeIn 0.3s ease-in;
+  display: block !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Additional specificity for form messages */
+#contact-form-messages .form__success,
+#booking-form-messages .form__success {
+  background-color: #d4edda !important;
+  border: 1px solid #c3e6cb !important;
+  color: #155724 !important;
+}
+
+#contact-form-messages .form__fail,
+#booking-form-messages .form__fail {
+  background-color: #f8d7da !important;
+  border: 1px solid #f5c6cb !important;
+  color: #721c24 !important;
 }
 
 @keyframes fadeIn {
